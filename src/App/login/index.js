@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import "./login.css";
+
+import Form from './form';
+import styles from "./login.module.css";
 
 class Login extends Component {
   render() {
     return (
-      <div className="container">
+      <div className={styles.container}>
+        <div className={styles.formContainer}>
+          <Form />
+        </div>
       </div>
     )
   }
