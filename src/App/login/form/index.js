@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { login } from 'App/login/actions';
 import styles from './form.module.css';
 
 class Form extends Component {
@@ -18,6 +19,7 @@ class Form extends Component {
   }
 
   onSubmit = (event) => {
+    login(this.state);
     event.preventDefault();
   }
 
