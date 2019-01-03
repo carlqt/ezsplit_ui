@@ -1,11 +1,14 @@
+import Request from 'Lib/request';
+
 export function login(data) {
   const url = "http://localhost:8000/accounts/authenticate"
-  const options = {
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-    method: "POST",
-  };
 
-  fetch(url, options)
-    .then(response => response.json())
+  // fetch(url, options)
+  //   .then(response => response.json())
+
+  return Request.post(url, data)
+    .then((resp) => {
+      localStorage.setItem('jwt', resp.data.token)
+      return resp;
+    });
 }
