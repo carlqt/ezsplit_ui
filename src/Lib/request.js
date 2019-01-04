@@ -2,7 +2,15 @@ import { isEmpty } from 'Lib/helpers';
 
 class Request {
   constructor() {
-    this.headers = { "Content-Type": "application/json" };
+    const jwt = localStorage.getItem('jwt');
+
+    this.headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (jwt) {
+      this.headers["Authorization"] = `Bearer ${jwt}`
+    };
   }
 
   post(url = "", body = {}) {
@@ -13,6 +21,7 @@ class Request {
       method,
     };
 
+    console.log(options);
     return fetch(url, options)
       .then(response => response.json())
   }
@@ -35,4 +44,4 @@ class Request {
   }
 }
 
-export default new Request();
+export default Request;
