@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProtectedRoute from 'App/protected_route';
 import Login from 'App/login';
 import Home from 'App/home';
+import Receipts from 'App/receipts';
 
 class App extends Component {
   render() {
@@ -15,6 +16,8 @@ class App extends Component {
             <ProtectedRoute path="/home/:id" component={Home} />
             <ProtectedRoute path="/home/" component={Home} />
           </Switch>
+
+          <Route path="/receipts/new" component={Receipts} />
         </div>
       </Router>
     )

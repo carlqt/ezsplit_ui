@@ -4,7 +4,6 @@ import styles from './home.module.css';
 
 class Home extends Component {
   render() {
-    console.log(this.props);
     return (
       <div className={styles.container} >
         <div className={styles.sidebar}>
