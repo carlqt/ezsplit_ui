@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './home.module.css';
+import Sidebar from 'Components/sidebar';
 
 class Home extends Component {
   render() {
     return (
       <div className={styles.container} >
         <div className={styles.sidebar}>
-          <h3>Groups</h3>
-          <Link to="/receipts/new">
-            <h3>Create Receipt</h3>
-          </Link>
+          <Sidebar />
         </div>
       </div>
     );
