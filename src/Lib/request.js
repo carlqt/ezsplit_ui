@@ -21,17 +21,20 @@ class Request {
       method,
     };
 
-    console.log(options);
     return fetch(url, options)
       .then(response => response.json())
   }
 
   xget(url, params = {}) {
+    const options = {
+      headers: this.headers,
+    };
+
     if (!isEmpty(params)) {
       url = `${url}?${this.encodedParams(params)}`
     }
 
-    return fetch(url)
+    return fetch(url, options)
       .then(response => response.json())
   }
 

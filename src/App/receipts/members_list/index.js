@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
-import { getMembers } from 'Actions/homes';
-import Receipts from './receipts';
+import MembersList from './members_list';
 
 const mapStateToProps = state => {
   return {
@@ -12,4 +11,4 @@ const mapDispatchToProps = {
   getMembers,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Receipts);
+export default connect(mapStateToProps,mapDispatchToProps)(MembersList);
