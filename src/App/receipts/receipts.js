@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import Sidebar from 'Components/sidebar';
+import CreateReceipt from './forms/create_receipt';
 import styles from './styles';
 
 
@@ -53,7 +54,7 @@ class Receipts extends Component {
     const { receipt } = this.state;
     const { members } = this.props;
 
-    const member = members.find(mem => mem.id === id);
+    const member = members.find(mem => mem.id == id);
 
     if (member) {
       receipt.members.push(member);
@@ -65,28 +66,12 @@ class Receipts extends Component {
     const { receipt } = this.state;
     const members = receipt.members
 
-    const index = members.findIndex(mem => mem.id === id);
+    const index = members.findIndex(mem => mem.id == id);
 
     if (index >= 0) {
       receipt.members.splice(index, 1);
       this.setState({ receipt });
     }
-  }
-
-  renderMembers = ({email, id}) => {
-    return(
-      <FormControlLabel
-        key={id}
-        label={email}
-        control={
-          <Checkbox
-            value={id.toString()}
-            color="primary"
-            onChange={this.onCheckboxChange}
-          />
-        }
-      />
-    );
   }
 
   render() {
@@ -100,27 +85,11 @@ class Receipts extends Component {
       <div className={classes.root}>
         <Sidebar>
           <div className={classes.container}>
-            <div className={classes.formContainer}>
-              <TextField
-                className={classes.input}
-                name="description"
-                label="Receipt Name"
-                onChange={this.receiptOnChange}
-                value={description}
-              />
-              <TextField
-                className={classes.input}
-                name="total"
-                label="Total Cost"
-                type="number"
-                onChange={this.receiptOnChange}
-                value={total}
-              />
-
-              { members.map(this.renderMembers) }
-
-              <Button variant="contained" color="primary">Next</Button>
-            </div>
+            <CreateReceipt
+              onCheckboxChange={this.onCheckboxChange}
+              receiptOnChange={this.receiptOnChange}
+              {...{ members, description, total }}
+            />
 
             <div className={classes.formContainer}>
               <div className={classes.menuItem}>
