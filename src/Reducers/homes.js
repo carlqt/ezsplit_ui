@@ -10,8 +10,6 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case 'GET_HOME_MEMBERS': {
-      const { members } = data;
-
       return state.merge({ members: data }); 
     }
     default: {

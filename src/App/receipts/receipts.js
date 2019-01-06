@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 
 import Sidebar from 'Components/sidebar';
 import CreateReceipt from './forms/create_receipt';
+import AddItems from './forms/add_items';
 import styles from './styles';
 
 
@@ -19,7 +16,13 @@ class Receipts extends Component {
         description: '',
         total: '',
         members: [],
-        items: [],
+        items: [
+          {
+            name: '',
+            quantity: '',
+            price: '',
+          }
+        ],
       },
       step: 1,
     }
@@ -74,45 +77,84 @@ class Receipts extends Component {
     }
   }
 
-  render() {
-    const { classes, members } = this.props;
+  onNext = () => {
+    this.setState({ step: 2 });
+  }
+
+  addItem = () => {
+    const { receipt } = this.state;
+    const { items } = receipt;
+    const emptyItem = {
+      name: '',
+      quantity: '',
+      price: '',
+    }
+
+    receipt.items = items.concat(emptyItem)
+    this.setState({ receipt });
+  }
+
+  updateItem = (event, index) => {
+    const { name, value } = event.target;
+    const { receipt } = this.state;
+
+    receipt.items[index][name] = value;
+
+    this.setState({ receipt });
+  }
+
+  removeItem = (index) => {
+    const { receipt } = this.state;
+
+    receipt.items.splice(index, 1);
+    this.setState({ receipt });
+  }
+
+  renderForms = () => {
+    const { members } = this.props;
+    const { step, receipt } = this.state;
     const {
       description,
       total,
-    } = this.state.receipt;
+      items,
+    } = receipt;
+
+    switch (step) {
+      case 1: {
+        return(
+          <CreateReceipt
+            onCheckboxChange={this.onCheckboxChange}
+            receiptOnChange={this.receiptOnChange}
+            onNext={this.onNext}
+            {...{ members, description, total }}
+          />
+        );
+      }
+      case 2: {
+        return(
+          <AddItems
+            addItem={this.addItem}
+            removeItem={this.removeItem}
+            updateItem={this.updateItem}
+            {...{ items }}
+          />
+        );
+      }
+      default:
+        return <div />;
+    }
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    console.log(this.state);
 
     return (
       <div className={classes.root}>
         <Sidebar>
           <div className={classes.container}>
-            <CreateReceipt
-              onCheckboxChange={this.onCheckboxChange}
-              receiptOnChange={this.receiptOnChange}
-              {...{ members, description, total }}
-            />
-
-            <div className={classes.formContainer}>
-              <div className={classes.menuItem}>
-                <TextField
-                  className={classes.input}
-                  name="Name"
-                  label="Name"
-                />
-                <TextField
-                  className={classes.input}
-                  name="price"
-                  label="Price"
-                  type="number"
-                />
-                <TextField
-                  className={classes.input}
-                  name="quantity"
-                  label="Quantity"
-                  type="number"
-                />
-              </div>
-              <Button variant="contained" color="primary">Create</Button>
-            </div>
+            { this.renderForms() }
           </div>
         </Sidebar>
       </div>

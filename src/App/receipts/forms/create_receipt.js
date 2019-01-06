@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 class CreateReceipt extends PureComponent {
   renderMembers = ({email, id}) => {
@@ -31,6 +32,7 @@ class CreateReceipt extends PureComponent {
       classes,
       description,
       total,
+      onNext,
     } = this.props;
 
     return(
@@ -41,6 +43,9 @@ class CreateReceipt extends PureComponent {
           label="Receipt Name"
           onChange={receiptOnChange}
           value={description}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
         <TextField
           className={classes.input}
@@ -49,11 +54,17 @@ class CreateReceipt extends PureComponent {
           type="number"
           onChange={receiptOnChange}
           value={total}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">S$</InputAdornment>,
+          }}
         />
 
         { members.map(this.renderMembers) }
 
-        <Button variant="contained" color="primary">Next</Button>
+        <Button variant="contained" color="primary" onClick={onNext}>Next</Button>
       </div>
     )
   }

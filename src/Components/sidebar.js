@@ -30,7 +30,7 @@ class Sidebar extends Component {
 
             <ListItem button key="Create Receipts">
               <ListItemIcon><HomeIcon/></ListItemIcon>
-              <Link to="home/2/receipts/new" style={{ textDecoration: 'none' }}>
+              <Link to="/home/2/receipts/new" style={{ textDecoration: 'none' }}>
                 <ListItemText primary="Create Receipts"/>
               </Link>
             </ListItem>
