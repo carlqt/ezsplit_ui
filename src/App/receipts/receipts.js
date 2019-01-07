@@ -5,6 +5,7 @@ import Sidebar from 'Components/sidebar';
 import CreateReceipt from './forms/create_receipt';
 import AddItems from './forms/add_items';
 import styles from './styles';
+import Stepper from './stepper';
 
 
 class Receipts extends Component {
@@ -103,6 +104,14 @@ class Receipts extends Component {
     this.setState({ receipt });
   }
 
+  createReceipt = () => {
+    const { createReceipt, computedMatch  } = this.props;
+    const { receipt } = this.state;
+    const homeID = computedMatch.params.id;
+
+    createReceipt(homeID, { receipt });
+  }
+
   removeItem = (index) => {
     const { receipt } = this.state;
 
@@ -110,8 +119,14 @@ class Receipts extends Component {
     this.setState({ receipt });
   }
 
+  stepBack = () => {
+    const { step } = this.state;
+
+    this.setState({ step: step - 1 });
+  }
+
   renderForms = () => {
-    const { members } = this.props;
+    const { members, createReceipt } = this.props;
     const { step, receipt } = this.state;
     const {
       description,
@@ -136,7 +151,12 @@ class Receipts extends Component {
             addItem={this.addItem}
             removeItem={this.removeItem}
             updateItem={this.updateItem}
-            {...{ items }}
+            createReceipt={this.createReceipt}
+            stepBack={this.stepBack}
+            {...{
+              items,
+              total,
+            }}
           />
         );
       }
@@ -147,13 +167,15 @@ class Receipts extends Component {
 
   render() {
     const { classes } = this.props;
-
-    console.log(this.state);
+    const { step } = this.state;
 
     return (
       <div className={classes.root}>
         <Sidebar>
           <div className={classes.container}>
+            <Stepper
+              activeStep={step - 1}
+            />
             { this.renderForms() }
           </div>
         </Sidebar>

@@ -48,6 +48,7 @@ class CreateReceipt extends PureComponent {
           }}
         />
         <TextField
+          required
           className={classes.input}
           name="total"
           label="Total Cost"
@@ -75,10 +76,10 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    flexGrow: 1,
     padding: 10,
   },
   input: {
+    marginTop: 10,
     marginLeft: 5,
   },
 });
