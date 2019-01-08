@@ -58,7 +58,7 @@ class Receipts extends Component {
     const { receipt } = this.state;
     const { members } = this.props;
 
-    const member = members.find(mem => mem.id == id);
+    const member = members.find(mem => mem.profileId == id);
 
     if (member) {
       receipt.members.push(member);
@@ -70,7 +70,7 @@ class Receipts extends Component {
     const { receipt } = this.state;
     const members = receipt.members
 
-    const index = members.findIndex(mem => mem.id == id);
+    const index = members.findIndex(mem => mem.profileId == id);
 
     if (index >= 0) {
       receipt.members.splice(index, 1);

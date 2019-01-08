@@ -23,17 +23,24 @@ class Sidebar extends Component {
           }}
         >
           <List>
+            <Link to="/home" style={{ textDecoration: 'none' }}>
+              <ListItem button key="Home">
+                <ListItemIcon><HomeIcon/></ListItemIcon>
+                  <ListItemText primary="Home"/>
+              </ListItem>
+            </Link>
+
             <ListItem button key="Group">
               <ListItemIcon><HomeIcon/></ListItemIcon>
               <ListItemText primary="Group"/>
             </ListItem>
 
-            <ListItem button key="Create Receipts">
-              <ListItemIcon><HomeIcon/></ListItemIcon>
-              <Link to="/home/2/receipts/new" style={{ textDecoration: 'none' }}>
-                <ListItemText primary="Create Receipts"/>
-              </Link>
-            </ListItem>
+            <Link to="/home/2/receipts/new" style={{ textDecoration: 'none' }}>
+              <ListItem button key="Create Receipts">
+                <ListItemIcon><HomeIcon/></ListItemIcon>
+                  <ListItemText primary="Create Receipts"/>
+              </ListItem>
+            </Link>
           </List>
         </Drawer>
         { this.props.children }

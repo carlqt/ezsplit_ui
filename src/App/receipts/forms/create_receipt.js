@@ -7,16 +7,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 class CreateReceipt extends PureComponent {
-  renderMembers = ({email, id}) => {
+  renderMembers = ({email, profileId}) => {
     const { onCheckboxChange } = this.props;
 
     return(
       <FormControlLabel
-        key={id}
+        key={profileId}
         label={email}
         control={
           <Checkbox
-            value={id.toString()}
+            value={profileId.toString()}
             color="primary"
             onChange={onCheckboxChange}
           />
