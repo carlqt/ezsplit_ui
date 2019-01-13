@@ -6,10 +6,14 @@ import ProtectedRoute from 'App/protected_route';
 import Login from 'App/login';
 import Home from 'App/home';
 import Receipts from 'App/receipts';
+import Alert from 'Components/alerts';
 import store from './store'
 
 class App extends Component {
   render() {
+    const { appStore } = store.getState();
+    const alert =  appStore.get('alert');
+
     return (
       <Provider store={store}>
         <Router>
@@ -20,6 +24,8 @@ class App extends Component {
               <ProtectedRoute path="/home/:id" component={Home} />
               <ProtectedRoute path="/home/" component={Home} />
             </Switch>
+
+            { alert.get('visible') ?  <Alert /> : <div /> }
           </div>
         </Router>
       </Provider>

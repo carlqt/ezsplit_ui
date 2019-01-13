@@ -7,7 +7,6 @@ export function getMembers(homeID) {
   return (dispatch) => {
     return request.xget(url)
       .then((resp) => {
-        console.log(resp)
         dispatch({
           type: "GET_HOME_MEMBERS",
           data: resp.data.members,

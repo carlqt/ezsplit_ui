@@ -9,7 +9,6 @@ export function createReceipt(homeID, data) {
   // TODO: Do something here...
   // Save to state and/or redirect to dashboard
   return (dispatch) => {
-    return request.post(url, formatData)
-      .then(resp => console.log(resp));
+    return request.post(url, formatData);
   }
 }
