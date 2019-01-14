@@ -9,14 +9,14 @@ const initialState = Immutable.fromJS({
 });
 
 export default function(state = initialState, action) {
-  const { type, body, visible } = action;
+  const { type, body } = action;
 
   switch (type) {
     case 'OPEN_ALERT': {
       return state.mergeDeep({
         alert: {
+          visible: true,
           body,
-          visible,
         },
       })
     }

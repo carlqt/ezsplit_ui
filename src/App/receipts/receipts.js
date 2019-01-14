@@ -105,11 +105,14 @@ class Receipts extends Component {
   }
 
   createReceipt = () => {
-    const { createReceipt, computedMatch  } = this.props;
+    const { createReceipt, computedMatch, openAlert  } = this.props;
     const { receipt } = this.state;
     const homeID = computedMatch.params.id;
 
-    createReceipt(homeID, { receipt });
+    createReceipt(homeID, { receipt })
+      .then(r => {
+        openAlert('Success!');
+      });
   }
 
   removeItem = (index) => {
