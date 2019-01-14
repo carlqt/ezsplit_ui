@@ -1,185 +1,40 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import CreateIcon from '@material-ui/icons/Create';
 
 import Sidebar from 'Components/sidebar';
-import CreateReceipt from './forms/create_receipt';
-import AddItems from './forms/add_items';
-import styles from './styles';
-import Stepper from './stepper';
-
 
 class Receipts extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      receipt: {
-        description: '',
-        total: '',
-        members: [],
-        items: [
-          {
-            name: '',
-            quantity: '',
-            price: '',
-          }
-        ],
-      },
-      step: 1,
-    }
-  }
-
-  componentDidMount() {
-    const { getMembers, computedMatch } = this.props;
-    const homeID = computedMatch.params.id;
-
-    getMembers(homeID);
-  }
-
-  receiptOnChange = (event) => {
-    const { name, value } = event.target;
-    const { receipt } = this.state;
-    receipt[name] = value;
-
-    this.setState({ receipt });
-  }
-
-  onCheckboxChange = (event, checked) => {
-    const { value } = event.target;
-
-    if (checked) {
-      this.insertMemberState(value);
-    } else {
-      this.removeMemberState(value);
-    }
-  }
-
-  insertMemberState = (id) => {
-    const { receipt } = this.state;
-    const { members } = this.props;
-
-    const member = members.find(mem => mem.profileId == id);
-
-    if (member) {
-      receipt.members.push(member);
-      this.setState({ receipt });
-    }
-  }
-
-  removeMemberState = (id) => {
-    const { receipt } = this.state;
-    const members = receipt.members
-
-    const index = members.findIndex(mem => mem.profileId == id);
-
-    if (index >= 0) {
-      receipt.members.splice(index, 1);
-      this.setState({ receipt });
-    }
-  }
-
-  onNext = () => {
-    this.setState({ step: 2 });
-  }
-
-  addItem = () => {
-    const { receipt } = this.state;
-    const { items } = receipt;
-    const emptyItem = {
-      name: '',
-      quantity: '',
-      price: '',
-    }
-
-    receipt.items = items.concat(emptyItem)
-    this.setState({ receipt });
-  }
-
-  updateItem = (event, index) => {
-    const { name, value } = event.target;
-    const { receipt } = this.state;
-
-    receipt.items[index][name] = value;
-
-    this.setState({ receipt });
-  }
-
   createReceipt = () => {
-    const { createReceipt, computedMatch, openAlert  } = this.props;
-    const { receipt } = this.state;
-    const homeID = computedMatch.params.id;
+    const { history } = this.props;
 
-    createReceipt(homeID, { receipt })
-      .then(r => {
-        openAlert('Success!');
-      });
-  }
-
-  removeItem = (index) => {
-    const { receipt } = this.state;
-
-    receipt.items.splice(index, 1);
-    this.setState({ receipt });
-  }
-
-  stepBack = () => {
-    const { step } = this.state;
-
-    this.setState({ step: step - 1 });
-  }
-
-  renderForms = () => {
-    const { members, createReceipt } = this.props;
-    const { step, receipt } = this.state;
-    const {
-      description,
-      total,
-      items,
-    } = receipt;
-
-    switch (step) {
-      case 1: {
-        return(
-          <CreateReceipt
-            onCheckboxChange={this.onCheckboxChange}
-            receiptOnChange={this.receiptOnChange}
-            onNext={this.onNext}
-            {...{ members, description, total }}
-          />
-        );
-      }
-      case 2: {
-        return(
-          <AddItems
-            addItem={this.addItem}
-            removeItem={this.removeItem}
-            updateItem={this.updateItem}
-            createReceipt={this.createReceipt}
-            stepBack={this.stepBack}
-            {...{
-              items,
-              total,
-            }}
-          />
-        );
-      }
-      default:
-        return <div />;
-    }
+    history.push('receipts/new');
   }
 
   render() {
     const { classes } = this.props;
-    const { step } = this.state;
 
-    return (
+    return(
       <div className={classes.root}>
         <Sidebar>
           <div className={classes.container}>
-            <Stepper
-              activeStep={step - 1}
-            />
-            { this.renderForms() }
+            <div className={classes.row}>
+              <h2 className={classes.header}>Receipts</h2>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.createReceipt}
+              >
+                <CreateIcon />
+                Create
+              </Button>
+            </div>
+
+            <div className={classes.row}>
+              Table here
+            </div>
           </div>
         </Sidebar>
       </div>
@@ -187,4 +42,25 @@ class Receipts extends Component {
   }
 }
 
-export default withStyles(styles)(Receipts);
+const styles = theme => ({
+  root: {
+    height: '100%',
+    width: '100%',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: 18,
+  },
+  header: {
+    flexGrow: 2,
+  }
+});
+
+export default withRouter(withStyles(styles)(Receipts));

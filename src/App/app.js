@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProtectedRoute from 'App/protected_route';
 import Login from 'App/login';
 import Home from 'App/home';
+import CreateReceipt from 'App/create_receipt';
 import Receipts from 'App/receipts';
 import Alert from 'Components/alerts';
 
@@ -17,7 +18,8 @@ class App extends Component {
         <div className="routerContainer">
           <Route path="/login" component={Login} />
           <Switch>
-            <ProtectedRoute path="/home/:id/receipts/new" component={Receipts} />
+            <ProtectedRoute path="/home/:id/receipts/new" component={CreateReceipt} />
+            <ProtectedRoute path="/home/:id/receipts" component={Receipts} />
             <ProtectedRoute path="/home/:id" component={Home} />
             <ProtectedRoute path="/home/" component={Home} />
           </Switch>
