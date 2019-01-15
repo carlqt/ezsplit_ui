@@ -5,8 +5,16 @@ import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create';
 
 import Sidebar from 'Components/sidebar';
+import List from './list';
 
 class Receipts extends Component {
+  componentDidMount = () => {
+    const { computedMatch, getReceipts } = this.props;
+    const { id }= computedMatch.params
+
+    this.props.getReceipts(id);
+  }
+
   createReceipt = () => {
     const { history } = this.props;
 
@@ -14,7 +22,7 @@ class Receipts extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, receipts } = this.props;
 
     return(
       <div className={classes.root}>
@@ -33,7 +41,9 @@ class Receipts extends Component {
             </div>
 
             <div className={classes.row}>
-              Table here
+              <List
+                {...{ receipts }}
+              />
             </div>
           </div>
         </Sidebar>

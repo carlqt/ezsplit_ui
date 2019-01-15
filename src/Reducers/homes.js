@@ -2,7 +2,6 @@ import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
   members: [],
-  state: 'INIT',
 });
 
 export default function(state = initialState, action) {

@@ -1,17 +1,64 @@
 import React, { Component } from 'react';
-import styles from './home.module.css';
+import { withStyles } from '@material-ui/core/styles';
+
 import Sidebar from 'Components/sidebar';
+import Table from 'Components/table';
 
 class Home extends Component {
   render() {
-    return (
-      <div className={styles.container} >
-        <div className={styles.sidebar}>
-          <Sidebar />
-        </div>
+    const { classes } = this.props;
+    const data = [
+      {
+        id: 1,
+        email: 'carl@gmail.com',
+        balance: 120,
+      },
+      {
+        id: 2,
+        email: 'anne@gmail.com',
+        balance: -10,
+      },
+    ]
+
+    return(
+      <div className={classes.root}>
+        <Sidebar>
+          <div className={classes.container}>
+            <div className={classes.row}>
+              <h2 className={classes.header}>Dashboard</h2>
+            </div>
+
+            <div className={classes.row}>
+              <Table
+                {...{ data }}
+              />
+            </div>
+          </div>
+        </Sidebar>
       </div>
     );
   }
 }
 
-export default Home;
+const styles = theme => ({
+  root: {
+    height: '100%',
+    width: '100%',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: 18,
+  },
+  header: {
+    flexGrow: 2,
+  }
+});
+
+export default withStyles(styles)(Home);

@@ -9,6 +9,10 @@ import Receipts from 'App/receipts';
 import Alert from 'Components/alerts';
 
 class App extends Component {
+  componentDidMount() {
+    // load any needed here
+  }
+
   render() {
     const { appStore } = this.props;
     const alert = appStore.get('alert');

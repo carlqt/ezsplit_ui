@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -6,11 +7,35 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      anchorEl: null,
+    }
+  }
+
+  openMenu = (event) => {
+    console.log(event);
+    this.setState({
+      anchorEl: event.currentTarget,
+    });
+  }
+
+  menuOnClose = () => {
+    this.setState({
+      anchorEl: null,
+    });
+  }
+
   render() {
     const { classes } = this.props;
+    const { anchorEl } = this.state;
 
     return(
       <div className={classes.root}>
@@ -30,7 +55,7 @@ class Sidebar extends Component {
               </ListItem>
             </Link>
 
-            <ListItem button key="Group">
+            <ListItem button key="Group" onClick={this.openMenu}>
               <ListItemIcon><HomeIcon/></ListItemIcon>
               <ListItemText primary="Group"/>
             </ListItem>
@@ -42,6 +67,14 @@ class Sidebar extends Component {
               </ListItem>
             </Link>
           </List>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={this.menuOnClose}
+          >
+            <MenuItem>Best Damn House</MenuItem>
+          </Menu>
         </Drawer>
         { this.props.children }
       </div>
@@ -63,4 +96,4 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(Sidebar);
+export default withRouter(withStyles(styles)(Sidebar));

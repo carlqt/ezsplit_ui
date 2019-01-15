@@ -12,3 +12,18 @@ export function createReceipt(homeID, data) {
     return request.post(url, formatData);
   }
 }
+
+export function getReceipts(homeID) {
+  const url = `http://localhost:8000/home/${homeID}/receipts`
+  const request = new Request();
+
+  return (dispatch) => {
+    return request.xget(url)
+      .then(resp => {
+        dispatch({
+          type: 'GET_RECEIPTS',
+          data: resp.data,
+        })
+      })
+  }
+}

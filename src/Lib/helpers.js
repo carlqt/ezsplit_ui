@@ -18,3 +18,13 @@ export function userInfo() {
 
   return JSON.parse(window.atob(base64));
 }
+
+export function currentHouse() {
+  const house = localStorage.getItem('house');
+  const { id, name } = house;
+
+  return {
+    id,
+    name,
+  }
+}
