@@ -11,6 +11,7 @@ import Alert from 'Components/alerts';
 class App extends Component {
   componentDidMount() {
     // load any needed here
+    this.props.getAccount();
   }
 
   render() {
