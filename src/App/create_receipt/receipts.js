@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-import Sidebar from 'Components/sidebar';
 import CreateReceipt from './forms/create_receipt';
 import AddItems from './forms/add_items';
 import styles from './styles';
@@ -174,14 +173,12 @@ class Receipts extends Component {
 
     return (
       <div className={classes.root}>
-        <Sidebar>
-          <div className={classes.container}>
-            <Stepper
-              activeStep={step - 1}
-            />
-            { this.renderForms() }
-          </div>
-        </Sidebar>
+        <div className={classes.container}>
+          <Stepper
+            activeStep={step - 1}
+          />
+          { this.renderForms() }
+        </div>
       </div>
     );
   }

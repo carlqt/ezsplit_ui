@@ -25,6 +25,12 @@ class CreateReceipt extends PureComponent {
     );
   }
 
+  onSubmit = (event) => {
+    const { onNext } = this.props;
+    onNext();
+    event.preventDefault();
+  }
+
   render() {
     const {
       members,
@@ -32,12 +38,12 @@ class CreateReceipt extends PureComponent {
       classes,
       description,
       total,
-      onNext,
     } = this.props;
 
     return(
-      <div className={classes.formContainer}>
+      <form className={classes.formContainer} onSubmit={this.onSubmit}>
         <TextField
+          required
           className={classes.input}
           name="description"
           label="Receipt Name"
@@ -65,8 +71,8 @@ class CreateReceipt extends PureComponent {
 
         { members.map(this.renderMembers) }
 
-        <Button variant="contained" color="primary" onClick={onNext}>Next</Button>
-      </div>
+        <Button type="submit" variant="contained" color="primary">Next</Button>
+      </form>
     )
   }
 }

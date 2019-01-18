@@ -22,7 +22,6 @@ class Home extends Component {
 
     return(
       <div className={classes.root}>
-        <Sidebar>
           <div className={classes.container}>
             <div className={classes.row}>
               <h2 className={classes.header}>Dashboard</h2>
@@ -34,7 +33,6 @@ class Home extends Component {
               />
             </div>
           </div>
-        </Sidebar>
       </div>
     );
   }

@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create';
 
-import Sidebar from 'Components/sidebar';
 import List from './list';
 
 class Receipts extends Component {
@@ -26,28 +25,26 @@ class Receipts extends Component {
 
     return(
       <div className={classes.root}>
-        <Sidebar>
-          <div className={classes.container}>
-            <div className={classes.row}>
-              <h2 className={classes.header}>Receipts</h2>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.createReceipt}
-              >
-                <CreateIcon />
-                Create
-              </Button>
-            </div>
-
-            <div className={classes.row}>
-              <List
-                {...{ receipts }}
-              />
-            </div>
+        <div className={classes.container}>
+          <div className={classes.row}>
+            <h2 className={classes.header}>Receipts</h2>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.createReceipt}
+            >
+              <CreateIcon />
+              Create
+            </Button>
           </div>
-        </Sidebar>
-      </div>
+
+          <div className={classes.row}>
+            <List
+              {...{ receipts }}
+            />
+          </div>
+        </div>
+    </div>
     );
   }
 }

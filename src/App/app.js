@@ -7,6 +7,7 @@ import Home from 'App/home';
 import CreateReceipt from 'App/create_receipt';
 import Receipts from 'App/receipts';
 import Alert from 'Components/alerts';
+import Sidebar from 'Components/sidebar';
 
 class App extends Component {
   componentDidMount() {
@@ -15,19 +16,24 @@ class App extends Component {
   }
 
   render() {
-    const { appStore } = this.props;
+    const { appStore, accountStore } = this.props;
     const alert = appStore.get('alert');
+    const groups = accountStore.get('groups');
 
     return (
       <Router>
         <div className="routerContainer">
           <Route path="/login" component={Login} />
-          <Switch>
-            <ProtectedRoute path="/home/:id/receipts/new" component={CreateReceipt} />
-            <ProtectedRoute path="/home/:id/receipts" component={Receipts} />
-            <ProtectedRoute path="/home/:id" component={Home} />
-            <ProtectedRoute path="/home/" component={Home} />
-          </Switch>
+          <Sidebar
+            {...{ groups }}
+          >
+            <Switch>
+                <ProtectedRoute path="/home/:id/receipts/new" component={CreateReceipt} />
+                <ProtectedRoute path="/home/:id/receipts" component={Receipts} />
+                <ProtectedRoute path="/home/:id" component={Home} />
+                <ProtectedRoute path="/home/" component={Home} />
+            </Switch>
+          </Sidebar>
 
           { alert.get('visible') ?  <Alert /> : <div /> }
         </div>
