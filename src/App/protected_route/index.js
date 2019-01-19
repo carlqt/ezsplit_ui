@@ -1,35 +1,15 @@
-import React, { PureComponent } from 'react';
-import { Route, Redirect } from "react-router-dom";
-import { isAuthenticated } from 'Lib/helpers';
+import { connect } from "react-redux";
+import { getAccount } from "Actions/account";
+import Route from './protected_route';
 
-class ProtectedRoute extends PureComponent {
-  renderProps = () => {
-    const { component: Component, location } = this.props;
-
-    if (isAuthenticated()) {
-      return <Component {...this.props} />;
-    };
-
-    return(
-      <Redirect
-        to={{
-          pathname: "/login",
-          state: { from: location }
-        }}
-      />
-    );
+const mapStateToProps = state => {
+  return {
+    accountStore: state.accountStore,
   }
+};
 
-  render() {
-    const { component, ...rest } = this.props;
+const mapDispatchToProps = {
+  getAccount,
+};
 
-    return(
-      <Route
-        {...rest}
-        render={this.renderProps}
-      />
-    );
-  }
-}
-
-export default ProtectedRoute;
+export default connect(mapStateToProps, mapDispatchToProps)(Route);
