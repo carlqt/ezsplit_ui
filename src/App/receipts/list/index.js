@@ -27,6 +27,7 @@ class List extends Component {
           <DeleteIcon color="error" />
           <DescriptionIcon color="primary" />
         </TableCell>
+        <TableCell>pending</TableCell>
       </TableRow>
     );
   }
@@ -45,6 +46,7 @@ class List extends Component {
             <TableCell>Name</TableCell>
             <TableCell>Total Price</TableCell>
             <TableCell>Actions</TableCell>
+            <TableCell>State</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

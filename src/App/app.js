@@ -12,11 +12,15 @@ import Sidebar from 'Components/sidebar';
 class App extends Component {
   componentDidMount() {
     // load any needed here
-    this.props.getAccount();
+    const {
+      getAccount,
+    } = this.props;
+
+    getAccount();
   }
 
   render() {
-    const { appStore, accountStore } = this.props;
+    const { appStore, accountStore, getHome } = this.props;
     const alert = appStore.get('alert');
     const groups = accountStore.get('groups');
 
@@ -25,7 +29,7 @@ class App extends Component {
         <div className="routerContainer">
           <Route path="/login" component={Login} />
           <Sidebar
-            {...{ groups }}
+            {...{ groups, getHome }}
           >
             <Switch>
                 <ProtectedRoute path="/home/:id/receipts/new" component={CreateReceipt} />

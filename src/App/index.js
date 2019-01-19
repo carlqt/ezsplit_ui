@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import { getAccount } from "Actions/account";
+import { getHome } from 'Actions/homes';
 import App from './app';
 
 const mapStateToProps = state => {
@@ -11,6 +12,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getAccount,
+  getHome,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

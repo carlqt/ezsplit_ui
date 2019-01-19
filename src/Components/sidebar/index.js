@@ -31,8 +31,12 @@ class Sidebar extends Component {
   }
 
   houseSelect = (house) => {
+    const { getHome, history } = this.props;
     const currentHouse = JSON.stringify(house.toJS());
     localStorage.setItem('house', currentHouse);
+
+    getHome(house.get('id'));
+    history.push('/home');
   }
 
   renderMenuItems = (house) => {

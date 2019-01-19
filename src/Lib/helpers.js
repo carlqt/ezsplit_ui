@@ -21,10 +21,15 @@ export function userInfo() {
 
 export function currentHouse() {
   const house = localStorage.getItem('house');
-  const { id, name } = house;
 
-  return {
-    id,
-    name,
-  }
+  if (house) {
+    const { id, name } = JSON.parse(house);
+
+    return {
+      id,
+      name,
+    }
+  };
+
+  return {};
 }

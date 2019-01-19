@@ -8,15 +8,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 class List extends Component {
-  renderData = (value) => (
-    <TableCell key={value}>{value}</TableCell>
-  )
-
   renderBody = (value) => {
+    const id = value.get('profileId');
+    const email = value.get('email'); 
+    const balance = value.get('balance');
 
     return(
-      <TableRow key={value.id}>
-        { Object.values(value).map(this.renderData) }
+      <TableRow key={id}>
+        <TableCell>{id}</TableCell>
+        <TableCell>{email}</TableCell>
+        <TableCell>{balance}</TableCell>
       </TableRow>
     );
   }
@@ -27,16 +28,17 @@ class List extends Component {
       data,
     } = this.props;
 
-    const obj = data.get('0')
-
     return(
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            { obj.keySeq().map(this.renderData) }
+            <TableCell>ID</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Balance</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
+          { data.map(this.renderBody) }
         </TableBody>
       </Table>
     )

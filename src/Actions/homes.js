@@ -14,3 +14,18 @@ export function getMembers(homeID) {
       });
   }
 }
+
+export function getHome(homeID) {
+  const url = `http://localhost:8000/home/${homeID}`
+  const request = new Request();
+
+  return (dispatch) => {
+    return request.xget(url)
+      .then((resp) => {
+        dispatch({
+          type: "GET_CURRENT_HOME",
+          data: resp.data,
+        })
+      });
+  }
+}

@@ -1,7 +1,6 @@
 import Immutable from 'immutable';
 
 const initialState = Immutable.fromJS({
-  members: [],
 });
 
 export default function(state = initialState, action) {
@@ -10,6 +9,9 @@ export default function(state = initialState, action) {
   switch (type) {
     case 'GET_HOME_MEMBERS': {
       return state.merge({ members: data }); 
+    }
+    case 'GET_CURRENT_HOME': {
+      return Immutable.fromJS(data);
     }
     default: {
       return state;
