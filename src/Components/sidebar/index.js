@@ -7,8 +7,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
 import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
@@ -16,26 +17,48 @@ class Sidebar extends Component {
     super();
 
     this.state = {
-      anchorEl: null,
+      groupMenu: {
+        isCollapsed: true,
+      },
     }
   }
 
-  openMenu = (event) => {
-    console.log(event);
-    this.setState({
-      anchorEl: event.currentTarget,
-    });
+  openMenu = () => {
+    const { groupMenu } = this.state;
+    groupMenu.isCollapsed = !groupMenu.isCollapsed;
+
+    this.setState({ groupMenu });
   }
 
-  menuOnClose = () => {
-    this.setState({
-      anchorEl: null,
-    });
+  houseSelect = (house) => {
+    const currentHouse = JSON.stringify(house.toJS());
+    localStorage.setItem('house', currentHouse);
+  }
+
+  renderMenuItems = (house) => {
+    const { classes } = this.props;
+    const id = house.get('id');
+    const name = house.get('name');
+
+    return(
+      <ListItem
+        key={id}
+        button
+        className={classes.nested}
+        onClick={() => this.houseSelect(house)}
+      >
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText inset primary={name} />
+      </ListItem>
+    )
   }
 
   render() {
-    const { classes } = this.props;
-    const { anchorEl } = this.state;
+    const { classes, groups } = this.props;
+    const { groupMenu } = this.state;
+    const { isCollapsed } = groupMenu;
 
     return(
       <div className={classes.root}>
@@ -55,26 +78,25 @@ class Sidebar extends Component {
               </ListItem>
             </Link>
 
-            <ListItem button key="Group" onClick={this.openMenu}>
-              <ListItemIcon><HomeIcon/></ListItemIcon>
-              <ListItemText primary="Group"/>
-            </ListItem>
-
             <Link to="/home/2/receipts" style={{ textDecoration: 'none' }}>
               <ListItem button key="Create Receipts">
                 <ListItemIcon><HomeIcon/></ListItemIcon>
                   <ListItemText primary="Receipts"/>
               </ListItem>
             </Link>
-          </List>
 
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={this.menuOnClose}
-          >
-            <MenuItem>Best Damn House</MenuItem>
-          </Menu>
+            <ListItem button key="Group" onClick={this.openMenu}>
+              <ListItemIcon><HomeIcon/></ListItemIcon>
+              <ListItemText primary="Group"/>
+              { isCollapsed ? <ExpandMore /> : <ExpandLess /> }
+            </ListItem>
+            <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                { groups.map(this.renderMenuItems) }
+              </List>
+            </Collapse>
+
+          </List>
         </Drawer>
         { this.props.children }
       </div>
@@ -93,7 +115,10 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: 240,
-  }
+  },
+  nested: {
+    paddingLeft: theme.spacing.unit * 4,
+  },
 });
 
 export default withRouter(withStyles(styles)(Sidebar));

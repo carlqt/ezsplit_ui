@@ -11,7 +11,7 @@ class Receipts extends Component {
     const { computedMatch, getReceipts } = this.props;
     const { id }= computedMatch.params
 
-    this.props.getReceipts(id);
+    getReceipts(id);
   }
 
   createReceipt = () => {

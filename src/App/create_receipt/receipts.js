@@ -128,7 +128,7 @@ class Receipts extends Component {
   }
 
   renderForms = () => {
-    const { members, createReceipt } = this.props;
+    const { members } = this.props;
     const { step, receipt } = this.state;
     const {
       description,

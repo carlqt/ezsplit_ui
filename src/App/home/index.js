@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-import Sidebar from 'Components/sidebar';
 import Table from 'Components/table';
 
 class Home extends Component {
