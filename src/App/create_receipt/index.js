@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { getMembers } from 'Actions/homes';
+import { getCurrentHouse } from 'Actions/homes';
 import { createReceipt } from 'Actions/receipts';
 import { openAlert } from 'Actions/app';
 import Receipts from './receipts';
@@ -7,11 +7,12 @@ import Receipts from './receipts';
 const mapStateToProps = state => {
   return {
     members: state.homeStore.get('members'),
+    homeStore: state.homeStore,
   }
 };
 
 const mapDispatchToProps = {
-  getMembers,
+  getCurrentHouse,
   createReceipt,
   openAlert,
 };

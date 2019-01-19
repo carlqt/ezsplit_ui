@@ -19,9 +19,8 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
 
           <Switch>
-              <ProtectedRoute path="/home/:id/receipts/new" component={CreateReceipt} />
-              <ProtectedRoute path="/home/:id/receipts" component={Receipts} />
-              <ProtectedRoute path="/home/:id" component={Home} />
+              <ProtectedRoute path="/home/receipts/new" component={CreateReceipt} />
+              <ProtectedRoute path="/home/receipts" component={Receipts} />
               <ProtectedRoute path="/home/" component={Home} />
           </Switch>
 

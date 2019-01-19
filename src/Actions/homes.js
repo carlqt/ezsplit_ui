@@ -1,4 +1,5 @@
 import Request from 'Lib/request';
+import { currentHouse } from 'Lib/helpers';
 
 export function getMembers(homeID) {
   const url = `http://localhost:8000/home/${homeID}/members`
@@ -28,4 +29,10 @@ export function getHome(homeID) {
         })
       });
   }
+}
+
+export function getCurrentHouse() {
+  const { id } = currentHouse();
+
+  return getHome(id);
 }

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { getHome } from 'Actions/homes';
+import { getCurrentHouse } from 'Actions/homes';
 import Home from './home';
 
 const mapStateToProps = state => {
@@ -9,7 +9,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  getHome,
+  getCurrentHouse,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

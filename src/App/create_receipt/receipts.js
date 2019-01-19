@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
+import { currentHouse } from 'Lib/helpers';
+import Loading from 'Components/loading';
 import CreateReceipt from './forms/create_receipt';
 import AddItems from './forms/add_items';
 import styles from './styles';
@@ -29,10 +31,7 @@ class Receipts extends Component {
   }
 
   componentDidMount() {
-    const { getMembers, computedMatch } = this.props;
-    const homeID = computedMatch.params.id;
-
-    getMembers(homeID);
+    this.props.getCurrentHouse();
   }
 
   receiptOnChange = (event) => {
@@ -104,11 +103,11 @@ class Receipts extends Component {
   }
 
   createReceipt = () => {
-    const { createReceipt, computedMatch, openAlert  } = this.props;
+    const { createReceipt, openAlert  } = this.props;
     const { receipt } = this.state;
-    const homeID = computedMatch.params.id;
+    const { id } = currentHouse();
 
-    createReceipt(homeID, { receipt })
+    createReceipt(id, { receipt })
       .then(r => {
         openAlert('Success!');
       });
@@ -128,13 +127,14 @@ class Receipts extends Component {
   }
 
   renderForms = () => {
-    const { members } = this.props;
+    const { homeStore } = this.props;
     const { step, receipt } = this.state;
     const {
       description,
       total,
       items,
     } = receipt;
+    const members = homeStore.get('members');
 
     switch (step) {
       case 1: {
@@ -168,8 +168,12 @@ class Receipts extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, homeStore } = this.props;
     const { step } = this.state;
+
+    if (homeStore.size === 0) {
+      return <Loading />
+    }
 
     return (
       <div className={classes.root}>

@@ -10,10 +10,10 @@ class Home extends Component {
     // load any needed here
     const { id } = currentHouse();
     const {
-      getHome,
+      getCurrentHouse,
     } = this.props;
 
-    if (id) { getHome(id) };
+    if (id) { getCurrentHouse() };
   }
 
   renderContents = () => {

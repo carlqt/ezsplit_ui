@@ -4,12 +4,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create';
 
+import { currentHouse } from 'Lib/helpers';
 import List from './list';
 
 class Receipts extends Component {
   componentDidMount = () => {
-    const { computedMatch, getReceipts } = this.props;
-    const { id }= computedMatch.params
+    const { getReceipts } = this.props;
+    const { id }= currentHouse();
 
     getReceipts(id);
   }
