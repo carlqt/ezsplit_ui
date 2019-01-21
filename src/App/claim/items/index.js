@@ -28,6 +28,7 @@ class List extends Component {
         </TableCell>
         <TableCell>{name}</TableCell>
         <TableCell>{quantity}</TableCell>
+        <TableCell>Carl</TableCell>
         <TableCell>{price}</TableCell>
       </TableRow>
     );
@@ -47,6 +48,7 @@ class List extends Component {
             </TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Quantity</TableCell>
+            <TableCell>Claimed By</TableCell>
             <TableCell>Price</TableCell>
           </TableRow>
         </TableHead>

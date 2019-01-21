@@ -9,9 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 
 class List extends Component {
   renderBody = (value) => {
-    const id = value.get('profileId');
-    const email = value.get('email'); 
-    const balance = value.get('balance');
+    const id = value.profileId;
+    const { email, balance } = value;
 
     return(
       <TableRow key={id}>
@@ -38,7 +37,7 @@ class List extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          { data.map(this.renderBody) }
+          { data.valueSeq().map(this.renderBody) }
         </TableBody>
       </Table>
     )

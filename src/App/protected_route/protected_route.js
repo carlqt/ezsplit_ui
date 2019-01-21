@@ -2,10 +2,18 @@ import React, { PureComponent } from 'react';
 import { Route, Redirect } from "react-router-dom";
 import { isAuthenticated } from 'Lib/helpers';
 import Sidebar from 'Components/sidebar';
+import { currentHouse } from 'Lib/helpers';
 
 class ProtectedRoute extends PureComponent {
   componentDidMount() {
-    this.props.getAccount();
+    const { id } = currentHouse();
+    const {
+      getCurrentHouse,
+      getAccount,
+    } = this.props;
+
+    if (id) { getCurrentHouse() };
+    getAccount();
   }
 
   renderProps = () => {

@@ -3,6 +3,7 @@ import Claim from './claim';
 
 const mapStateToProps = state => {
   return {
+    homeStore: state.homeStore,
   }
 };
 

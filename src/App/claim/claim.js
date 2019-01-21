@@ -47,9 +47,10 @@ class Claim extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, homeStore } = this.props;
     const { data } = this.state;
     const items = data.get('items');
+    const members = homeStore.get('members');
 
     return(
       <div className={classes.container}>
@@ -66,6 +67,7 @@ class Claim extends Component {
               <Items
                 data={items}
                 onChange={this.onItemChange}
+                {...{ members }}
               /> :
               <div />
           }
