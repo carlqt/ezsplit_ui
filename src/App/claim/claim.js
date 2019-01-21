@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import Immutable from 'immutable';
 import { withRouter } from "react-router";
 import { withStyles } from '@material-ui/core/styles';
 import { getReceipt } from 'Actions/receipts';
-import Immutable from 'immutable';
+import Button from '@material-ui/core/Button';
 import Items from './items';
 
 class Claim extends Component {
@@ -23,13 +24,11 @@ class Claim extends Component {
   }
 
   onItemChange = (event) => {
-    const { data } = this.state;
     const {
       checked,
       value,
     } = event.target;
 
-    const item = data.getIn(['items',value]);
     this.setState(({data}) => {
       return { data: data.setIn(['items', value, 'checked'], checked) }
     });
@@ -39,7 +38,7 @@ class Claim extends Component {
     const { data } = this.state;
     const items = data.get('items');
 
-    if (!items || items.size == 0) { return 0 }
+    if (!items || items.size === 0) { return 0 }
 
     return items.filter(item => item.get('checked')).reduce((mem, item) => {
       return mem + (item.get('quantity') * item.get('price'))
@@ -71,6 +70,15 @@ class Claim extends Component {
               /> :
               <div />
           }
+        </div>
+
+        <div className={classes.row}>
+          <Button
+            variant="contained"
+            color="primary"
+          >
+            Claim
+          </Button>
         </div>
       </div>
     );

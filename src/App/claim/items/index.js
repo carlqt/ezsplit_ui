@@ -10,11 +10,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 class List extends Component {
   renderBody = (value, index) => {
-    const { onChange } = this.props;
+    const { onChange, members } = this.props;
     const id = value.get('id');
     const name = value.get('name'); 
     const quantity = value.get('quantity');
     const price = value.get('price');
+    const claimId = value.get('claimId');
+    const claimedBy = members.getIn([String(claimId), 'email'], null);
 
     return(
       <TableRow key={id}>
@@ -22,13 +24,12 @@ class List extends Component {
           <Checkbox
             value={index}
             color="primary"
-            onChange={onChange}
             {...{ onChange }}
           />
         </TableCell>
         <TableCell>{name}</TableCell>
         <TableCell>{quantity}</TableCell>
-        <TableCell>Carl</TableCell>
+        <TableCell>{claimedBy}</TableCell>
         <TableCell>{price}</TableCell>
       </TableRow>
     );
