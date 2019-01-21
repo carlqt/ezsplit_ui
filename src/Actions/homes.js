@@ -26,8 +26,13 @@ export function getHome(homeID) {
         dispatch({
           type: "GET_CURRENT_HOME",
           data: resp.data,
-        })
-      });
+        });
+
+        dispatch({
+          type: 'SET_CURRENT_PROFILE',
+          data: resp.data.currentProfile,
+        });
+      })
   }
 }
 

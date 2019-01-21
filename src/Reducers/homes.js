@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 import membersReducer from 'Reducers/members';
 
 const initialState = Immutable.fromJS({
+  members: [],
 });
 
 export default function(state = initialState, action) {
@@ -13,8 +14,10 @@ export default function(state = initialState, action) {
     }
     case 'GET_CURRENT_HOME': {
       // return Immutable.fromJS(data);
+      const { currentProfile, ...rest } = data;
+
       return Immutable.fromJS({
-        ...data,
+        ...rest,
         members: membersReducer(Immutable.Map(), {type: 'SET_MEMBERS', data: data.members}),
       })
     }

@@ -16,6 +16,7 @@ class List extends Component {
     const quantity = value.get('quantity');
     const price = value.get('price');
     const claimId = value.get('claimId');
+    const checked = value.get('checked');
     const claimedBy = members.getIn([String(claimId), 'email'], null);
 
     return(
@@ -24,7 +25,7 @@ class List extends Component {
           <Checkbox
             value={index}
             color="primary"
-            {...{ onChange }}
+            {...{ checked, onChange }}
           />
         </TableCell>
         <TableCell>{name}</TableCell>
