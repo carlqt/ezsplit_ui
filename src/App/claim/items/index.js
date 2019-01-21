@@ -9,7 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
 class List extends Component {
-  renderBody = (value) => {
+  renderBody = (value, index) => {
+    const { onChange } = this.props;
     const id = value.get('id');
     const name = value.get('name'); 
     const quantity = value.get('quantity');
@@ -19,11 +20,12 @@ class List extends Component {
       <TableRow key={id}>
         <TableCell>
           <Checkbox
-            value={id}
+            value={index}
             color="primary"
+            onChange={onChange}
+            {...{ onChange }}
           />
         </TableCell>
-        <TableCell>{id}</TableCell>
         <TableCell>{name}</TableCell>
         <TableCell>{quantity}</TableCell>
         <TableCell>{price}</TableCell>
@@ -43,7 +45,6 @@ class List extends Component {
           <TableRow>
             <TableCell>
             </TableCell>
-            <TableCell>ID</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Quantity</TableCell>
             <TableCell>Price</TableCell>
