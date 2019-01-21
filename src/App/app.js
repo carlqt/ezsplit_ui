@@ -7,6 +7,7 @@ import Home from 'App/home';
 import CreateReceipt from 'App/create_receipt';
 import Receipts from 'App/receipts';
 import Alert from 'Components/alerts';
+import Claim from 'App/claim';
 
 class App extends Component {
   render() {
@@ -19,9 +20,10 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
 
           <Switch>
-              <ProtectedRoute path="/home/receipts/new" component={CreateReceipt} />
-              <ProtectedRoute path="/home/receipts" component={Receipts} />
-              <ProtectedRoute path="/home/" component={Home} />
+            <ProtectedRoute path="/home/receipts/:id" component={Claim} />
+            <ProtectedRoute exact path="/home/receipts/new" component={CreateReceipt} />
+            <ProtectedRoute exact path="/home/receipts" component={Receipts} />
+            <ProtectedRoute exact path="/home/" component={Home} />
           </Switch>
 
           { alert.get('visible') ?  <Alert /> : <div /> }

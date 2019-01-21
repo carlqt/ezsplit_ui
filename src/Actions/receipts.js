@@ -1,5 +1,6 @@
 import Request from 'Lib/request';
 import { decamelize } from '@ridi/object-case-converter';
+import { currentHouse } from 'Lib/helpers';
 
 export function createReceipt(homeID, data) {
   const url = `http://localhost:8000/home/${homeID}/receipts`
@@ -26,4 +27,12 @@ export function getReceipts(homeID) {
         })
       })
   }
+}
+
+export async function getReceipt(receiptID) {
+  const { id: homeID } = currentHouse();
+  const url = `http://localhost:8000/home/${homeID}/receipts/${receiptID}`
+  const request = new Request();
+
+  return await request.xget(url)
 }

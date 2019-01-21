@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 import Table from '@material-ui/core/Table';
@@ -21,7 +22,11 @@ class List extends Component {
     return(
       <TableRow key={id}>
         <TableCell>{formattedDate}</TableCell>
-        <TableCell>{name}</TableCell>
+        <TableCell>
+          <Link to={`/home/receipts/${id}`}>
+            {name}
+          </Link>
+        </TableCell>
         <TableCell>{price}</TableCell>
         <TableCell>
           <DeleteIcon color="error" />
