@@ -20,8 +20,8 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
 
           <Switch>
-            <ProtectedRoute path="/home/receipts/:id" component={Claim} />
             <ProtectedRoute exact path="/home/receipts/new" component={CreateReceipt} />
+            <ProtectedRoute path="/home/receipts/:id" component={Claim} />
             <ProtectedRoute exact path="/home/receipts" component={Receipts} />
             <ProtectedRoute exact path="/home/" component={Home} />
           </Switch>

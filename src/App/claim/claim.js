@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Immutable from 'immutable';
 import { withRouter } from "react-router";
 import { withStyles } from '@material-ui/core/styles';
-import { getReceipt } from 'Actions/receipts';
+import { getReceipt, claimItems } from 'Actions/receipts';
 import Button from '@material-ui/core/Button';
 import Items from './items';
 
@@ -45,11 +45,25 @@ class Claim extends Component {
     }, 0);
   }
 
+  handleClaim = () => {
+    const { computedMatch: { params } } = this.props;
+    const { data } = this.state;
+    const selectedItems = data.get('items').filter((item) => {
+      return item.get('checked') === true
+    });
+
+    claimItems(selectedItems.toJS(), params.id)
+      .then((resp) => {
+        this.setState({
+          data: Immutable.fromJS(resp.data)
+        })
+      });
+  }
+
   render() {
-    const { classes, homeStore } = this.props;
+    const { classes } = this.props;
     const { data } = this.state;
     const items = data.get('items');
-    const members = homeStore.get('members');
 
     return(
       <div className={classes.container}>
@@ -66,7 +80,6 @@ class Claim extends Component {
               <Items
                 data={items}
                 onChange={this.onItemChange}
-                {...{ members }}
               /> :
               <div />
           }
@@ -76,6 +89,7 @@ class Claim extends Component {
           <Button
             variant="contained"
             color="primary"
+            onClick={this.handleClaim}
           >
             Claim
           </Button>

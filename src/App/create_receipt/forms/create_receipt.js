@@ -9,8 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 class CreateReceipt extends PureComponent {
   renderMembers = (member) => {
     const { onCheckboxChange } = this.props;
-    const email = member.get('email');
-    const profileId = member.get('profileId');
+    const { email, profileId } = member;
 
     return(
       <FormControlLabel
@@ -71,7 +70,7 @@ class CreateReceipt extends PureComponent {
           }}
         />
 
-        { members.map(this.renderMembers) }
+        { members.valueSeq().map(this.renderMembers) }
 
         <Button type="submit" variant="contained" color="primary">Next</Button>
       </form>

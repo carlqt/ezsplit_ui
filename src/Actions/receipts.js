@@ -36,3 +36,16 @@ export async function getReceipt(receiptID) {
 
   return await request.xget(url)
 }
+
+export async function claimItems(data, receiptId) {
+  try {
+    const { id: homeID } = currentHouse();
+    const url = `http://localhost:8000/home/${homeID}/receipts/${receiptId}/claim_items`
+    const itemIds = data.map(item => item.id);
+    const request = new Request();
+
+    return await request.post(url, { items: itemIds });
+  } catch (e) {
+    console.log(e);
+  }
+}
