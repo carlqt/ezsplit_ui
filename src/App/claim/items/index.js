@@ -9,6 +9,22 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
 class List extends Component {
+  toSentence = (claimedBy) => {
+    if (!claimedBy) { return }
+
+    const initialVal = claimedBy.getIn([0, 'email']);
+
+    return claimedBy.reduce(this.formSentence, initialVal);
+  }
+
+  formSentence = (mem, item, index, arr) => {
+    if (index === 0) {
+      return item.get('email');
+    }
+
+    return mem + (index - 1 === arr.size ? ', ' : ' and ') + item.get('email');
+  }
+
   renderBody = (value, index) => {
     const { onChange } = this.props;
     const id = value.get('id');
@@ -16,7 +32,7 @@ class List extends Component {
     const quantity = value.get('quantity');
     const price = value.get('price');
     const checked = value.get('checked');
-    const claimedBy = value.get('claimedBy');
+    const claimedBy = this.toSentence(value.get('claimedBy'));
 
     return(
       <TableRow key={id}>

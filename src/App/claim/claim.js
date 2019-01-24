@@ -41,7 +41,7 @@ class Claim extends Component {
     if (!items || items.size === 0) { return 0 }
 
     return items.filter(item => item.get('checked')).reduce((mem, item) => {
-      return mem + (item.get('quantity') * item.get('price'))
+      return mem + parseFloat(item.get('price') || 0) / item.get('claimedBy').size
     }, 0);
   }
 
@@ -81,7 +81,7 @@ class Claim extends Component {
                 data={items}
                 onChange={this.onItemChange}
               /> :
-              <div />
+              null
           }
         </div>
 
@@ -111,8 +111,6 @@ const styles = theme => ({
     width: '100%',
   },
   row: {
-    display: 'flex',
-    alignItems: 'center',
     padding: 18,
   },
   header: {
