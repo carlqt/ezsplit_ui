@@ -6,17 +6,10 @@ import ClearIcon from '@material-ui/icons/Clear';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 class CreateReceipt extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentCost: 0,
-    }
-  }
-
   currentCost = () => {
     const { items } = this.props;
     return items.reduce((mem, item) => {
-      return mem = mem + (item.quantity * item.price)
+      return mem = mem + parseFloat(item.price || 0)
     }, 0)
   }
 
