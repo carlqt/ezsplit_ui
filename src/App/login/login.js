@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { isAuthenticated } from 'Lib/helpers';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';

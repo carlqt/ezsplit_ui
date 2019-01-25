@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { withStyles } from '@material-ui/core/styles';
+import { currentHouse } from 'Lib/helpers';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,6 +12,11 @@ import PowerIcon from '@material-ui/icons/PowerSettingsNew';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import AddCircleIcon from '@material-ui/icons/AddCircleOutline';
+import ReceiptIcon from '@material-ui/icons/Assignment';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import Radio from '@material-ui/core/Radio';
+
 import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
@@ -21,6 +27,7 @@ class Sidebar extends Component {
       groupMenu: {
         isCollapsed: true,
       },
+      selectedGroup: null,
     }
   }
 
@@ -33,8 +40,8 @@ class Sidebar extends Component {
 
   houseSelect = (house) => {
     const { getHome, history } = this.props;
-    const currentHouse = JSON.stringify(house.toJS());
-    localStorage.setItem('house', currentHouse);
+    const houseJSON = JSON.stringify(house.toJS());
+    localStorage.setItem('house', houseJSON);
 
     getHome(house.get('id'));
     history.push('/home');
@@ -42,6 +49,7 @@ class Sidebar extends Component {
 
   renderMenuItems = (house) => {
     const { classes } = this.props;
+    const { id: currentHouseId } = currentHouse();
     const id = house.get('id');
     const name = house.get('name');
 
@@ -52,9 +60,9 @@ class Sidebar extends Component {
         className={classes.nested}
         onClick={() => this.houseSelect(house)}
       >
-        <ListItemIcon>
-          <HomeIcon />
-        </ListItemIcon>
+        <Radio
+          checked={ currentHouseId === id }
+        />
         <ListItemText inset primary={name} />
       </ListItem>
     )
@@ -79,14 +87,14 @@ class Sidebar extends Component {
           <List>
             <Link to="/home" style={{ textDecoration: 'none' }}>
               <ListItem button key="Home">
-                <ListItemIcon><HomeIcon/></ListItemIcon>
+                <ListItemIcon><DashboardIcon/></ListItemIcon>
                   <ListItemText primary="Home"/>
               </ListItem>
             </Link>
 
             <Link to="/home/receipts" style={{ textDecoration: 'none' }}>
               <ListItem button key="Create Receipts">
-                <ListItemIcon><HomeIcon/></ListItemIcon>
+                <ListItemIcon><ReceiptIcon /></ListItemIcon>
                   <ListItemText primary="Receipts"/>
               </ListItem>
             </Link>
@@ -99,6 +107,15 @@ class Sidebar extends Component {
             <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 { groups.map(this.renderMenuItems) }
+                <ListItem
+                  button
+                  className={classes.nested}
+                >
+                  <ListItemIcon>
+                    <AddCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText inset primary="Create Group" />
+                </ListItem>
               </List>
             </Collapse>
 

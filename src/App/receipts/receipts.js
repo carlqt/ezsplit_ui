@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create';
@@ -12,7 +12,9 @@ class Receipts extends Component {
     const { getReceipts } = this.props;
     const { id }= currentHouse();
 
-    getReceipts(id);
+    if (id) {
+      getReceipts(id);
+    }
   }
 
   createReceipt = () => {
@@ -22,7 +24,12 @@ class Receipts extends Component {
   }
 
   render() {
+    const { id }= currentHouse();
     const { classes, receipts } = this.props;
+
+    if (!id) {
+      return <Redirect to="/home" />;
+    }
 
     return(
       <div className={classes.root}>
