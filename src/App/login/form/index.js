@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { login } from 'App/login/actions';
-import styles from './form.module.css';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import TextField  from '@material-ui/core/TextField';
 
 class Form extends Component {
   constructor() {
@@ -8,6 +15,7 @@ class Form extends Component {
     this.state = {
       email: "",
       password: "",
+      errors: null,
     };
   }
 
@@ -19,33 +27,77 @@ class Form extends Component {
   }
 
   onSubmit = (event) => {
-    login(this.state);
+    login(this.state)
+      .then(resp => {
+        if (resp.ok) {
+        } else {
+          this.setState({errors: resp.json.message})
+        }
+      })
     event.preventDefault();
   }
 
+
   render() {
-    const { email, password } = this.state;
+    const { errors, email, password } = this.state;
+    const { classes } = this.props;
 
     return (
-      <form className={styles.container} onSubmit={this.onSubmit}>
-        <input
-          type="text"
-          placeholder="email"
-          onChange={this.onChange}
-          value={email}
-          name="email"
+      <form className={classes.form} onSubmit={this.onSubmit}>
+        <FormControl margin="normal" required fullWidth>
+          <TextField
+            id="email"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onChange={this.onChange}
+            value={email}
+            label="Email"
+            helperText={Boolean(errors) ? errors : ""}
+            error={Boolean(errors)}
+            required
+          />
+        </FormControl>
+        <FormControl margin="normal" required fullWidth>
+          <TextField
+            name="password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={this.onChange}
+            value={password}
+            label="Password"
+            required
+            helperText={Boolean(errors) ? errors : ""}
+            error={Boolean(errors)}
+          />
+        </FormControl>
+        <FormControlLabel
+          control={<Checkbox value="remember" color="primary" />}
+          label="Remember me"
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="password"
-          onChange={this.onChange}
-          value={password}
-        />
-        <button>Login</button>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+        >
+          Sign in
+        </Button>
       </form>
     )
   }
 }
 
-export default Form;
+const styles = theme => ({
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
+  },
+  submit: {
+    marginTop: theme.spacing.unit * 3,
+  },
+});
+
+export default withStyles(styles)(Form);

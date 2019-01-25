@@ -6,14 +6,16 @@ import { currentHouse } from 'Lib/helpers';
 
 class ProtectedRoute extends PureComponent {
   componentDidMount() {
-    const { id } = currentHouse();
-    const {
-      getCurrentHouse,
-      getAccount,
-    } = this.props;
+    if (isAuthenticated()) {
+      const { id } = currentHouse();
+      const {
+        getCurrentHouse,
+        getAccount,
+      } = this.props;
 
-    if (id) { getCurrentHouse() };
-    getAccount();
+      if (id) { getCurrentHouse() };
+      getAccount();
+    }
   }
 
   renderProps = () => {

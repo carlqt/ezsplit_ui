@@ -22,7 +22,14 @@ class Request {
     };
 
     return fetch(url, options)
-      .then(response => response.json())
+      .then((response) => {
+        return response.json().then(json => ({
+          headers: response.headers,
+          status: response.status,
+          ok: response.ok,
+          json,
+        }))
+      })
   }
 
   xget(url, params = {}) {
