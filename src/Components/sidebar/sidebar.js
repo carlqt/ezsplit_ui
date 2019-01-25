@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
+import PowerIcon from '@material-ui/icons/PowerSettingsNew';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
@@ -60,7 +61,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { classes, accountStore } = this.props;
+    const { classes, accountStore, logout } = this.props;
     const { groupMenu } = this.state;
     const { isCollapsed } = groupMenu;
     const groups = accountStore.get('groups');
@@ -101,6 +102,10 @@ class Sidebar extends Component {
               </List>
             </Collapse>
 
+            <ListItem button key="Sign out" onClick={logout}>
+              <ListItemIcon><PowerIcon /></ListItemIcon>
+                <ListItemText primary="Sign out"/>
+            </ListItem>
           </List>
         </Drawer>
         { this.props.children }

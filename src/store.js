@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore, compose } from "redux";
 import thunk from 'redux-thunk';
 import homeReducer from 'Reducers/homes';
 import appReducer from 'Reducers/app';
@@ -6,6 +6,7 @@ import receiptsReducer from 'Reducers/receipts';
 import accountReducer from 'Reducers/account';
 import profileReducer  from 'Reducers/profile';
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const combinedReducers = combineReducers({
   homeStore: homeReducer,
   appStore: appReducer,
@@ -14,4 +15,4 @@ const combinedReducers = combineReducers({
   profileStore: profileReducer,
 });
 
-export default createStore(combinedReducers, applyMiddleware(thunk));
+export default createStore(combinedReducers, composeEnhancers(applyMiddleware(thunk)));

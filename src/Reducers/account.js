@@ -11,6 +11,9 @@ export default function(state = initialState, action) {
     case 'GET_ACCOUNT': {
       return Immutable.fromJS(data);
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

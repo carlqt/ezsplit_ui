@@ -10,3 +10,11 @@ export function closeAlert() {
     type: "CLOSE_ALERT",
   }
 }
+
+export function logout() {
+  localStorage.clear();
+
+  return {
+    type: "LOGOUT",
+  }
+}

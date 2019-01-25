@@ -5,12 +5,19 @@ export function login(data) {
   const request = new Request();
   const { email, password } = data;
 
-  return request.post(url, { email, password })
-    .then((resp) => {
-      if (resp.ok) {
-        localStorage.setItem('jwt', resp.data.token)
-      }
+  return dispatch => {
+    return request.post(url, { email, password })
+      .then((resp) => {
+        if (resp.ok) {
+          localStorage.setItem('jwt', resp.data.token)
 
-      return resp;
-    });
+          dispatch({
+            type: "GET_ACCOUNT",
+            data: resp.data,
+          })
+        }
+
+        return resp;
+      });
+  }
 }

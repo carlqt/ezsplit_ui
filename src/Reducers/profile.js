@@ -10,6 +10,9 @@ export default function(state = initialState, action) {
     case 'SET_CURRENT_PROFILE': {
       return state.merge({ ...data })
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { login } from 'App/login/actions';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import TextField  from '@material-ui/core/TextField';
 
 class Form extends Component {
@@ -27,11 +24,13 @@ class Form extends Component {
   }
 
   onSubmit = (event) => {
-    login(this.state)
+    const { onSubmit } = this.props;
+
+    onSubmit(this.state)
       .then(resp => {
         if (resp.ok) {
         } else {
-          this.setState({errors: resp.json.message})
+          this.setState({errors: resp.message})
         }
       })
     event.preventDefault();

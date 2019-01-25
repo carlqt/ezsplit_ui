@@ -36,10 +36,12 @@ class ProtectedRoute extends PureComponent {
   }
 
   render() {
-    const { component, ...rest } = this.props;
+    const { logout, component, ...rest } = this.props;
 
     return(
-      <Sidebar>
+      <Sidebar
+        {...{ logout }}
+      >
         <Route
           {...rest}
           render={this.renderProps}

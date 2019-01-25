@@ -21,6 +21,9 @@ export default function(state = initialState, action) {
         members: membersReducer(Immutable.Map(), {type: 'SET_MEMBERS', data: data.members}),
       })
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

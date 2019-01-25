@@ -23,11 +23,11 @@ class Request {
 
     return fetch(url, options)
       .then((response) => {
-        return response.json().then(json => ({
+        return response.json().then(data => ({
           headers: response.headers,
           status: response.status,
           ok: response.ok,
-          json,
+          ...data,
         }))
       })
   }

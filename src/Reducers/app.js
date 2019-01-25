@@ -23,6 +23,9 @@ export default function(state = initialState, action) {
     case 'CLOSE_ALERT': {
       return state.setIn(['alert', 'visible'], false);
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }
