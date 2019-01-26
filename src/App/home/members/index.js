@@ -10,13 +10,18 @@ import TableRow from '@material-ui/core/TableRow';
 class List extends Component {
   renderBody = (value) => {
     const id = value.profileId;
+    const { classes } = this.props;
     const { email, balance } = value;
 
     return(
       <TableRow key={id}>
         <TableCell>{id}</TableCell>
         <TableCell>{email}</TableCell>
-        <TableCell>{balance}</TableCell>
+        <TableCell
+          className={ balance < 0 ? classes.balance : false }
+        >
+          {balance}
+        </TableCell>
       </TableRow>
     );
   }
@@ -45,6 +50,9 @@ class List extends Component {
 }
 
 const styles = theme => ({
+  balance: {
+    color: 'red',
+  },
 });
 
 export default withStyles(styles)(List);
