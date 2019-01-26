@@ -1,7 +1,8 @@
-export function openAlert(body = '') {
+export function openAlert(body = '', variant='success') {
   return {
     type: "OPEN_ALERT",
     body,
+    variant,
   }
 }
 

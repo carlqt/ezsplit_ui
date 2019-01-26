@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
+import { isAuthenticated } from 'Lib/helpers';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import HomeIcon from '@material-ui/icons/Home';
@@ -8,11 +10,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import Loading from 'Components/loading';
-import { joinHome } from 'Actions/homes';
+import { invite } from 'Actions/homes';
 import NotFound from 'Components/not_found';
-import Button from '@material-ui/core/Button';
-import TextField  from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
+import Form from './form';
 
 class Invite extends Component {
   constructor() {
@@ -30,7 +30,7 @@ class Invite extends Component {
   componentDidMount() {
     const { match: { params } } = this.props;
 
-    joinHome(params.token)
+    invite(params.token)
       .then(resp => {
         this.setState({
           data: resp.data,
@@ -42,9 +42,26 @@ class Invite extends Component {
       })
   }
 
+  onSubmit = (data) => {
+    const { match: { params }, joinHome, openAlert } = this.props;
+
+    joinHome(params.token, data)
+      .then((resp) => {
+        if (resp.ok) {
+        } else {
+          openAlert(resp.message, 'error')
+        }
+      })
+  }
+
   render() {
     const { classes } = this.props;
     const { data, loading, response: { status } } = this.state;
+
+    if (isAuthenticated()) {
+      console.log('redirecting');
+      return <Redirect to="/home" />;
+    }
 
     if (loading) {
       return <Loading />
@@ -64,42 +81,9 @@ class Invite extends Component {
           <Avatar className={classes.avatar}>
             <HomeIcon />
           </Avatar>
-          <form className={classes.form}>
-            <TextField
-              className={classes.formElement}
-              name="email"
-              autoComplete="email"
-              autoFocus
-              label="Email"
-              required
-              fullWidth
-            />
-            <TextField
-              className={classes.formElement}
-              name="password"
-              label="Password"
-              type="password"
-              required
-              fullWidth
-            />
-            <TextField
-              className={classes.formElement}
-              name="passwordConfirmation"
-              label="Password Confirmation"
-              required
-              fullWidth
-              type="password"
-            />
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Create
-            </Button>
-          </form>
+          <Form
+            onSubmit={this.onSubmit}
+          />
           <Typography component="h1" variant="h5">
           </Typography>
         </Paper>
@@ -130,16 +114,6 @@ const styles = theme => ({
   avatar: {
     margin: theme.spacing.unit,
     backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
-  },
-  submit: {
-    marginTop: theme.spacing.unit * 3,
-  },
-  formElement: {
-    marginTop: theme.spacing.unit * 3,
   },
 });
 

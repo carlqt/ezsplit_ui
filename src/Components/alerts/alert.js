@@ -5,6 +5,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import amber from '@material-ui/core/colors/amber';
+
+const variantIcon = {
+  success: CheckCircleIcon,
+  error: ErrorIcon,
+};
 
 class Alert extends Component {
   render() {
@@ -16,6 +23,8 @@ class Alert extends Component {
 
     const open = alert.get('visible');
     const body = alert.get('body');
+    const variant = alert.get('variant');
+    const Icon = variantIcon[variant];
 
     return(
       <Snackbar
@@ -24,14 +33,15 @@ class Alert extends Component {
           horizontal: 'left',
         }}
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
+        onClose={closeAlert}
       >
         <SnackbarContent
-          className={`${classes.success} ${classes.margin}`}
+          className={`${classes[variant]} ${classes.margin}`}
           aria-describedby="client-snackbar"
           message={
             <span id="client-snackbar" className={classes.message}>
-              <CheckCircleIcon className={`${classes.success} ${classes.icon}`} />
+              <Icon className={`${classes[variant]} ${classes.icon}`} />
               { body }
             </span>
           }
@@ -78,6 +88,15 @@ const styles = theme => ({
   icon: {
     fontSize: 20,
     margin: theme.spacing.unit,
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark,
+  },
+  info: {
+    backgroundColor: theme.palette.primary.dark,
+  },
+  warning: {
+    backgroundColor: amber[700],
   },
 });
 

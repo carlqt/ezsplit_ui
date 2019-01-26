@@ -1,4 +1,5 @@
 import Request from 'Lib/request';
+import { decamelize } from '@ridi/object-case-converter';
 import { currentHouse } from 'Lib/helpers';
 
 export function getMembers(homeID) {
@@ -42,9 +43,33 @@ export function getCurrentHouse() {
   return getHome(id);
 }
 
-export function joinHome(token) {
+export function invite(token) {
   const url = `http://localhost:8000/invite/${token}`
   const request = new Request();
 
   return request.xget(url);
+}
+
+export function joinHome(token, data) {
+  const url = `http://localhost:8000/invite/`
+  const request = new Request();
+  const params = {
+    account: decamelize(data),
+    invite_token: token,
+  }
+
+  return (dispatch) => (
+    request.post(url, params)
+      .then((resp) => {
+        if (resp.ok) {
+          localStorage.setItem('jwt', resp.data.token)
+          dispatch({
+            type: "GET_ACCOUNT",
+            data: resp.data,
+          })
+        }
+
+        return resp;
+      })
+  )
 }

@@ -3,13 +3,13 @@ import Immutable from 'immutable';
 const initialState = Immutable.fromJS({
   alert: {
     visible: false,
-    state: 'success',
+    variant: 'success',
     body: '',
   }
 });
 
 export default function(state = initialState, action) {
-  const { type, body } = action;
+  const { type, body, variant } = action;
 
   switch (type) {
     case 'OPEN_ALERT': {
@@ -17,6 +17,7 @@ export default function(state = initialState, action) {
         alert: {
           visible: true,
           body,
+          variant,
         },
       })
     }
