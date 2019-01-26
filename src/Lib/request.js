@@ -42,7 +42,14 @@ class Request {
     }
 
     return fetch(url, options)
-      .then(response => response.json())
+      .then((response) => {
+        return response.json().then(data => ({
+          headers: response.headers,
+          status: response.status,
+          ok: response.ok,
+          ...data,
+        }))
+      })
   }
 
   encodedParams(params) {

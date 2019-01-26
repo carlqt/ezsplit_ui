@@ -8,6 +8,7 @@ import CreateReceipt from 'App/create_receipt';
 import Receipts from 'App/receipts';
 import Alert from 'Components/alerts';
 import Claim from 'App/claim';
+import Invite from 'App/invite';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
       <Router>
         <div className="routerContainer">
           <Route exact path="/login" component={Login} />
+          <Route exact path="/invite/:token" component={Invite} />
 
           <Switch>
             <ProtectedRoute exact path="/home/receipts/new" component={CreateReceipt} />

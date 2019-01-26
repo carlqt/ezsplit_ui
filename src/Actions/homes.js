@@ -41,3 +41,10 @@ export function getCurrentHouse() {
 
   return getHome(id);
 }
+
+export function joinHome(token) {
+  const url = `http://localhost:8000/invite/${token}`
+  const request = new Request();
+
+  return request.xget(url);
+}
