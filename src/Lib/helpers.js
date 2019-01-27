@@ -23,11 +23,12 @@ export function currentHouse() {
   const house = localStorage.getItem('house');
 
   if (house) {
-    const { id, name } = JSON.parse(house);
+    const { id, name, token } = JSON.parse(house);
 
     return {
       id,
       name,
+      token,
     }
   };
 

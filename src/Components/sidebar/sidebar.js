@@ -16,6 +16,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircleOutline';
 import ReceiptIcon from '@material-ui/icons/Assignment';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Radio from '@material-ui/core/Radio';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import { Link } from 'react-router-dom';
 
@@ -118,6 +119,13 @@ class Sidebar extends Component {
                 </ListItem>
               </List>
             </Collapse>
+
+            <Link to="/home/settings" style={{ textDecoration: 'none' }}>
+              <ListItem button key="House Settings">
+                <ListItemIcon><SettingsIcon /></ListItemIcon>
+                  <ListItemText primary="House Settings"/>
+              </ListItem>
+            </Link>
 
             <ListItem button key="Sign out" onClick={logout}>
               <ListItemIcon><PowerIcon /></ListItemIcon>
