@@ -1,0 +1,76 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+directive @authenticated repeatable on OBJECT | FIELD_DEFINITION
+
+type User {
+  id: ID!
+  username: String!
+}
+
+type Receipt {
+  id: ID!
+  user: User
+  description: String!
+  total: String
+  items: [Item]!
+}
+
+type UserWithJwt {
+  id: ID!
+  username: String!
+  accessToken: String!
+}
+
+type Item {
+  id: ID!
+  name: String!
+  price: String!
+  sharedBy: [User]!
+}
+
+type DeleteItemPayload {
+  msg: String!
+  id: ID!
+}
+
+input ReceiptInput {
+  description: String!
+  price: Float
+}
+
+input UserInput {
+  username: String!
+}
+
+input AddItemToReceiptInput {
+  receiptId: ID!
+  name: String!
+  price: Float
+}
+
+input AssignUserToItemInput {
+  itemId: ID!
+  userId: ID!
+}
+
+input AssignOrDeleteMeToItemInput {
+  itemId: ID!
+}
+
+type Mutation {
+  createMyReceipt(input: ReceiptInput): Receipt! @authenticated
+  addItemToReceipt(input: AddItemToReceiptInput): Item! @authenticated
+  assignUserToItem(input: AssignUserToItemInput): Item! @authenticated
+  assignMeToItem(input: AssignOrDeleteMeToItemInput): Item! @authenticated
+  removeMeFromItem(input: AssignOrDeleteMeToItemInput): DeleteItemPayload! @authenticated
+
+  createUser(input: UserInput): UserWithJwt!
+}
+
+type Query {
+  receipts: [Receipt]! @authenticated
+  receipt(id: ID!): Receipt!
+  users: [User]! @authenticated
+}
