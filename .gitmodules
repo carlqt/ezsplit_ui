@@ -1,0 +1,3 @@
+[submodule "ezsplit"]
+	path = ezsplit
+	url = https://github.com/carlqt/ezsplit
