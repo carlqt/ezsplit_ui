@@ -1,3 +1,6 @@
+include:
+  - ./ezsplit/docker-compose.yml
+
 services:
   caddy:
     image: caddy:2.8-alpine
