@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.2",
-    "@tanstack/react-router": "^1.31.19",
+    "@tanstack/router-devtools": "^1.35.3",
+    "@tanstack/router-vite-plugin": "^1.35.4",
     "graphql": "^16.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
