@@ -14,11 +14,11 @@ const ME = gql`
 `
 
 const Root = () => {
-  const { error } = useQuery(ME)
+  // const { error } = useQuery(ME)
 
-  if (error) {
-    return <SignupForm />
-  }
+  // if (error) {
+  //   return <SignupForm />
+  // }
 
   return (
     <>
