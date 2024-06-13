@@ -4,8 +4,13 @@ import { RouterProvider, createRouter } from "@tanstack/react-router"
 import { routeTree } from "./routeTree.gen.ts"
 import "./index.css"
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
+import { useAuth } from "./useAuth.ts"
 
-const router = createRouter({ routeTree })
+const router = createRouter({
+  routeTree,
+  context: { auth: undefined! },
+  defaultPreload: "intent",
+})
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -19,10 +24,24 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+const InnerApp = () => {
+  const auth = useAuth()
+  console.log(auth)
+
+  if (auth.loading) {
+    return <>Loading</>
+  }
+
+  return (
+    // Need to understand why it's failing without suspense
+    <RouterProvider router={router} context={{ auth }} />
+  )
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      <InnerApp />
     </ApolloProvider>
   </React.StrictMode>
 )

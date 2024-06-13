@@ -17,6 +17,7 @@
     "@apollo/client": "^3.10.2",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@tanstack/react-router": "^1.35.3",
+    "@tanstack/router-cli": "^1.37.0",
     "@tanstack/router-devtools": "^1.35.3",
     "@tanstack/router-vite-plugin": "^1.35.4",
     "graphql": "^16.8.1",
@@ -42,6 +43,7 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }
