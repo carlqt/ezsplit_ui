@@ -1,0 +1,11 @@
+include:
+  - ./ezsplit/docker-compose.yml
+
+services:
+  caddy:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile

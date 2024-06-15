@@ -4,23 +4,33 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "db:schema:apply": "docker compose run --rm dev-cli atlas schema apply --env local --auto-approve",
+    "db:seed:run": "docker compose run --rm dev-cli go run cmd/seed/main.go",
+    "db:setup": "pnpm db:schema:apply && pnpm db:seed:run"
   },
   "dependencies": {
     "@apollo/client": "^3.10.2",
-    "@tanstack/react-router": "^1.31.19",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@tanstack/react-router": "^1.35.3",
+    "@tanstack/router-cli": "^1.37.0",
+    "@tanstack/router-devtools": "^1.35.3",
+    "@tanstack/router-vite-plugin": "^1.35.4",
     "graphql": "^16.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "4.2.5",
+    "@graphql-codegen/introspection": "4.0.3",
     "@graphql-codegen/typescript": "^4.0.6",
     "@graphql-codegen/typescript-resolvers": "^4.0.6",
+    "@parcel/watcher": "^2.4.1",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
@@ -34,7 +44,6 @@
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "@graphql-codegen/introspection": "4.0.3",
-    "@graphql-codegen/client-preset": "4.2.5"
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }
