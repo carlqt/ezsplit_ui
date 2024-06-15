@@ -1,16 +1,58 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
+import { Link, createFileRoute, useRouter } from "@tanstack/react-router"
+import { graphql } from "@src/__generated__/gql"
 import { FormEvent, useState } from "react"
+import { useMutation } from "@apollo/client"
+import {
+  LoginUserMutation,
+  LoginUserMutationVariables,
+  MeQuery,
+} from "@src/__generated__/graphql"
+import { ME } from "@src/useAuth"
+
+const LOGIN_USER = graphql(`
+  mutation LoginUser($input: LoginUserInput) {
+    loginUser(input: $input) {
+      id
+      username
+    }
+  }
+`)
 
 export const Route = createFileRoute("/login")({
   component: Login,
 })
 
 function Login() {
+  const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
+  const [login, { error }] = useMutation<
+    LoginUserMutation,
+    LoginUserMutationVariables
+  >(LOGIN_USER, {
+    variables: { input: { username, password } },
+    onCompleted: async () => {
+      await router.invalidate()
+      router.history.push("/")
+    },
+    update(cache, { data }) {
+      if (data) {
+        cache.writeQuery<MeQuery>({
+          query: ME,
+          data: { me: { ...data.loginUser, __typename: "Me" } },
+        })
+      }
+    },
+  })
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    login()
+  }
+
+  if (error) {
+    return <div>{error.message}</div>
   }
 
   return (

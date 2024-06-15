@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
   beforeLoad: ({ context, location }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
-        to: "/sign_up",
+        to: "/login",
         search: {
           redirect: location.href,
         },
