@@ -45,6 +45,11 @@ export type Item = {
   sharedBy: Array<Maybe<User>>;
 };
 
+export type LoginUserInput = {
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
 export type Me = {
   __typename?: 'Me';
   id: Scalars['ID']['output'];
@@ -59,6 +64,7 @@ export type Mutation = {
   assignUserToItem: Item;
   createMyReceipt: Receipt;
   createUser: UserWithJwt;
+  loginUser: UserWithJwt;
   removeMeFromItem: DeleteItemPayload;
 };
 
@@ -85,6 +91,11 @@ export type MutationCreateMyReceiptArgs = {
 
 export type MutationCreateUserArgs = {
   input?: InputMaybe<UserInput>;
+};
+
+
+export type MutationLoginUserArgs = {
+  input?: InputMaybe<LoginUserInput>;
 };
 
 
