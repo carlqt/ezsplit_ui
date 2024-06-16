@@ -3,7 +3,6 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router"
 const AuthLayout = () => {
   return (
     <>
-      <h1>You are IN</h1>
       <Outlet />
     </>
   )

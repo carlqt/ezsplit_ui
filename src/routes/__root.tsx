@@ -3,10 +3,12 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools"
 
 const Root = () => {
   return (
-    <>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
+    <div className="bg-gray-50 dark:bg-gray-900 container">
+      <div className="flex items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <Outlet />
+        <TanStackRouterDevtools />
+      </div>
+    </div>
   )
 }
 
