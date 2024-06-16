@@ -1,6 +1,5 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
-import { IAuthContext } from "../auth"
 
 const Root = () => {
   return (
@@ -12,7 +11,10 @@ const Root = () => {
 }
 
 interface MyRouterContext {
-  auth: IAuthContext
+  auth: {
+    isAuthenticated: boolean
+    user: string | undefined
+  }
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

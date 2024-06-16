@@ -26,7 +26,6 @@ const client = new ApolloClient({
 
 const InnerApp = () => {
   const auth = useAuth()
-  console.log(auth)
 
   if (auth.loading) {
     return <>Loading</>
