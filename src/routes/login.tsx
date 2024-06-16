@@ -1,44 +1,46 @@
-import { FormEvent, useState } from "react"
+import { Link, createFileRoute, useRouter } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
+import { FormEvent, useState } from "react"
 import { useMutation } from "@apollo/client"
-import { Link, useRouter } from "@tanstack/react-router"
-import { ME } from "@src/useAuth"
 import {
-  CreateUserMutation,
-  CreateUserMutationVariables,
+  LoginUserMutation,
+  LoginUserMutationVariables,
   MeQuery,
 } from "@src/__generated__/graphql"
+import { ME } from "@src/useAuth"
 
-const CREATE_USER = graphql(`
-  mutation CreateUser($input: UserInput) {
-    createUser(input: $input) {
+const LOGIN_USER = graphql(`
+  mutation LoginUser($input: LoginUserInput) {
+    loginUser(input: $input) {
       id
       username
     }
   }
 `)
 
-export const SignupForm = () => {
-  const router = useRouter()
+export const Route = createFileRoute("/login")({
+  component: Login,
+})
 
+function Login() {
+  const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
 
-  const [createUser, { error }] = useMutation<
-    CreateUserMutation,
-    CreateUserMutationVariables
-  >(CREATE_USER, {
-    variables: { input: { username, password, confirmPassword } },
+  const [login, { error }] = useMutation<
+    LoginUserMutation,
+    LoginUserMutationVariables
+  >(LOGIN_USER, {
+    variables: { input: { username, password } },
     onCompleted: async () => {
       await router.invalidate()
-      router.history.push("/dashboard")
+      router.history.push("/")
     },
     update(cache, { data }) {
       if (data) {
         cache.writeQuery<MeQuery>({
           query: ME,
-          data: { me: { ...data.createUser, __typename: "Me" } },
+          data: { me: { ...data.loginUser, __typename: "Me" } },
         })
       }
     },
@@ -46,11 +48,11 @@ export const SignupForm = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    createUser()
+    login()
   }
 
   if (error) {
-    return <>Lol Error: {error}</>
+    return <div>{error.message}</div>
   }
 
   return (
@@ -59,7 +61,7 @@ export const SignupForm = () => {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
+              Sign in
             </h1>
             <form
               className="space-y-4 md:space-y-6"
@@ -95,34 +97,19 @@ export const SignupForm = () => {
                   required={true}
                 />
               </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Confirm password
-                </label>
-                <input
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  value={confirmPassword}
-                  type="password"
-                  name="confirm-password"
-                  id="confirm-password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required={true}
-                />
-              </div>
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Create an account
+                Login
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
+                Don't have an account?{" "}
                 <Link
-                  to="/login"
+                  to="/sign_up"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Login here
+                  Register here
                 </Link>
               </p>
             </form>
