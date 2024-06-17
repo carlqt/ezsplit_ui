@@ -1,10 +1,15 @@
-import { AppShell, Group, Burger, NavLink } from "@mantine/core"
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router"
+import { AppShell, Group, Burger, NavLink, Title } from "@mantine/core"
+import { Outlet, createFileRoute, redirect, useNavigate } from "@tanstack/react-router"
 import { IconReceipt, IconLogout2 } from "@tabler/icons-react"
 import { useAuth } from "@src/useAuth"
 
 const AuthLayout = () => {
   const { user } = useAuth()
+  const navigate = useNavigate()
+
+  const navigateToReceipts = () => {
+    navigate({ to: "/receipts" })
+  }
 
   return (
     <AppShell
@@ -15,12 +20,13 @@ const AuthLayout = () => {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger  hiddenFrom="sm" size="sm" />
+          <Title order={1}>EZsplit</Title>
           {/* <MantineLogo size={30} /> */}
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <h2>Hi {user}</h2>
-        <NavLink label="Receipts" leftSection={<IconReceipt />} />
+        <Title order={3}>Hi {user}</Title>
+        <NavLink onClick={navigateToReceipts} label="Receipts" leftSection={<IconReceipt />} />
         <NavLink label="Logout" leftSection={<IconLogout2 />} />
       </AppShell.Navbar>
       <AppShell.Main><Outlet /></AppShell.Main>

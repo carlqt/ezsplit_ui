@@ -15,6 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignupIndexImport } from './routes/sign_up/index'
+import { Route as AuthReceiptsImport } from './routes/_auth.receipts'
 import { Route as AuthDashboardImport } from './routes/_auth.dashboard'
 import { Route as AuthAboutImport } from './routes/_auth.about'
 
@@ -38,6 +39,11 @@ const IndexRoute = IndexImport.update({
 const SignupIndexRoute = SignupIndexImport.update({
   path: '/sign_up/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthReceiptsRoute = AuthReceiptsImport.update({
+  path: '/receipts',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthDashboardRoute = AuthDashboardImport.update({
@@ -89,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/receipts': {
+      id: '/_auth/receipts'
+      path: '/receipts'
+      fullPath: '/receipts'
+      preLoaderRoute: typeof AuthReceiptsImport
+      parentRoute: typeof AuthImport
+    }
     '/sign_up/': {
       id: '/sign_up/'
       path: '/sign_up'
@@ -103,7 +116,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AuthRoute: AuthRoute.addChildren({ AuthAboutRoute, AuthDashboardRoute }),
+  AuthRoute: AuthRoute.addChildren({
+    AuthAboutRoute,
+    AuthDashboardRoute,
+    AuthReceiptsRoute,
+  }),
   LoginRoute,
   SignupIndexRoute,
 })
@@ -129,7 +146,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/about",
-        "/_auth/dashboard"
+        "/_auth/dashboard",
+        "/_auth/receipts"
       ]
     },
     "/login": {
@@ -141,6 +159,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_auth/dashboard": {
       "filePath": "_auth.dashboard.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/receipts": {
+      "filePath": "_auth.receipts.tsx",
       "parent": "/_auth"
     },
     "/sign_up/": {

@@ -30,7 +30,7 @@ const InnerApp = () => {
   const auth = useAuth()
 
   if (auth.loading) {
-    return <>Loading</>
+    return <></>
   }
 
   return (
