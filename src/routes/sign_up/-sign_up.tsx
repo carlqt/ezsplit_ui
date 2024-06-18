@@ -33,7 +33,7 @@ export const SignupForm = () => {
     variables: { input: { username, password, confirmPassword } },
     onCompleted: async () => {
       await router.invalidate()
-      router.history.push("/dashboard")
+      router.history.push("/")
     },
     update(cache, { data }) {
       if (data) {
