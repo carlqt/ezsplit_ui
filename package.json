@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --ignore-pattern 'src/__generated__/*' --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen --config codegen.ts",
     "db:schema:apply": "docker compose run --rm dev-cli atlas schema apply --env local --auto-approve",
