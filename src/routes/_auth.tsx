@@ -18,7 +18,7 @@ const AuthLayout = () => {
   const navigate = useNavigate()
 
   const navigateToReceipts = () => {
-    navigate({ to: "/receipts" })
+    navigate({ to: "/" })
   }
 
   const [logout, { error }] = useMutation<LogoutUserMutation, LogoutUserMutationVariables>(LOGOUT_USER, {
