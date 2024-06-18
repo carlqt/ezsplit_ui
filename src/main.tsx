@@ -5,6 +5,7 @@ import { routeTree } from "./routeTree.gen.ts"
 import "./index.css"
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
 import { useAuth } from "./useAuth.ts"
+import { createTheme, MantineProvider } from "@mantine/core"
 
 const router = createRouter({
   routeTree,
@@ -24,12 +25,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+// eslint-disable-next-line react-refresh/only-export-components
 const InnerApp = () => {
   const auth = useAuth()
-  console.log(auth)
 
   if (auth.loading) {
-    return <>Loading</>
+    return <></>
   }
 
   return (
@@ -38,10 +39,18 @@ const InnerApp = () => {
   )
 }
 
+const theme = createTheme({
+  fontFamily: 'Montserrat, sans-serif',
+  defaultRadius: 'md',
+})
+
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <InnerApp />
+      <MantineProvider theme={theme}>
+        <InnerApp />
+      </MantineProvider>
     </ApolloProvider>
   </React.StrictMode>
 )

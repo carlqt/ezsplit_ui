@@ -1,18 +1,22 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
-import { IAuthContext } from "../auth"
 
 const Root = () => {
   return (
-    <>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
+    <div className="bg-gray-50 dark:bg-gray-900 container">
+      <div className="flex items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <Outlet />
+        <TanStackRouterDevtools />
+      </div>
+    </div>
   )
 }
 
 interface MyRouterContext {
-  auth: IAuthContext
+  auth: {
+    isAuthenticated: boolean
+    user: string | undefined
+  }
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

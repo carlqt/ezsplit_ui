@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --ignore-pattern 'src/__generated__/*' --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen --config codegen.ts",
     "db:schema:apply": "docker compose run --rm dev-cli atlas schema apply --env local --auto-approve",
@@ -16,6 +16,9 @@
   "dependencies": {
     "@apollo/client": "^3.10.2",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@mantine/core": "^7.10.2",
+    "@mantine/hooks": "^7.10.2",
+    "@tabler/icons-react": "^3.6.0",
     "@tanstack/react-router": "^1.35.3",
     "@tanstack/router-cli": "^1.37.0",
     "@tanstack/router-devtools": "^1.35.3",
@@ -41,7 +44,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-tsconfig-paths": "^4.3.2"
