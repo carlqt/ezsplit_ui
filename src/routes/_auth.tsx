@@ -2,13 +2,42 @@ import { AppShell, Group, Burger, NavLink, Title } from "@mantine/core"
 import { Outlet, createFileRoute, redirect, useNavigate } from "@tanstack/react-router"
 import { IconReceipt, IconLogout2 } from "@tabler/icons-react"
 import { useAuth } from "@src/useAuth"
+import { useApolloClient, useMutation } from "@apollo/client"
+import { graphql } from "@src/__generated__/gql"
+import { LogoutUserMutation, LogoutUserMutationVariables } from "@src/__generated__/graphql"
+
+const LOGOUT_USER = graphql(`
+  mutation LogoutUser {
+    logoutUser
+  }
+`)
 
 const AuthLayout = () => {
   const { user } = useAuth()
+  const { clearStore }= useApolloClient()
   const navigate = useNavigate()
 
   const navigateToReceipts = () => {
     navigate({ to: "/receipts" })
+  }
+
+  const [logout, { error }] = useMutation<LogoutUserMutation, LogoutUserMutationVariables>(LOGOUT_USER, {
+    onCompleted: async () => {
+      navigate({ to: "/login" })
+    },
+    update(_, { data }) {
+      if (data) {
+        clearStore()
+      }
+    },
+  })
+
+  const onClickLogout = () => {
+    logout()
+  }
+
+  if (error) {
+    return <>{ error }</>
   }
 
   return (
@@ -27,7 +56,7 @@ const AuthLayout = () => {
       <AppShell.Navbar p="md">
         <Title order={3}>Hi {user}</Title>
         <NavLink onClick={navigateToReceipts} label="Receipts" leftSection={<IconReceipt />} />
-        <NavLink label="Logout" leftSection={<IconLogout2 />} />
+        <NavLink onClick={onClickLogout} label="Logout" leftSection={<IconLogout2 />} />
       </AppShell.Navbar>
       <AppShell.Main><Outlet /></AppShell.Main>
     </AppShell>
