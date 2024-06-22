@@ -1,8 +1,8 @@
-import { useQuery } from "@apollo/client";
-import { Container, Table, Title } from "@mantine/core";
-import { graphql } from "@src/__generated__/gql";
-import { ReceiptsQuery } from "@src/__generated__/graphql";
+import { useQuery } from "@apollo/client"
+import { Table, Container, Title } from "@mantine/core"
+import { ReceiptsQuery } from "@src/__generated__/graphql"
 import { createFileRoute } from "@tanstack/react-router"
+import { graphql } from "@src/__generated__/gql"
 
 const RECEIPTS_QUERY = graphql(`
   query Receipts {
@@ -14,10 +14,9 @@ const RECEIPTS_QUERY = graphql(`
   }
 `)
 
-export const Route = createFileRoute("/_auth/")({
+export const Route = createFileRoute("/_auth/receipt")({
   component: ReceiptsPage,
 })
-
 function ReceiptsPage() {
   const { data, loading, error } = useQuery(RECEIPTS_QUERY)
 
@@ -59,5 +58,5 @@ function ReceiptsPage() {
         <Table.Tbody>{receipts.map(displayData)}</Table.Tbody>
       </Table>
     </Container>
-  );
+  )
 }

@@ -53,6 +53,7 @@ export type LoginUserInput = {
 export type Me = {
   __typename?: 'Me';
   id: Scalars['ID']['output'];
+  receipts: Array<Receipt>;
   totalPayables: Scalars['String']['output'];
   username: Scalars['String']['output'];
 };
