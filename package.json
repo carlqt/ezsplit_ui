@@ -11,7 +11,8 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "db:schema:apply": "docker compose run --rm dev-cli atlas schema apply --env local --auto-approve",
     "db:seed:run": "docker compose run --rm dev-cli go run cmd/seed/main.go",
-    "db:setup": "pnpm db:schema:apply && pnpm db:seed:run"
+    "db:setup": "pnpm db:schema:apply && pnpm db:seed:run",
+    "submodule:update": "git submodule update --remote --merge"
   },
   "dependencies": {
     "@apollo/client": "^3.10.2",
