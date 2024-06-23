@@ -8,7 +8,7 @@ import {
   Skeleton,
 } from "@mantine/core"
 import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
 
 const RECEIPTS_QUERY = graphql(`
@@ -30,6 +30,11 @@ export const Route = createFileRoute("/_auth/receipts")({
 
 function ReceiptsPage() {
   const { data, loading, error } = useQuery(RECEIPTS_QUERY)
+  const navigate = useNavigate()
+
+  const newReceiptsNavigate = () => {
+    navigate({ to: "/receipts/new" })
+  }
 
   if (loading) {
     return <Skeleton visible={loading} height={100}></Skeleton>
@@ -64,7 +69,7 @@ function ReceiptsPage() {
   return (
     <Container>
       <Title order={1}>Receipts</Title>
-      <Button variant="filled" color="teal">
+      <Button onClick={newReceiptsNavigate} variant="filled" color="teal">
         Create Receipt
       </Button>
       <Table>
