@@ -15,7 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignupIndexImport } from './routes/sign_up/index'
-import { Route as AuthReceiptImport } from './routes/_auth.receipt'
+import { Route as AuthReceiptsImport } from './routes/_auth.receipts'
 
 // Create/Update Routes
 
@@ -39,8 +39,8 @@ const SignupIndexRoute = SignupIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthReceiptRoute = AuthReceiptImport.update({
-  path: '/receipt',
+const AuthReceiptsRoute = AuthReceiptsImport.update({
+  path: '/receipts',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -69,11 +69,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/receipt': {
-      id: '/_auth/receipt'
-      path: '/receipt'
-      fullPath: '/receipt'
-      preLoaderRoute: typeof AuthReceiptImport
+    '/_auth/receipts': {
+      id: '/_auth/receipts'
+      path: '/receipts'
+      fullPath: '/receipts'
+      preLoaderRoute: typeof AuthReceiptsImport
       parentRoute: typeof AuthImport
     }
     '/sign_up/': {
@@ -90,7 +90,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AuthRoute: AuthRoute.addChildren({ AuthReceiptRoute }),
+  AuthRoute: AuthRoute.addChildren({ AuthReceiptsRoute }),
   LoginRoute,
   SignupIndexRoute,
 })
@@ -115,14 +115,14 @@ export const routeTree = rootRoute.addChildren({
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/receipt"
+        "/_auth/receipts"
       ]
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/_auth/receipt": {
-      "filePath": "_auth.receipt.tsx",
+    "/_auth/receipts": {
+      "filePath": "_auth.receipts.tsx",
       "parent": "/_auth"
     },
     "/sign_up/": {
