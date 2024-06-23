@@ -1,5 +1,12 @@
 import { useQuery } from "@apollo/client"
-import { Table, Container, Title, NumberFormatter } from "@mantine/core"
+import {
+  Table,
+  Container,
+  Title,
+  NumberFormatter,
+  Button,
+  Skeleton,
+} from "@mantine/core"
 import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
 import { createFileRoute } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
@@ -25,7 +32,7 @@ function ReceiptsPage() {
   const { data, loading, error } = useQuery(RECEIPTS_QUERY)
 
   if (loading) {
-    return <>Loading</>
+    return <Skeleton visible={loading} height={100}></Skeleton>
   }
 
   if (error) {
@@ -57,6 +64,9 @@ function ReceiptsPage() {
   return (
     <Container>
       <Title order={1}>Receipts</Title>
+      <Button variant="filled" color="teal">
+        Create Receipt
+      </Button>
       <Table>
         <Table.Thead>
           <Table.Tr>
