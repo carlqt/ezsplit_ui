@@ -1,15 +1,18 @@
 import { useQuery } from "@apollo/client"
-import { Table, Container, Title } from "@mantine/core"
-import { ReceiptsQuery } from "@src/__generated__/graphql"
+import { Table, Container, Title, NumberFormatter } from "@mantine/core"
+import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
 import { createFileRoute } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
 
 const RECEIPTS_QUERY = graphql(`
-  query Receipts {
-    receipts {
+  query MeWithReceipts {
+    me {
       id
-      description
-      total
+      receipts {
+        id
+        description
+        total
+      }
     }
   }
 `)
@@ -17,6 +20,7 @@ const RECEIPTS_QUERY = graphql(`
 export const Route = createFileRoute("/_auth/receipt")({
   component: ReceiptsPage,
 })
+
 function ReceiptsPage() {
   const { data, loading, error } = useQuery(RECEIPTS_QUERY)
 
@@ -32,14 +36,20 @@ function ReceiptsPage() {
     return <>Something went wrong</>
   }
 
-  const { receipts } = data
+  const { receipts } = data.me
 
-  const displayData = (r: ReceiptsQuery["receipts"][0]) => {
+  const displayData = (r: MeWithReceiptsQuery["me"]["receipts"][0]) => {
     return (
       <Table.Tr key={r.id}>
         <Table.Td>{r.id}</Table.Td>
         <Table.Td>{r.description}</Table.Td>
-        <Table.Td>{r.total}</Table.Td>
+        <Table.Td>
+          <NumberFormatter
+            prefix="$"
+            value={r.total || 0}
+            thousandSeparator={true}
+          />
+        </Table.Td>
       </Table.Tr>
     )
   }
