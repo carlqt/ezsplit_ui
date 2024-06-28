@@ -6,14 +6,12 @@ import {
   NumberFormatter,
   Button,
   Skeleton,
-  Modal,
-  TextInput,
-  Box,
 } from "@mantine/core"
 import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
 import { createFileRoute } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
 import { useDisclosure } from "@mantine/hooks"
+import { CreateReceiptModal } from "./-createReceiptModal"
 
 const RECEIPTS_QUERY = graphql(`
   query MeWithReceipts {
@@ -68,18 +66,11 @@ function ReceiptsPage() {
 
   return (
     <Container>
-      <Modal opened={opened} onClose={close} title="Create Receipt" centered>
-        <Box mx="auto">
-          <form>
-            <TextInput label="Description" />
-            <TextInput label="Total" mt="md" />
-
-            <Button type="submit" fullWidth mt="xl">
-              Create
-            </Button>
-          </form>
-        </Box>
-      </Modal>
+      <CreateReceiptModal
+        opened={opened}
+        close={close}
+        RECEIPTS_QUERY={RECEIPTS_QUERY}
+      />
 
       <Title order={1}>Receipts</Title>
       <Button onClick={open} variant="filled" color="teal">
