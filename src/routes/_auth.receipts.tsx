@@ -6,10 +6,14 @@ import {
   NumberFormatter,
   Button,
   Skeleton,
+  Modal,
+  TextInput,
+  Box,
 } from "@mantine/core"
 import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
+import { useDisclosure } from "@mantine/hooks"
 
 const RECEIPTS_QUERY = graphql(`
   query MeWithReceipts {
@@ -30,11 +34,7 @@ export const Route = createFileRoute("/_auth/receipts")({
 
 function ReceiptsPage() {
   const { data, loading, error } = useQuery(RECEIPTS_QUERY)
-  const navigate = useNavigate()
-
-  const newReceiptsNavigate = () => {
-    navigate({ to: "/receipts/new" })
-  }
+  const [opened, { open, close }] = useDisclosure(false)
 
   if (loading) {
     return <Skeleton visible={loading} height={100}></Skeleton>
@@ -68,8 +68,21 @@ function ReceiptsPage() {
 
   return (
     <Container>
+      <Modal opened={opened} onClose={close} title="Create Receipt" centered>
+        <Box mx="auto">
+          <form>
+            <TextInput label="Description" />
+            <TextInput label="Total" mt="md" />
+
+            <Button type="submit" fullWidth mt="xl">
+              Create
+            </Button>
+          </form>
+        </Box>
+      </Modal>
+
       <Title order={1}>Receipts</Title>
-      <Button onClick={newReceiptsNavigate} variant="filled" color="teal">
+      <Button onClick={open} variant="filled" color="teal">
         Create Receipt
       </Button>
       <Table>
