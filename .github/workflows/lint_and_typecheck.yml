@@ -7,9 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install modules
-        run: pnpm install
+        run: corepack pnpm install
       - name: Run Eslint
-        run: pnpm lint
+        run: corepack pnpm lint
       - name: Run typecheck
-        run: pnpm tsc
+        run: corepack pnpm tsc
       
