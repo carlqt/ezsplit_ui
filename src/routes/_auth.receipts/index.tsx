@@ -28,7 +28,7 @@ const RECEIPTS_QUERY = graphql(`
   }
 `)
 
-export const Route = createFileRoute("/_auth/receipts")({
+export const Route = createFileRoute("/_auth/receipts/")({
   component: ReceiptsPage,
 })
 
