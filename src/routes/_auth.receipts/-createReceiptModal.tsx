@@ -53,7 +53,7 @@ export function CreateReceiptModal({
       setDescription("")
       close()
     },
-    update(cache, { data }) {
+    update: (cache, { data }) => {
       const existingReceipts = cache.readQuery({ query: RECEIPTS_QUERY })
       if (!existingReceipts) return
       if (!data?.createMyReceipt) return
@@ -82,6 +82,7 @@ export function CreateReceiptModal({
           <TextInput
             label="Description"
             name="description"
+            required
             onChange={(e) => setDescription(e.target.value)}
             value={description}
           />
@@ -93,7 +94,6 @@ export function CreateReceiptModal({
             onChange={onTotalChange}
             value={total}
           />
-
           <Button
             loading={loading}
             loaderProps={{ type: "bars" }}

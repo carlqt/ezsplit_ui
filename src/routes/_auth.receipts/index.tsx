@@ -12,6 +12,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
 import { useDisclosure } from "@mantine/hooks"
 import { CreateReceiptModal } from "./-createReceiptModal"
+import { IconTrash } from "@tabler/icons-react"
 
 const RECEIPTS_QUERY = graphql(`
   query MeWithReceipts {
@@ -60,6 +61,9 @@ function ReceiptsPage() {
             thousandSeparator={true}
           />
         </Table.Td>
+        <Table.Td>
+          <IconTrash />
+        </Table.Td>
       </Table.Tr>
     )
   }
@@ -76,12 +80,13 @@ function ReceiptsPage() {
       <Button onClick={open} variant="filled" color="teal">
         Create Receipt
       </Button>
-      <Table>
+      <Table highlightOnHover>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>ID</Table.Th>
             <Table.Th>Description</Table.Th>
             <Table.Th>Total</Table.Th>
+            <Table.Th>Actions</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{receipts.map(displayData)}</Table.Tbody>
