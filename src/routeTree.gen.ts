@@ -13,8 +13,9 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
+import { Route as IndexImport } from './routes/index'
 import { Route as SignupIndexImport } from './routes/sign_up/index'
-import { Route as AuthIndexImport } from './routes/_auth.index'
+import { Route as AuthReceiptsIndexImport } from './routes/_auth.receipts/index'
 
 // Create/Update Routes
 
@@ -28,13 +29,18 @@ const AuthRoute = AuthImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const IndexRoute = IndexImport.update({
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const SignupIndexRoute = SignupIndexImport.update({
   path: '/sign_up/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthIndexRoute = AuthIndexImport.update({
-  path: '/',
+const AuthReceiptsIndexRoute = AuthReceiptsIndexImport.update({
+  path: '/receipts/',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -42,6 +48,13 @@ const AuthIndexRoute = AuthIndexImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -56,13 +69,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/': {
-      id: '/_auth/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthIndexImport
-      parentRoute: typeof AuthImport
-    }
     '/sign_up/': {
       id: '/sign_up/'
       path: '/sign_up'
@@ -70,13 +76,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/receipts/': {
+      id: '/_auth/receipts/'
+      path: '/receipts'
+      fullPath: '/receipts'
+      preLoaderRoute: typeof AuthReceiptsIndexImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  AuthRoute: AuthRoute.addChildren({ AuthIndexRoute }),
+  IndexRoute,
+  AuthRoute: AuthRoute.addChildren({ AuthReceiptsIndexRoute }),
   LoginRoute,
   SignupIndexRoute,
 })
@@ -89,26 +103,30 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_auth",
         "/login",
         "/sign_up/"
       ]
     },
+    "/": {
+      "filePath": "index.tsx"
+    },
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/"
+        "/_auth/receipts/"
       ]
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/_auth/": {
-      "filePath": "_auth.index.tsx",
-      "parent": "/_auth"
-    },
     "/sign_up/": {
       "filePath": "sign_up/index.tsx"
+    },
+    "/_auth/receipts/": {
+      "filePath": "_auth.receipts/index.tsx",
+      "parent": "/_auth"
     }
   }
 }

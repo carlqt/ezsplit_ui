@@ -8,7 +8,16 @@ import {
   MeQuery,
 } from "@src/__generated__/graphql"
 import { ME } from "@src/useAuth"
-import { Container, Title, Anchor, Paper, TextInput, PasswordInput, Button, Text } from "@mantine/core"
+import {
+  Container,
+  Title,
+  Anchor,
+  Paper,
+  TextInput,
+  PasswordInput,
+  Button,
+  Text,
+} from "@mantine/core"
 
 const LOGIN_USER = graphql(`
   mutation LoginUser($input: LoginUserInput) {
@@ -58,11 +67,9 @@ function Login() {
 
   return (
     <Container size={420} my={40}>
-      <Title ta="center">
-        Welcome back!
-      </Title>
+      <Title ta="center">Welcome back!</Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Do not have an account yet?{' '}
+        Do not have an account yet?{" "}
         <Link to="/sign_up">
           <Anchor size="sm" component="button">
             Create account
@@ -75,7 +82,8 @@ function Login() {
           <TextInput
             label="Username"
             placeholder="john_smith"
-            required onChange={e => setUsername(e.target.value)}
+            required
+            onChange={(e) => setUsername(e.target.value)}
             value={username}
           />
           <PasswordInput
@@ -83,7 +91,7 @@ function Login() {
             placeholder="Your password"
             required
             mt="md"
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
           <Button type="submit" fullWidth mt="xl">
