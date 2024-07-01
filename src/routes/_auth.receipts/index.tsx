@@ -1,11 +1,5 @@
 import { useQuery } from "@apollo/client"
-import {
-  Table,
-  Container,
-  Title,
-  Button,
-  Skeleton,
-} from "@mantine/core"
+import { Table, Container, Title, Button, Skeleton } from "@mantine/core"
 import { createFileRoute } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
 import { useDisclosure } from "@mantine/hooks"
@@ -24,7 +18,6 @@ const RECEIPTS_QUERY = graphql(`
     }
   }
 `)
-
 
 export const Route = createFileRoute("/_auth/receipts/")({
   component: ReceiptsPage,
@@ -70,7 +63,10 @@ function ReceiptsPage() {
           </Table.Tr>
         </Table.Thead>
 
-        <ReceiptsTableBody receipts={receipts} />
+        <ReceiptsTableBody
+          receipts={receipts}
+          RECEIPTS_QUERY={RECEIPTS_QUERY}
+        />
       </Table>
     </Container>
   )
