@@ -6,6 +6,7 @@ import {
   NumberFormatter,
   Button,
   Skeleton,
+  ActionIcon,
 } from "@mantine/core"
 import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
 import { createFileRoute } from "@tanstack/react-router"
@@ -68,7 +69,9 @@ function ReceiptsPage() {
           />
         </Table.Td>
         <Table.Td>
-          <IconTrash />
+          <ActionIcon variant="transparent">
+            <IconTrash />
+          </ActionIcon>
         </Table.Td>
       </Table.Tr>
     )
