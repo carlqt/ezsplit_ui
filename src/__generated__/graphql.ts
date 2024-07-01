@@ -37,6 +37,10 @@ export type DeleteItemPayload = {
   msg: Scalars['String']['output'];
 };
 
+export type DeleteMyReceiptInput = {
+  id: Scalars['ID']['input'];
+};
+
 export type Item = {
   __typename?: 'Item';
   id: Scalars['ID']['output'];
@@ -65,6 +69,7 @@ export type Mutation = {
   assignUserToItem: Item;
   createMyReceipt: Receipt;
   createUser: UserWithJwt;
+  deleteMyReceipt: Scalars['ID']['output'];
   loginUser: UserWithJwt;
   logoutUser: Scalars['String']['output'];
   removeMeFromItem: DeleteItemPayload;
@@ -93,6 +98,11 @@ export type MutationCreateMyReceiptArgs = {
 
 export type MutationCreateUserArgs = {
   input?: InputMaybe<UserInput>;
+};
+
+
+export type MutationDeleteMyReceiptArgs = {
+  input?: InputMaybe<DeleteMyReceiptInput>;
 };
 
 
@@ -163,6 +173,11 @@ export type MeWithReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeWithReceiptsQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, receipts: Array<{ __typename?: 'Receipt', id: string, description: string, total?: string | null }> } };
 
+export type DeleteMyReceiptMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DeleteMyReceiptMutation = { __typename?: 'Mutation', deleteMyReceipt: string };
+
 export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -190,6 +205,7 @@ export type MeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: strin
 
 export const CreateMyReceiptDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMyReceipt"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ReceiptInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMyReceipt"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"total"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<CreateMyReceiptMutation, CreateMyReceiptMutationVariables>;
 export const MeWithReceiptsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MeWithReceipts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"receipts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"total"}}]}}]}}]}}]} as unknown as DocumentNode<MeWithReceiptsQuery, MeWithReceiptsQueryVariables>;
+export const DeleteMyReceiptDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteMyReceipt"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteMyReceipt"}}]}}]} as unknown as DocumentNode<DeleteMyReceiptMutation, DeleteMyReceiptMutationVariables>;
 export const LogoutUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogoutUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logoutUser"}}]}}]} as unknown as DocumentNode<LogoutUserMutation, LogoutUserMutationVariables>;
 export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LoginUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginUserInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]} as unknown as DocumentNode<LoginUserMutation, LoginUserMutationVariables>;
 export const CreateUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UserInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]} as unknown as DocumentNode<CreateUserMutation, CreateUserMutationVariables>;

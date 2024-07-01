@@ -27,6 +27,12 @@ const RECEIPTS_QUERY = graphql(`
   }
 `)
 
+const DELETE_RECEIPT = graphql(`
+  mutation DeleteMyReceipt {
+    deleteMyReceipt
+  }
+`)
+
 export const Route = createFileRoute("/_auth/receipts/")({
   component: ReceiptsPage,
 })
