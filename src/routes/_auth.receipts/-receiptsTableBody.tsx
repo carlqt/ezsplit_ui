@@ -1,10 +1,17 @@
 import { Table, NumberFormatter, ActionIcon } from "@mantine/core"
+import { graphql } from "@src/__generated__/gql"
 import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
 import { IconTrash } from "@tabler/icons-react"
 
 interface ReceiptsTableBodyProps {
   receipts: MeWithReceiptsQuery["me"]["receipts"]
 }
+
+const DELETE_RECEIPT_MUTATION = graphql(`
+  mutation DeleteMyReceipt {
+    deleteMyReceipt
+  }
+`)
 
 export const ReceiptsTableBody = ({ receipts }: ReceiptsTableBodyProps) => {
   const rowItem = (r: MeWithReceiptsQuery["me"]["receipts"][0]) => {
