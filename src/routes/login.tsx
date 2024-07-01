@@ -80,6 +80,7 @@ function Login() {
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form onSubmit={onSubmit}>
           <TextInput
+            autoFocus
             label="Username"
             placeholder="john_smith"
             required
