@@ -28,11 +28,7 @@ const LOGIN_USER = graphql(`
   }
 `)
 
-export const Route = createFileRoute("/login")({
-  component: Login,
-})
-
-function Login() {
+const Login = () => {
   const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -103,3 +99,7 @@ function Login() {
     </Container>
   )
 }
+
+export const Route = createFileRoute("/login")({
+  component: Login,
+})

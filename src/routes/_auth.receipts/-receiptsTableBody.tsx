@@ -19,9 +19,7 @@ const DELETE_RECEIPT_MUTATION = graphql(`
   }
 `)
 
-export const ReceiptsTableBody = ({
-  receipts,
-}: ReceiptsTableBodyProps) => {
+export const ReceiptsTableBody = ({ receipts }: ReceiptsTableBodyProps) => {
   const [isDeleting, { open: startLoading, close: stopLoading }] =
     useDisclosure()
   const [deleteReceipt] = useMutation<
@@ -35,8 +33,8 @@ export const ReceiptsTableBody = ({
       cache.evict({
         id: cache.identify({
           __typename: "Receipt",
-          id: data?.deleteMyReceipt
-        })
+          id: data?.deleteMyReceipt,
+        }),
       })
 
       cache.gc()
@@ -45,7 +43,7 @@ export const ReceiptsTableBody = ({
 
   const onDelete = (id: string) => {
     startLoading()
-    deleteReceipt({ variables: { input: { id } }})
+    deleteReceipt({ variables: { input: { id } } })
   }
 
   const rowItem = (r: MeWithReceiptsQuery["me"]["receipts"][0]) => {
