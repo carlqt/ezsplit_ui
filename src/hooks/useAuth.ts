@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client"
-import { graphql } from "../src/__generated__/gql"
+import { graphql } from "@src/__generated__/gql"
 
 export const ME = graphql(`
   query Me {

@@ -7,7 +7,7 @@ import {
   LoginUserMutationVariables,
   MeQuery,
 } from "@src/__generated__/graphql"
-import { ME } from "@src/useAuth"
+import { ME } from "@src/hooks/useAuth"
 import {
   Container,
   Title,
