@@ -1,18 +1,10 @@
 import { useQuery } from "@apollo/client"
-import {
-  Table,
-  Container,
-  Title,
-  NumberFormatter,
-  Button,
-  Skeleton,
-} from "@mantine/core"
-import { MeWithReceiptsQuery } from "@src/__generated__/graphql"
+import { Table, Container, Title, Button, Skeleton } from "@mantine/core"
 import { createFileRoute } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
 import { useDisclosure } from "@mantine/hooks"
 import { CreateReceiptModal } from "./-createReceiptModal"
-import { IconTrash } from "@tabler/icons-react"
+import { ReceiptsTableBody } from "./-receiptsTableBody"
 
 const RECEIPTS_QUERY = graphql(`
   query MeWithReceipts {
@@ -49,25 +41,6 @@ function ReceiptsPage() {
 
   const { receipts } = data.me
 
-  const displayData = (r: MeWithReceiptsQuery["me"]["receipts"][0]) => {
-    return (
-      <Table.Tr key={r.id}>
-        <Table.Td>{r.id}</Table.Td>
-        <Table.Td>{r.description}</Table.Td>
-        <Table.Td>
-          <NumberFormatter
-            prefix="$"
-            value={r.total || 0}
-            thousandSeparator={true}
-          />
-        </Table.Td>
-        <Table.Td>
-          <IconTrash />
-        </Table.Td>
-      </Table.Tr>
-    )
-  }
-
   return (
     <Container>
       <CreateReceiptModal
@@ -89,7 +62,10 @@ function ReceiptsPage() {
             <Table.Th>Actions</Table.Th>
           </Table.Tr>
         </Table.Thead>
-        <Table.Tbody>{receipts.map(displayData)}</Table.Tbody>
+
+        <ReceiptsTableBody
+          receipts={receipts}
+        />
       </Table>
     </Container>
   )
