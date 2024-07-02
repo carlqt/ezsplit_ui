@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from "@tanstack/react-router"
 import { IconReceipt, IconLogout2 } from "@tabler/icons-react"
-import { useAuth } from "@src/useAuth"
+import { useAuth } from "@src/hooks/useAuth"
 import { useApolloClient, useMutation } from "@apollo/client"
 import { graphql } from "@src/__generated__/gql"
 import {

@@ -7,7 +7,7 @@ import {
   LoginUserMutationVariables,
   MeQuery,
 } from "@src/__generated__/graphql"
-import { ME } from "@src/useAuth"
+import { ME } from "@src/hooks/useAuth"
 import {
   Container,
   Title,
@@ -28,11 +28,7 @@ const LOGIN_USER = graphql(`
   }
 `)
 
-export const Route = createFileRoute("/login")({
-  component: Login,
-})
-
-function Login() {
+const Login = () => {
   const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -103,3 +99,7 @@ function Login() {
     </Container>
   )
 }
+
+export const Route = createFileRoute("/login")({
+  component: Login,
+})

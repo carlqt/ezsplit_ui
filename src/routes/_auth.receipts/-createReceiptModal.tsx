@@ -28,11 +28,11 @@ interface CreateReceiptModalProps {
   >
 }
 
-export function CreateReceiptModal({
+export const CreateReceiptModal = ({
   opened,
   close,
   RECEIPTS_QUERY,
-}: CreateReceiptModalProps) {
+}: CreateReceiptModalProps) => {
   const [total, setTotal] = useState(0)
   const [description, setDescription] = useState("")
 

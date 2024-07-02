@@ -19,11 +19,7 @@ const RECEIPTS_QUERY = graphql(`
   }
 `)
 
-export const Route = createFileRoute("/_auth/receipts/")({
-  component: ReceiptsPage,
-})
-
-function ReceiptsPage() {
+const ReceiptsPage = () => {
   const { data, loading, error } = useQuery(RECEIPTS_QUERY)
   const [opened, { open, close }] = useDisclosure(false)
 
@@ -63,10 +59,12 @@ function ReceiptsPage() {
           </Table.Tr>
         </Table.Thead>
 
-        <ReceiptsTableBody
-          receipts={receipts}
-        />
+        <ReceiptsTableBody receipts={receipts} />
       </Table>
     </Container>
   )
 }
+
+export const Route = createFileRoute("/_auth/receipts/")({
+  component: ReceiptsPage,
+})

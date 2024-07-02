@@ -4,7 +4,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router"
 import { routeTree } from "./routeTree.gen.ts"
 import "./index.css"
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
-import { useAuth } from "./useAuth.ts"
+import { useAuth } from "./hooks/useAuth.ts"
 import { createTheme, MantineProvider } from "@mantine/core"
 
 const router = createRouter({
@@ -40,15 +40,14 @@ const InnerApp = () => {
 }
 
 const theme = createTheme({
-  fontFamily: 'Montserrat, sans-serif',
-  defaultRadius: 'md',
+  fontFamily: "Montserrat, sans-serif",
+  defaultRadius: "md",
 })
-
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <MantineProvider theme={theme}>
+      <MantineProvider theme={theme} defaultColorScheme="auto">
         <InnerApp />
       </MantineProvider>
     </ApolloProvider>
