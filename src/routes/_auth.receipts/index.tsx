@@ -65,7 +65,6 @@ function ReceiptsPage() {
 
         <ReceiptsTableBody
           receipts={receipts}
-          RECEIPTS_QUERY={RECEIPTS_QUERY}
         />
       </Table>
     </Container>

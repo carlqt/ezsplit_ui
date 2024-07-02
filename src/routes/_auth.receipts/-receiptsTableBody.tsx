@@ -1,4 +1,4 @@
-import { TypedDocumentNode, useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 import { Table, NumberFormatter, ActionIcon } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { graphql } from "@src/__generated__/gql"
@@ -6,16 +6,11 @@ import {
   DeleteMyReceiptMutation,
   DeleteMyReceiptMutationVariables,
   MeWithReceiptsQuery,
-  MeWithReceiptsQueryVariables,
 } from "@src/__generated__/graphql"
 import { IconTrash } from "@tabler/icons-react"
 
 interface ReceiptsTableBodyProps {
   receipts: MeWithReceiptsQuery["me"]["receipts"]
-  RECEIPTS_QUERY: TypedDocumentNode<
-    MeWithReceiptsQuery,
-    MeWithReceiptsQueryVariables
-  >
 }
 
 const DELETE_RECEIPT_MUTATION = graphql(`
@@ -26,7 +21,6 @@ const DELETE_RECEIPT_MUTATION = graphql(`
 
 export const ReceiptsTableBody = ({
   receipts,
-  RECEIPTS_QUERY,
 }: ReceiptsTableBodyProps) => {
   const [isDeleting, { open: startLoading, close: stopLoading }] =
     useDisclosure()
@@ -38,18 +32,14 @@ export const ReceiptsTableBody = ({
       stopLoading()
     },
     update: (cache, { data }) => {
-      const allReceipts = cache.readQuery({ query: RECEIPTS_QUERY })
-
-      if (allReceipts === null) return
-
-      const updatedReceipts = allReceipts?.me.receipts.filter(
-        (t) => t.id != data?.deleteMyReceipt
-      )
-
-      cache.writeQuery({
-        query: RECEIPTS_QUERY,
-        data: { me: { ...allReceipts.me, receipts: updatedReceipts } },
+      cache.evict({
+        id: cache.identify({
+          __typename: "Receipt",
+          id: data?.deleteMyReceipt
+        })
       })
+
+      cache.gc()
     },
   })
 
