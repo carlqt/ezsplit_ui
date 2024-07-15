@@ -16,6 +16,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignupIndexImport } from './routes/sign_up/index'
 import { Route as AuthReceiptsIndexImport } from './routes/_auth.receipts/index'
+import { Route as AuthReceiptsReceiptIdImport } from './routes/_auth.receipts/$receiptId'
 
 // Create/Update Routes
 
@@ -41,6 +42,11 @@ const SignupIndexRoute = SignupIndexImport.update({
 
 const AuthReceiptsIndexRoute = AuthReceiptsIndexImport.update({
   path: '/receipts/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthReceiptsReceiptIdRoute = AuthReceiptsReceiptIdImport.update({
+  path: '/receipts/$receiptId',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -76,6 +82,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/receipts/$receiptId': {
+      id: '/_auth/receipts/$receiptId'
+      path: '/receipts/$receiptId'
+      fullPath: '/receipts/$receiptId'
+      preLoaderRoute: typeof AuthReceiptsReceiptIdImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/receipts/': {
       id: '/_auth/receipts/'
       path: '/receipts'
@@ -90,7 +103,10 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AuthRoute: AuthRoute.addChildren({ AuthReceiptsIndexRoute }),
+  AuthRoute: AuthRoute.addChildren({
+    AuthReceiptsReceiptIdRoute,
+    AuthReceiptsIndexRoute,
+  }),
   LoginRoute,
   SignupIndexRoute,
 })
@@ -115,6 +131,7 @@ export const routeTree = rootRoute.addChildren({
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
+        "/_auth/receipts/$receiptId",
         "/_auth/receipts/"
       ]
     },
@@ -123,6 +140,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/sign_up/": {
       "filePath": "sign_up/index.tsx"
+    },
+    "/_auth/receipts/$receiptId": {
+      "filePath": "_auth.receipts/$receiptId.tsx",
+      "parent": "/_auth"
     },
     "/_auth/receipts/": {
       "filePath": "_auth.receipts/index.tsx",

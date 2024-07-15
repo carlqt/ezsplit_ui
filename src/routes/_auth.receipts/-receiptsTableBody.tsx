@@ -8,6 +8,7 @@ import {
   MeWithReceiptsQuery,
 } from "@src/__generated__/graphql"
 import { IconTrash } from "@tabler/icons-react"
+import { Link } from "@tanstack/react-router"
 
 interface ReceiptsTableBodyProps {
   receipts: MeWithReceiptsQuery["me"]["receipts"]
@@ -50,7 +51,9 @@ export const ReceiptsTableBody = ({ receipts }: ReceiptsTableBodyProps) => {
     return (
       <Table.Tr key={r.id}>
         <Table.Td>{r.id}</Table.Td>
-        <Table.Td>{r.description}</Table.Td>
+        <Table.Td>
+          <Link to={`/receipts/$receiptId`} params={{ receiptId: r.id }}>{r.description}</Link>
+        </Table.Td>
         <Table.Td>
           <NumberFormatter
             prefix="$"
