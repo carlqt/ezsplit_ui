@@ -16,7 +16,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignupIndexImport } from './routes/sign_up/index'
 import { Route as AuthReceiptsIndexImport } from './routes/_auth.receipts/index'
-import { Route as AuthReceiptsReceiptIdImport } from './routes/_auth.receipts/$receiptId'
+import { Route as AuthReceiptsReceiptIdIndexImport } from './routes/_auth.receipts/$receiptId/index'
 
 // Create/Update Routes
 
@@ -45,10 +45,12 @@ const AuthReceiptsIndexRoute = AuthReceiptsIndexImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AuthReceiptsReceiptIdRoute = AuthReceiptsReceiptIdImport.update({
-  path: '/receipts/$receiptId',
-  getParentRoute: () => AuthRoute,
-} as any)
+const AuthReceiptsReceiptIdIndexRoute = AuthReceiptsReceiptIdIndexImport.update(
+  {
+    path: '/receipts/$receiptId/',
+    getParentRoute: () => AuthRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -82,18 +84,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupIndexImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/receipts/$receiptId': {
-      id: '/_auth/receipts/$receiptId'
-      path: '/receipts/$receiptId'
-      fullPath: '/receipts/$receiptId'
-      preLoaderRoute: typeof AuthReceiptsReceiptIdImport
-      parentRoute: typeof AuthImport
-    }
     '/_auth/receipts/': {
       id: '/_auth/receipts/'
       path: '/receipts'
       fullPath: '/receipts'
       preLoaderRoute: typeof AuthReceiptsIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/receipts/$receiptId/': {
+      id: '/_auth/receipts/$receiptId/'
+      path: '/receipts/$receiptId'
+      fullPath: '/receipts/$receiptId'
+      preLoaderRoute: typeof AuthReceiptsReceiptIdIndexImport
       parentRoute: typeof AuthImport
     }
   }
@@ -104,8 +106,8 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AuthRoute: AuthRoute.addChildren({
-    AuthReceiptsReceiptIdRoute,
     AuthReceiptsIndexRoute,
+    AuthReceiptsReceiptIdIndexRoute,
   }),
   LoginRoute,
   SignupIndexRoute,
@@ -131,8 +133,8 @@ export const routeTree = rootRoute.addChildren({
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/receipts/$receiptId",
-        "/_auth/receipts/"
+        "/_auth/receipts/",
+        "/_auth/receipts/$receiptId/"
       ]
     },
     "/login": {
@@ -141,12 +143,12 @@ export const routeTree = rootRoute.addChildren({
     "/sign_up/": {
       "filePath": "sign_up/index.tsx"
     },
-    "/_auth/receipts/$receiptId": {
-      "filePath": "_auth.receipts/$receiptId.tsx",
-      "parent": "/_auth"
-    },
     "/_auth/receipts/": {
       "filePath": "_auth.receipts/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/receipts/$receiptId/": {
+      "filePath": "_auth.receipts/$receiptId/index.tsx",
       "parent": "/_auth"
     }
   }

@@ -1,7 +1,9 @@
-import { Button, Container, Space, Stack, Table, TableData, Title } from '@mantine/core'
+import { Button, Container, Skeleton, Space, Stack, Table, TableData, Title } from '@mantine/core'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { IconChevronLeft } from '@tabler/icons-react'
 import { graphql } from '@src/__generated__/gql'
+import { useQuery } from '@apollo/client'
+import { ItemsTable } from './-itemsTable'
 
 const RECEIPT_QUERY = graphql(`
   query Receipt($receiptId: ID!) {
@@ -9,6 +11,7 @@ const RECEIPT_QUERY = graphql(`
       id
       total
       items {
+        id
         name
         price
       }
@@ -17,14 +20,21 @@ const RECEIPT_QUERY = graphql(`
 `)
 
 const Receipt = () => {
-  const tableData: TableData = {
-    caption: 'Receipt line items',
-    head: ['Name', 'Price'],
-    body: [
-      ['Chickenjoy', '$5.00'],
-      ['Jolly Spaghetti', '$3.00'],
-      ['Peach Mango Pie', '$2.00'],
-    ],
+  const { receiptId } = Route.useParams()
+  const { data, loading, error } = useQuery(RECEIPT_QUERY, {
+    variables: {
+      receiptId: receiptId,
+    },
+  })
+
+  const items = data?.receipt.items
+
+  if (loading) {
+    return <Skeleton visible={loading} height={100}></Skeleton>
+  }
+
+  if (error) {
+    return <>Error: {error.message}</>
   }
 
   return (
@@ -39,11 +49,11 @@ const Receipt = () => {
         <Title order={2}>Price: $$$</Title>
       </Stack>
 
-      <Table data={tableData} />
+      {items && <ItemsTable items={items} />}
     </Container>
   )
 }
 
-export const Route = createFileRoute('/_auth/receipts/$receiptId')({
+export const Route = createFileRoute('/_auth/receipts/$receiptId/')({
   component: Receipt
 })
