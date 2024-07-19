@@ -7,8 +7,6 @@ interface ItemsTableProps {
 
 export const ItemsTable = ({ items }: ItemsTableProps) => {
   const tableItems = (i: ReceiptQuery["receipt"]["items"][0]) => {
-    if (i === null) return null
-
     return (
       <Table.Tr key={i.id}>
         <Table.Td>{i.id}</Table.Td>
@@ -38,7 +36,7 @@ export const ItemsTable = ({ items }: ItemsTableProps) => {
         </Table.Tr>
       </Table.Thead>
 
-      {items.map(i => tableItems(i))}
+      <Table.Tbody>{items.map(i => tableItems(i))}</Table.Tbody>
     </Table>
   )
 }

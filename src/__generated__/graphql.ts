@@ -132,7 +132,7 @@ export type Receipt = {
   __typename?: 'Receipt';
   description: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  items: Array<Maybe<Item>>;
+  items: Array<Item>;
   total?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
 };
@@ -171,7 +171,7 @@ export type ReceiptQueryVariables = Exact<{
 }>;
 
 
-export type ReceiptQuery = { __typename?: 'Query', receipt: { __typename?: 'Receipt', id: string, total?: string | null, items: Array<{ __typename?: 'Item', id: string, name: string, price: string } | null> } };
+export type ReceiptQuery = { __typename?: 'Query', receipt: { __typename?: 'Receipt', id: string, total?: string | null, items: Array<{ __typename?: 'Item', id: string, name: string, price: string }> } };
 
 export type CreateMyReceiptMutationVariables = Exact<{
   input?: InputMaybe<ReceiptInput>;
