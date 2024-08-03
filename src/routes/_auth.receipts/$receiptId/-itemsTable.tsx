@@ -15,10 +15,7 @@ export const ItemsTable = ({ items }: ItemsTableProps) => {
     const actionIcon = (name || price) ? <IconDeviceFloppy /> : <IconCirclePlus />
 
     return (
-      // setting the key as 'static' is a hack to prevent the warning: "Warning: Each child in a list should have a unique "key" prop."
-      // It's not really needed to set a key for this row, since it's an ephemeral row that doesn't have an id and it's just used for
-      // adding items
-      <Table.Tr key={'static'}>
+      <Table.Tr>
         <Table.Td>
         </Table.Td>
         <Table.Td>
@@ -87,7 +84,14 @@ export const ItemsTable = ({ items }: ItemsTableProps) => {
         </Table.Tr>
       </Table.Thead>
 
-      <Table.Tbody>{items.map(i => tableItems(i)).concat([actionRow()])}</Table.Tbody>
+      <Table.Tbody>
+        <>
+          {items.map(i => tableItems(i))}
+        </>
+        <>
+          {actionRow()}
+        </>
+      </Table.Tbody>
     </Table>
   )
 }
