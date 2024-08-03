@@ -1,15 +1,44 @@
+import { useMutation } from "@apollo/client"
 import { ActionIcon, NumberFormatter, Table, TextInput } from "@mantine/core"
+import { graphql } from "@src/__generated__/gql"
 import { ReceiptQuery } from "@src/__generated__/graphql"
 import { IconCirclePlus, IconDeviceFloppy, IconTrash } from "@tabler/icons-react"
 import { useState } from "react"
 
+const CREATE_ITEM_MUTATION = graphql(`
+  mutation AddItemToReceipt($input: AddItemToReceiptInput) {
+    addItemToReceipt(input: $input) {
+      id
+      name
+      price
+    }
+  }
+`)
+
 interface ItemsTableProps {
   items: ReceiptQuery["receipt"]["items"]
+  receiptId: string
 }
 
-export const ItemsTable = ({ items }: ItemsTableProps) => {
+export const ItemsTable = ({ items, receiptId }: ItemsTableProps) => {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
+
+  const [addItem] = useMutation(CREATE_ITEM_MUTATION)
+
+  const onCreate = () => {
+    const inputPrice = parseFloat(price)
+
+    addItem({
+      variables: {
+        input: {
+          receiptId,
+          name,
+          price: inputPrice,
+        }
+      }
+    })
+  }
 
   const actionRow = () => {
     const actionIcon = (name || price) ? <IconDeviceFloppy /> : <IconCirclePlus />
@@ -40,7 +69,7 @@ export const ItemsTable = ({ items }: ItemsTableProps) => {
         <Table.Td>
           <ActionIcon
             variant="transparent"
-          // onClick={() => onDelete(r.id)}
+            onClick={onCreate}
           // loading={isDeleting}
           >
             {actionIcon}

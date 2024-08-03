@@ -49,7 +49,7 @@ const Receipt = () => {
         <Title order={2}>Price: $$$</Title>
       </Stack>
 
-      {items && <ItemsTable items={items} />}
+      {items && <ItemsTable receiptId={receiptId} items={items} />}
     </Container>
   )
 }
