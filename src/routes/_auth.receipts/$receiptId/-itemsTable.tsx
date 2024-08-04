@@ -1,7 +1,7 @@
-import { useMutation } from "@apollo/client"
+import { TypedDocumentNode, useMutation } from "@apollo/client"
 import { ActionIcon, NumberFormatter, Table, TextInput } from "@mantine/core"
 import { graphql } from "@src/__generated__/gql"
-import { ReceiptQuery } from "@src/__generated__/graphql"
+import { Exact, ReceiptQuery } from "@src/__generated__/graphql"
 import { IconCirclePlus, IconDeviceFloppy, IconTrash } from "@tabler/icons-react"
 import { useState } from "react"
 
@@ -18,13 +18,37 @@ const CREATE_ITEM_MUTATION = graphql(`
 interface ItemsTableProps {
   items: ReceiptQuery["receipt"]["items"]
   receiptId: string
+  RECEIPT_QUERY: TypedDocumentNode<ReceiptQuery, Exact<{ receiptId: string }>>
 }
 
-export const ItemsTable = ({ items, receiptId }: ItemsTableProps) => {
+export const ItemsTable = ({ RECEIPT_QUERY, items, receiptId }: ItemsTableProps) => {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
 
-  const [addItem] = useMutation(CREATE_ITEM_MUTATION)
+  const [addItem] = useMutation(CREATE_ITEM_MUTATION, {
+    variables: { input: { receiptId, name, price: 0 } },
+    onCompleted: () => {
+      setName("")
+      setPrice("")
+    },
+    update: (cache, { data }) => {
+      const existingReceipt = cache.readQuery({ query: RECEIPT_QUERY, variables: { receiptId } })
+
+      if (!existingReceipt) return
+      if (!data?.addItemToReceipt) return
+
+      cache.writeQuery({
+        query: RECEIPT_QUERY,
+        variables: { receiptId },
+        data: {
+          receipt: {
+            ...existingReceipt.receipt,
+            items: [...existingReceipt.receipt.items, data.addItemToReceipt],
+          }
+        }
+      })
+    }
+  })
 
   const onCreate = () => {
     const inputPrice = parseFloat(price)
