@@ -10,6 +10,9 @@ const config: CodegenConfig = {
       preset: "client",
       plugins: []
     },
+    "./src/__generated__/generated-hooks.ts": {
+      plugins: ['typescript-react-apollo', 'typescript', 'typescript-operations'],
+    },
   },
   // ignoreNoDocuments: true,
 };
