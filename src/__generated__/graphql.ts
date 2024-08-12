@@ -70,9 +70,11 @@ export type Mutation = {
   createMyReceipt: Receipt;
   createUser: UserWithJwt;
   deleteMyReceipt: Scalars['ID']['output'];
+  generatePublicUrl: Receipt;
   loginUser: UserWithJwt;
   logoutUser: Scalars['String']['output'];
   removeMeFromItem: DeleteItemPayload;
+  removePublicUrl: Receipt;
 };
 
 
@@ -106,6 +108,11 @@ export type MutationDeleteMyReceiptArgs = {
 };
 
 
+export type MutationGeneratePublicUrlArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationLoginUserArgs = {
   input?: InputMaybe<LoginUserInput>;
 };
@@ -113,6 +120,11 @@ export type MutationLoginUserArgs = {
 
 export type MutationRemoveMeFromItemArgs = {
   input?: InputMaybe<AssignOrDeleteMeToItemInput>;
+};
+
+
+export type MutationRemovePublicUrlArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type Query = {
@@ -133,8 +145,10 @@ export type Receipt = {
   description: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   items: Array<Item>;
-  total?: Maybe<Scalars['String']['output']>;
+  slug: Scalars['String']['output'];
+  total: Scalars['String']['output'];
   user?: Maybe<User>;
+  userId: Scalars['ID']['output'];
 };
 
 export type ReceiptInput = {
@@ -178,14 +192,14 @@ export type ReceiptQueryVariables = Exact<{
 }>;
 
 
-export type ReceiptQuery = { __typename?: 'Query', receipt: { __typename?: 'Receipt', id: string, total?: string | null, items: Array<{ __typename?: 'Item', id: string, name: string, price: string }> } };
+export type ReceiptQuery = { __typename?: 'Query', receipt: { __typename?: 'Receipt', id: string, total: string, items: Array<{ __typename?: 'Item', id: string, name: string, price: string }> } };
 
 export type CreateMyReceiptMutationVariables = Exact<{
   input?: InputMaybe<ReceiptInput>;
 }>;
 
 
-export type CreateMyReceiptMutation = { __typename?: 'Mutation', createMyReceipt: { __typename?: 'Receipt', id: string, total?: string | null, description: string } };
+export type CreateMyReceiptMutation = { __typename?: 'Mutation', createMyReceipt: { __typename?: 'Receipt', id: string, total: string, description: string } };
 
 export type DeleteMyReceiptMutationVariables = Exact<{
   input: DeleteMyReceiptInput;
@@ -197,7 +211,7 @@ export type DeleteMyReceiptMutation = { __typename?: 'Mutation', deleteMyReceipt
 export type MeWithReceiptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeWithReceiptsQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, receipts: Array<{ __typename?: 'Receipt', id: string, description: string, total?: string | null }> } };
+export type MeWithReceiptsQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, receipts: Array<{ __typename?: 'Receipt', id: string, description: string, total: string }> } };
 
 export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
 
