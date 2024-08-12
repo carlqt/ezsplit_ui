@@ -10,6 +10,7 @@ const RECEIPT_QUERY = graphql(`
     receipt(id: $receiptId) {
       id
       total
+      slug
       items {
         id
         name
