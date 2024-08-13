@@ -15,7 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n  query Me {\n    me {\n      id\n      username\n    }\n  }\n": types.MeDocument,
     "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n": types.AddItemToReceiptDocument,
-    "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n": types.ReceiptDocument,
+    "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n": types.ReceiptDocument,
     "\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      id\n      total\n      description\n    }\n  }\n": types.CreateMyReceiptDocument,
     "\n  mutation DeleteMyReceipt($input: DeleteMyReceiptInput!) {\n    deleteMyReceipt(input: $input)\n  }\n": types.DeleteMyReceiptDocument,
     "\n  query MeWithReceipts {\n    me {\n      id\n      receipts {\n        id\n        description\n        total\n      }\n    }\n  }\n": types.MeWithReceiptsDocument,
@@ -49,7 +49,7 @@ export function graphql(source: "\n  mutation AddItemToReceipt($input: AddItemTo
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n"): (typeof documents)["\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n"): (typeof documents)["\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
