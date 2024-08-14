@@ -1,9 +1,10 @@
-import { Button, Container, Grid, Skeleton, Space, Title, Divider, ActionIcon, rem, TextInput } from '@mantine/core'
+import { Button, Container, Grid, Skeleton, Space, Title, Divider } from '@mantine/core'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { IconArrowRight, IconChevronLeft } from '@tabler/icons-react'
+import { IconChevronLeft } from '@tabler/icons-react'
 import { graphql } from '@src/__generated__/gql'
 import { useQuery } from '@apollo/client'
 import { ItemsTable } from './-itemsTable'
+import { ShareReceipt } from './-shareReceipt'
 
 const RECEIPT_QUERY = graphql(`
   query Receipt($receiptId: ID!) {
@@ -60,25 +61,7 @@ const Receipt = () => {
         </Grid.Col>
       </Grid>
 
-      <Grid>
-        <Grid.Col span="content">
-          <Title order={2}>Share:</Title>
-        </Grid.Col>
-
-        <Grid.Col span={4}>
-          <TextInput
-            disabled
-            size="md"
-            placeholder={data?.receipt.slug}
-            rightSectionWidth={42}
-            rightSection={
-              <ActionIcon size={32} radius="xl" variant="filled">
-                <IconArrowRight style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-              </ActionIcon>
-            }
-          />
-        </Grid.Col>
-      </Grid>
+      <ShareReceipt slug={data?.receipt.slug ?? ""} receiptId={data?.receipt.id ?? ""} />
 
       {items && <ItemsTable receiptId={receiptId} items={items} />}
     </Container>
