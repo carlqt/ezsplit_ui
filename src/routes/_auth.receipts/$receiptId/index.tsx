@@ -30,8 +30,6 @@ const Receipt = () => {
     },
   })
 
-  const items = data?.receipt.items
-
   if (loading) {
     return <Skeleton visible={loading} height={100}></Skeleton>
   }
@@ -39,6 +37,12 @@ const Receipt = () => {
   if (error) {
     return <>Error: {error.message}</>
   }
+
+  if (!data) {
+    return <>Error: Empty response</>
+  }
+
+  const { items } = data.receipt
 
   return (
     <Container>
