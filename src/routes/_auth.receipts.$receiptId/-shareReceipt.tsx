@@ -19,7 +19,7 @@ interface ShareReceiptProps {
 }
 
 export const ShareReceipt = ({ slug, receiptId }: ShareReceiptProps) => {
-  const publicUrl = slug ? `${window.location.origin}/${slug}` : ""
+  const publicUrl = slug ? `${window.location.origin}/receipts/public/${slug}` : ""
 
   const [generatePublicUrl] = useMutation(GENERATE_PUBLIC_URL, {
     variables: { receiptId },
