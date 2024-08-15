@@ -16,6 +16,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignupIndexImport } from './routes/sign_up/index'
 import { Route as AuthReceiptsIndexImport } from './routes/_auth.receipts/index'
+import { Route as ReceiptsPublicReceiptSlugIndexImport } from './routes/receipts.public.$receiptSlug/index'
 import { Route as AuthReceiptsReceiptIdIndexImport } from './routes/_auth.receipts.$receiptId/index'
 
 // Create/Update Routes
@@ -44,6 +45,12 @@ const AuthReceiptsIndexRoute = AuthReceiptsIndexImport.update({
   path: '/receipts/',
   getParentRoute: () => AuthRoute,
 } as any)
+
+const ReceiptsPublicReceiptSlugIndexRoute =
+  ReceiptsPublicReceiptSlugIndexImport.update({
+    path: '/receipts/public/$receiptSlug/',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const AuthReceiptsReceiptIdIndexRoute = AuthReceiptsReceiptIdIndexImport.update(
   {
@@ -98,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthReceiptsReceiptIdIndexImport
       parentRoute: typeof AuthImport
     }
+    '/receipts/public/$receiptSlug/': {
+      id: '/receipts/public/$receiptSlug/'
+      path: '/receipts/public/$receiptSlug'
+      fullPath: '/receipts/public/$receiptSlug'
+      preLoaderRoute: typeof ReceiptsPublicReceiptSlugIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -111,6 +125,7 @@ export const routeTree = rootRoute.addChildren({
   }),
   LoginRoute,
   SignupIndexRoute,
+  ReceiptsPublicReceiptSlugIndexRoute,
 })
 
 /* prettier-ignore-end */
@@ -124,7 +139,8 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/_auth",
         "/login",
-        "/sign_up/"
+        "/sign_up/",
+        "/receipts/public/$receiptSlug/"
       ]
     },
     "/": {
@@ -150,6 +166,9 @@ export const routeTree = rootRoute.addChildren({
     "/_auth/receipts/$receiptId/": {
       "filePath": "_auth.receipts.$receiptId/index.tsx",
       "parent": "/_auth"
+    },
+    "/receipts/public/$receiptSlug/": {
+      "filePath": "receipts.public.$receiptSlug/index.tsx"
     }
   }
 }
