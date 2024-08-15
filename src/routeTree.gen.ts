@@ -16,7 +16,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignupIndexImport } from './routes/sign_up/index'
 import { Route as AuthReceiptsIndexImport } from './routes/_auth.receipts/index'
-import { Route as AuthReceiptsReceiptIdIndexImport } from './routes/_auth.receipts/$receiptId/index'
+import { Route as AuthReceiptsReceiptIdIndexImport } from './routes/_auth.receipts.$receiptId/index'
 
 // Create/Update Routes
 
@@ -148,7 +148,7 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/_auth"
     },
     "/_auth/receipts/$receiptId/": {
-      "filePath": "_auth.receipts/$receiptId/index.tsx",
+      "filePath": "_auth.receipts.$receiptId/index.tsx",
       "parent": "/_auth"
     }
   }
