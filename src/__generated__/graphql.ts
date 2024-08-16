@@ -46,7 +46,7 @@ export type Item = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   price: Scalars['String']['output'];
-  sharedBy: Array<Maybe<User>>;
+  sharedBy: Array<User>;
 };
 
 export type LoginUserInput = {
@@ -243,7 +243,7 @@ export type PublicReceiptQueryVariables = Exact<{
 }>;
 
 
-export type PublicReceiptQuery = { __typename?: 'Query', publicReceipt: { __typename?: 'Receipt', id: string, total: string, description: string, items: Array<{ __typename?: 'Item', id: string, name: string, price: string, sharedBy: Array<{ __typename?: 'User', id: string, username: string } | null> }> } };
+export type PublicReceiptQuery = { __typename?: 'Query', publicReceipt: { __typename?: 'Receipt', id: string, total: string, description: string, items: Array<{ __typename?: 'Item', id: string, name: string, price: string, sharedBy: Array<{ __typename?: 'User', id: string, username: string }> }> } };
 
 export type CreateUserMutationVariables = Exact<{
   input?: InputMaybe<UserInput>;

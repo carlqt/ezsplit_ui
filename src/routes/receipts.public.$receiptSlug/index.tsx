@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client'
-import { Container, Skeleton, Title } from '@mantine/core'
+import { Container, Skeleton, Table, TableData, Title } from '@mantine/core'
 import { graphql } from '@src/__generated__'
+import { User } from '@src/__generated__/graphql'
 import { createFileRoute } from '@tanstack/react-router'
 
 const PUBLIC_RECEIPT = graphql(`
@@ -44,11 +45,23 @@ const PublicReceipt = () => {
     return <>Error: Empty response</>
   }
 
+  const joinedUsernames = (users: User[]): string => {
+    return users.map((u) => u.username).join(', ')
+  }
+
+  const tableData: TableData = {
+    caption: `Item list in ${data.publicReceipt.description}`,
+    head: ['id', 'name', 'price', 'sharedBy'],
+    body: data.publicReceipt.items.map((i) => {
+      return [i.id, i.name, i.price, joinedUsernames(i.sharedBy)]
+    })
+  }
+
   return (
     <Container>
       <Title order={1}>{data.publicReceipt.description}</Title>
       <Title order={2}>{data.publicReceipt.total}</Title>
-      <div> Hello / receipts / public / $receiptSlug / !</div >
+      <Table data={tableData} />
     </Container>
   )
 }
