@@ -31,6 +31,10 @@ export type AssignUserToItemInput = {
   userId: Scalars['ID']['input'];
 };
 
+export type CreateGuestUserInput = {
+  username: Scalars['String']['input'];
+};
+
 export type DeleteItemPayload = {
   __typename?: 'DeleteItemPayload';
   id: Scalars['ID']['output'];
@@ -58,6 +62,7 @@ export type Me = {
   __typename?: 'Me';
   id: Scalars['ID']['output'];
   receipts: Array<Receipt>;
+  state: UserState;
   totalPayables: Scalars['String']['output'];
   username: Scalars['String']['output'];
 };
@@ -67,6 +72,7 @@ export type Mutation = {
   addItemToReceipt: Item;
   assignMeToItem: Item;
   assignUserToItem: Item;
+  createGuestUser: User;
   createMyReceipt: Receipt;
   createUser: UserWithJwt;
   deleteMyReceipt: Scalars['ID']['output'];
@@ -90,6 +96,11 @@ export type MutationAssignMeToItemArgs = {
 
 export type MutationAssignUserToItemArgs = {
   input?: InputMaybe<AssignUserToItemInput>;
+};
+
+
+export type MutationCreateGuestUserArgs = {
+  input?: InputMaybe<CreateGuestUserInput>;
 };
 
 
@@ -165,6 +176,7 @@ export type ReceiptInput = {
 export type User = {
   __typename?: 'User';
   id: Scalars['ID']['output'];
+  state: UserState;
   username: Scalars['String']['output'];
 };
 
@@ -173,6 +185,11 @@ export type UserInput = {
   password: Scalars['String']['input'];
   username: Scalars['String']['input'];
 };
+
+export enum UserState {
+  Guest = 'GUEST',
+  Verified = 'VERIFIED'
+}
 
 export type UserWithJwt = {
   __typename?: 'UserWithJwt';
