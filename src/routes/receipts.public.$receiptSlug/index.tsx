@@ -23,6 +23,7 @@ const PUBLIC_RECEIPT = graphql(`
   }
 `)
 
+type SharedBy = Omit<User, 'state'>
 
 const PublicReceipt = () => {
   const { receiptSlug } = Route.useParams()
@@ -45,7 +46,7 @@ const PublicReceipt = () => {
     return <>Error: Empty response</>
   }
 
-  const joinedUsernames = (users: User[]): string => {
+  const joinedUsernames = (users: SharedBy[]): string => {
     return users.map((u) => u.username).join(', ')
   }
 

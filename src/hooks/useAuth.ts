@@ -10,6 +10,7 @@ export const ME = graphql(`
   }
 `)
 
+// TODO: Check state. If verified, then it is authenticated
 export const useAuth = () => {
   const { data, loading } = useQuery(ME)
   const isAuthenticated = !!data?.me.username
