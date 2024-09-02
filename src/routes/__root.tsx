@@ -1,3 +1,4 @@
+import { MeQuery } from "@src/__generated__/graphql"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
 
@@ -15,7 +16,7 @@ const Root = () => {
 interface MyRouterContext {
   auth: {
     isAuthenticated: boolean
-    user: string | undefined
+    user: MeQuery["me"]
   }
 }
 

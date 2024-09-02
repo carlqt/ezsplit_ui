@@ -7,6 +7,7 @@ import {
   CreateUserMutation,
   CreateUserMutationVariables,
   MeQuery,
+  UserState,
 } from "@src/__generated__/graphql"
 import {
   Container,
@@ -48,7 +49,7 @@ export const SignupForm = () => {
       if (data) {
         cache.writeQuery<MeQuery>({
           query: ME,
-          data: { me: { ...data.createUser, __typename: "Me" } },
+          data: { me: { ...data.createUser, __typename: "Me", state: UserState.Verified } },
         })
       }
     },

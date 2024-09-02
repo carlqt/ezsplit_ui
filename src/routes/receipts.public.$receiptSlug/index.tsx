@@ -25,6 +25,11 @@ const PUBLIC_RECEIPT = graphql(`
 
 type SharedBy = Omit<User, 'state'>
 
+// TODO:
+// 1. Call Me Query
+// 2. If Me is nil -> Show a modal asking for a username
+// 3. If Me is not nil -> continue viewing the page
+
 const PublicReceipt = () => {
   const { receiptSlug } = Route.useParams()
 
