@@ -1,8 +1,10 @@
 import { useQuery } from '@apollo/client'
-import { Container, Skeleton, Table, TableData, Title } from '@mantine/core'
+import { Container, SimpleGrid, Skeleton, Table, TableData, Title } from '@mantine/core'
 import { graphql } from '@src/__generated__'
 import { User } from '@src/__generated__/graphql'
+import { useAuth } from '@src/hooks/useAuth'
 import { createFileRoute } from '@tanstack/react-router'
+import { CreateGuestModal } from './-createGuestModal'
 
 const PUBLIC_RECEIPT = graphql(`
   query PublicReceipt($slug: String!) {
@@ -33,11 +35,13 @@ type SharedBy = Omit<User, 'state'>
 const PublicReceipt = () => {
   const { receiptSlug } = Route.useParams()
 
-  const { data, loading, error } = useQuery(PUBLIC_RECEIPT, {
+  const { data: receiptQueryData, loading, error } = useQuery(PUBLIC_RECEIPT, {
     variables: {
       slug: receiptSlug,
     },
   })
+
+  const { user, loading: userLoading }= useAuth()
 
   if (loading) {
     return <Skeleton visible={loading} height={100}></Skeleton>
@@ -47,26 +51,39 @@ const PublicReceipt = () => {
     return <>Error: {error.message}</>
   }
 
-  if (!data) {
+  if (!receiptQueryData) {
     return <>Error: Empty response</>
   }
+
+  // user state to worry about
+  // 1. If user is nil but it is loading
+  // 2. If user is nil and finished loading show modal
+
+  // 3. If user is not nil
 
   const joinedUsernames = (users: SharedBy[]): string => {
     return users.map((u) => u.username).join(', ')
   }
 
   const tableData: TableData = {
-    caption: `Item list in ${data.publicReceipt.description}`,
+    caption: `Item list in ${receiptQueryData.publicReceipt.description}`,
     head: ['id', 'name', 'price', 'sharedBy'],
-    body: data.publicReceipt.items.map((i) => {
+    body: receiptQueryData.publicReceipt.items.map((i) => {
       return [i.id, i.name, i.price, joinedUsernames(i.sharedBy)]
     })
   }
 
   return (
     <Container>
-      <Title order={1}>{data.publicReceipt.description}</Title>
-      <Title order={2}>{data.publicReceipt.total}</Title>
+      <CreateGuestModal opened={!userLoading && !user} close={() => {}} />
+
+      <Title order={1}>{user?.username || 'GUEST'}</Title>
+
+      <SimpleGrid cols={2}>
+        <Title order={1}>{receiptQueryData.publicReceipt.description}</Title>
+        <Title order={2}>{receiptQueryData.publicReceipt.total}</Title>
+      </SimpleGrid>
+
       <Table data={tableData} />
     </Container>
   )
