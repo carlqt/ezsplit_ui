@@ -55,12 +55,6 @@ const PublicReceipt = () => {
     return <>Error: Empty response</>
   }
 
-  // user state to worry about
-  // 1. If user is nil but it is loading
-  // 2. If user is nil and finished loading show modal
-
-  // 3. If user is not nil
-
   const joinedUsernames = (users: SharedBy[]): string => {
     return users.map((u) => u.username).join(', ')
   }
@@ -75,7 +69,7 @@ const PublicReceipt = () => {
 
   return (
     <Container>
-      <CreateGuestModal opened={!userLoading && !user} close={() => {}} />
+      <CreateGuestModal opened={!userLoading && !user} />
 
       <Title order={1}>{user?.username || 'GUEST'}</Title>
 
