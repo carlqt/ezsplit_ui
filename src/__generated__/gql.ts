@@ -23,6 +23,8 @@ const documents = {
     "\n  mutation LogoutUser {\n    logoutUser\n  }\n": types.LogoutUserDocument,
     "\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n    }\n  }\n": types.LoginUserDocument,
     "\n  mutation CreateGuestUser($input: CreateGuestUserInput!) {\n    createGuestUser(input: $input) {\n      id\n      username\n      state\n    }\n  }\n": types.CreateGuestUserDocument,
+    "\n  mutation AssignMeToItem($input: AssignOrDeleteMeToItemInput) {\n    assignMeToItem(input: $input) {\n      id\n      name\n      price\n      sharedBy {\n        id\n        username\n      }\n    }\n  }\n": types.AssignMeToItemDocument,
+    "\n  mutation RemoveMeFromItem($input: AssignOrDeleteMeToItemInput) {\n    removeMeFromItem(input: $input) {\n      id\n    }\n  }\n": types.RemoveMeFromItemDocument,
     "\n  query PublicReceipt($slug: String!) {\n    publicReceipt(slug: $slug) {\n      id\n      total\n      description\n      items {\n        id\n        name\n        price\n        sharedBy {\n          id\n          username\n        }\n      }\n    }\n  }\n": types.PublicReceiptDocument,
     "\n  mutation CreateUser($input: UserInput) {\n    createUser(input: $input) {\n      id\n      username\n    }\n  }\n": types.CreateUserDocument,
 };
@@ -81,6 +83,14 @@ export function graphql(source: "\n  mutation LoginUser($input: LoginUserInput) 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateGuestUser($input: CreateGuestUserInput!) {\n    createGuestUser(input: $input) {\n      id\n      username\n      state\n    }\n  }\n"): (typeof documents)["\n  mutation CreateGuestUser($input: CreateGuestUserInput!) {\n    createGuestUser(input: $input) {\n      id\n      username\n      state\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation AssignMeToItem($input: AssignOrDeleteMeToItemInput) {\n    assignMeToItem(input: $input) {\n      id\n      name\n      price\n      sharedBy {\n        id\n        username\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation AssignMeToItem($input: AssignOrDeleteMeToItemInput) {\n    assignMeToItem(input: $input) {\n      id\n      name\n      price\n      sharedBy {\n        id\n        username\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RemoveMeFromItem($input: AssignOrDeleteMeToItemInput) {\n    removeMeFromItem(input: $input) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveMeFromItem($input: AssignOrDeleteMeToItemInput) {\n    removeMeFromItem(input: $input) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

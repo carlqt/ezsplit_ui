@@ -1,5 +1,30 @@
 import { Checkbox, NumberFormatter, Table } from "@mantine/core"
+import { graphql } from "@src/__generated__/graphql"
 import { PublicReceiptQuery } from "@src/__generated__/graphql"
+
+// assignMeToItem mutation
+const ASSIGN_ME_TO_ITEM = graphql(`
+  mutation AssignMeToItem($input: AssignOrDeleteMeToItemInput) {
+    assignMeToItem(input: $input) {
+      id
+      name
+      price
+      sharedBy {
+        id
+        username
+      }
+    }
+  }
+`)
+
+// removeMeFromItem mutation
+const REMOVE_ME_FROM_ITEM = graphql(`
+  mutation RemoveMeFromItem($input: AssignOrDeleteMeToItemInput) {
+    removeMeFromItem(input: $input) {
+      id
+    }
+  }
+`)
 
 interface ReceiptTableProps {
   receipt: PublicReceiptQuery["publicReceipt"]
