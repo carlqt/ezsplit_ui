@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/client"
 import {
   LoginUserMutation,
   LoginUserMutationVariables,
+  MeDocument,
   MeQuery,
   UserState,
 } from "@src/__generated__/graphql"
@@ -43,14 +44,7 @@ const Login = () => {
       await router.invalidate()
       router.history.push("/")
     },
-    update(cache, { data }) {
-      if (data) {
-        cache.writeQuery<MeQuery>({
-          query: ME,
-          data: { me: { ...data.loginUser, __typename: "Me", state: UserState.Verified } },
-        })
-      }
-    },
+    refetchQueries: [MeDocument],
   })
 
   const onSubmit = async (e: FormEvent) => {
