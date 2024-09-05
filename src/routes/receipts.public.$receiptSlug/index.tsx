@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client'
-import { Container, SimpleGrid, Skeleton, Table, TableData, Title } from '@mantine/core'
+import { Container, SimpleGrid, Skeleton, Title } from '@mantine/core'
 import { graphql } from '@src/__generated__'
-import { User } from '@src/__generated__/graphql'
 import { useAuth } from '@src/hooks/useAuth'
 import { createFileRoute } from '@tanstack/react-router'
 import { CreateGuestModal } from './-createGuestModal'
+import { ReceiptTable } from './-receiptTable'
 
 const PUBLIC_RECEIPT = graphql(`
   query PublicReceipt($slug: String!) {
@@ -25,8 +25,6 @@ const PUBLIC_RECEIPT = graphql(`
   }
 `)
 
-type SharedBy = Omit<User, 'state'>
-
 // TODO:
 // 1. Call Me Query
 // 2. If Me is nil -> Show a modal asking for a username
@@ -42,6 +40,7 @@ const PublicReceipt = () => {
   })
 
   const { user, loading: userLoading }= useAuth()
+  const userDetails = `${user?.username || 'GUEST'} - ${user?.totalPayables ?? 0}`
 
   if (loading) {
     return <Skeleton visible={loading} height={100}></Skeleton>
@@ -55,20 +54,6 @@ const PublicReceipt = () => {
     return <>Error: Empty response</>
   }
 
-  const joinedUsernames = (users: SharedBy[]): string => {
-    return users.map((u) => u.username).join(', ')
-  }
-
-  const tableData: TableData = {
-    caption: `Item list in ${receiptQueryData.publicReceipt.description}`,
-    head: ['id', 'name', 'price', 'sharedBy'],
-    body: receiptQueryData.publicReceipt.items.map((i) => {
-      return [i.id, i.name, i.price, joinedUsernames(i.sharedBy)]
-    })
-  }
-
-  const userDetails = `${user?.username || 'GUEST'} - ${user?.totalPayables ?? 0}`
-
   return (
     <Container>
       <CreateGuestModal opened={!userLoading && !user} />
@@ -80,7 +65,7 @@ const PublicReceipt = () => {
         <Title order={2}>{receiptQueryData.publicReceipt.total}</Title>
       </SimpleGrid>
 
-      <Table data={tableData} />
+      <ReceiptTable receipt={receiptQueryData.publicReceipt} />
     </Container>
   )
 }
