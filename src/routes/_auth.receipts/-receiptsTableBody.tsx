@@ -11,7 +11,7 @@ import { IconTrash } from "@tabler/icons-react"
 import { Link } from "@tanstack/react-router"
 
 interface ReceiptsTableBodyProps {
-  receipts: MeWithReceiptsQuery["me"]["receipts"]
+  receipts: NonNullable<MeWithReceiptsQuery["me"]>["receipts"]
 }
 
 const DELETE_RECEIPT_MUTATION = graphql(`
@@ -47,7 +47,7 @@ export const ReceiptsTableBody = ({ receipts }: ReceiptsTableBodyProps) => {
     deleteReceipt({ variables: { input: { id } } })
   }
 
-  const rowItem = (r: MeWithReceiptsQuery["me"]["receipts"][0]) => {
+  const rowItem = (r: NonNullable<MeWithReceiptsQuery["me"]>["receipts"][0]) => {
     return (
       <Table.Tr key={r.id}>
         <Table.Td>{r.id}</Table.Td>

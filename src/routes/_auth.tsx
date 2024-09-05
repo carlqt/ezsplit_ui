@@ -65,7 +65,7 @@ const AuthLayout = () => {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <Title order={3}>Hi {user}</Title>
+        <Title order={3}>Hi {user?.username}</Title>
         <NavLink
           onClick={navigateToReceipts}
           label="Receipts"

@@ -35,6 +35,11 @@ const ReceiptsPage = () => {
     return <>Something went wrong</>
   }
 
+  // TODO: Placeholder to refactor
+  if (!data.me) {
+    return <></>
+  }
+
   const { receipts } = data.me
 
   return (
@@ -42,7 +47,6 @@ const ReceiptsPage = () => {
       <CreateReceiptModal
         opened={opened}
         close={close}
-        RECEIPTS_QUERY={RECEIPTS_QUERY}
       />
 
       <Title order={1}>Receipts</Title>

@@ -6,6 +6,7 @@ import {
   LoginUserMutation,
   LoginUserMutationVariables,
   MeQuery,
+  UserState,
 } from "@src/__generated__/graphql"
 import { ME } from "@src/hooks/useAuth"
 import {
@@ -46,7 +47,7 @@ const Login = () => {
       if (data) {
         cache.writeQuery<MeQuery>({
           query: ME,
-          data: { me: { ...data.loginUser, __typename: "Me" } },
+          data: { me: { ...data.loginUser, __typename: "Me", state: UserState.Verified } },
         })
       }
     },

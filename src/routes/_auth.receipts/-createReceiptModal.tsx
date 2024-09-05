@@ -1,11 +1,10 @@
-import { TypedDocumentNode, useMutation } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 import { Modal, Box, TextInput, Button } from "@mantine/core"
 import { graphql } from "@src/__generated__/gql"
 import {
   CreateMyReceiptMutation,
   CreateMyReceiptMutationVariables,
-  MeWithReceiptsQuery,
-  MeWithReceiptsQueryVariables,
+  MeWithReceiptsDocument,
 } from "@src/__generated__/graphql"
 import { ChangeEvent, FormEvent, useState } from "react"
 
@@ -22,16 +21,11 @@ const CREATE_RECEIPT_MUTATION = graphql(`
 interface CreateReceiptModalProps {
   opened: boolean
   close: () => void
-  RECEIPTS_QUERY: TypedDocumentNode<
-    MeWithReceiptsQuery,
-    MeWithReceiptsQueryVariables
-  >
 }
 
 export const CreateReceiptModal = ({
   opened,
   close,
-  RECEIPTS_QUERY,
 }: CreateReceiptModalProps) => {
   const [total, setTotal] = useState(0)
   const [description, setDescription] = useState("")
@@ -54,8 +48,8 @@ export const CreateReceiptModal = ({
       close()
     },
     update: (cache, { data }) => {
-      const existingReceipts = cache.readQuery({ query: RECEIPTS_QUERY })
-      if (!existingReceipts) return
+      const existingReceipts = cache.readQuery({ query: MeWithReceiptsDocument })
+      if (!existingReceipts?.me) return
       if (!data?.createMyReceipt) return
 
       const updatedReceipts = [
@@ -64,7 +58,7 @@ export const CreateReceiptModal = ({
       ]
 
       cache.writeQuery({
-        query: RECEIPTS_QUERY,
+        query: MeWithReceiptsDocument,
         data: { me: { ...existingReceipts.me, receipts: updatedReceipts } },
       })
     },
