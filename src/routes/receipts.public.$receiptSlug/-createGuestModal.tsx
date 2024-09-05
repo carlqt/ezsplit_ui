@@ -36,7 +36,6 @@ export const CreateGuestModal = ({
   const onClose = (): void => {}
 
   // On create click, call mutation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (
     <Modal opened={opened} onClose={onClose} title="Create a display name" centered>
       <Box mx="auto">
