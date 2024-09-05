@@ -67,11 +67,13 @@ const PublicReceipt = () => {
     })
   }
 
+  const userDetails = `${user?.username || 'GUEST'} - ${user?.totalPayables ?? 0}`
+
   return (
     <Container>
       <CreateGuestModal opened={!userLoading && !user} />
 
-      <Title order={1}>{user?.username || 'GUEST'}</Title>
+      <Title order={1}>{userDetails}</Title>
 
       <SimpleGrid cols={2}>
         <Title order={1}>{receiptQueryData.publicReceipt.description}</Title>
