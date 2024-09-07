@@ -41,7 +41,6 @@ const Login = () => {
   >(LOGIN_USER, {
     variables: { input: { username, password } },
     onCompleted: async () => {
-      await router.invalidate()
       router.history.push("/")
     },
     refetchQueries: [MeDocument],
@@ -49,6 +48,7 @@ const Login = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    router.invalidate()
     login()
   }
 
