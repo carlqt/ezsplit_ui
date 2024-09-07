@@ -1,7 +1,8 @@
 import { useMutation } from "@apollo/client"
-import { Checkbox, NumberFormatter, Table } from "@mantine/core"
+import { ActionIcon, Checkbox, NumberFormatter, Table } from "@mantine/core"
 import { graphql } from "@src/__generated__/"
 import { MeDocument, PublicReceiptDocument, PublicReceiptQuery } from "@src/__generated__/graphql"
+import { IconStar, IconStarFilled } from "@tabler/icons-react"
 
 // assignMeToItem mutation
 const ASSIGN_OR_REMOVE_ME = graphql(`
@@ -52,7 +53,12 @@ export const ReceiptTable = ({ receipt, userID }: ReceiptTableProps) => {
         </Table.Td>
         <Table.Td>{joinedUsernames(r.sharedBy)}</Table.Td>
         <Table.Td>
-          <Checkbox size="md" checked={isSelected} onChange={checkboxOnChange} />
+          <ActionIcon
+            variant="transparent"
+            onClick={checkboxOnChange}
+          >
+            { isSelected ? <IconStarFilled /> : <IconStar /> }
+          </ActionIcon>
         </Table.Td>
       </Table.Tr>
     )
