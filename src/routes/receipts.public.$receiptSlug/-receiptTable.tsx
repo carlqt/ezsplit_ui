@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client"
-import { ActionIcon, Checkbox, NumberFormatter, Table } from "@mantine/core"
+import { ActionIcon, NumberFormatter, Table } from "@mantine/core"
 import { graphql } from "@src/__generated__/"
 import { MeDocument, PublicReceiptDocument, PublicReceiptQuery } from "@src/__generated__/graphql"
 import { IconStar, IconStarFilled } from "@tabler/icons-react"

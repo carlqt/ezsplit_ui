@@ -9,7 +9,9 @@ export const ME = graphql(`
       username
       state
       totalPayables
-      ...MyOrders
+      orders {
+        id
+      }
     }
   }
 `);

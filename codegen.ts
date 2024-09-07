@@ -8,10 +8,11 @@ const config: CodegenConfig = {
   generates: {
     "./src/__generated__/": {
       preset: "client",
-      plugins: []
+      presetConfig: {
+        fragmentMasking: { unmaskFunctionName: 'getFragmentData' }
+      }
     },
   },
-  // ignoreNoDocuments: true,
 };
 
 export default config;
