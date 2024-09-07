@@ -1,27 +1,13 @@
+import { useMutation } from "@apollo/client"
 import { Checkbox, NumberFormatter, Table } from "@mantine/core"
 import { graphql } from "@src/__generated__/"
-import { PublicReceiptQuery } from "@src/__generated__/graphql"
+import { MeDocument, PublicReceiptDocument, PublicReceiptQuery } from "@src/__generated__/graphql"
 
 // assignMeToItem mutation
-const ASSIGN_ME_TO_ITEM = graphql(`
-  mutation AssignMeToItem($input: AssignOrDeleteMeToItemInput) {
-    assignMeToItem(input: $input) {
-      id
-      name
-      price
-      sharedBy {
-        id
-        username
-      }
-    }
-  }
-`)
-
-// removeMeFromItem mutation
-const REMOVE_ME_FROM_ITEM = graphql(`
-  mutation RemoveMeFromItem($input: AssignOrDeleteMeToItemInput) {
-    removeMeFromItem(input: $input) {
-      id
+const ASSIGN_OR_REMOVE_ME = graphql(`
+  mutation AssignOrRemoveMeFromItem($itemId: ID!) {
+    assignOrRemoveMeFromItem(itemId: $itemId) {
+      itemId
     }
   }
 `)
@@ -36,6 +22,9 @@ type SharedBy = PublicReceiptQuery["publicReceipt"]["items"][0]["sharedBy"][0]
 export const ReceiptTable = ({ receipt, userID }: ReceiptTableProps) => {
   const { items } = receipt
   const caption = `Items in ${receipt.description}`
+  const [assignOrRemove] = useMutation(ASSIGN_OR_REMOVE_ME, {
+    refetchQueries: [PublicReceiptDocument, MeDocument]
+  })
 
   const rowItem = (r: PublicReceiptQuery["publicReceipt"]["items"][0]) => {
     const joinedUsernames = (users: SharedBy[]): string => {
@@ -44,9 +33,9 @@ export const ReceiptTable = ({ receipt, userID }: ReceiptTableProps) => {
 
     const isSelected = r.sharedBy.find((u) => u.id === userID) !== undefined
 
-    //const checkboxOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //  console.log('i was clicked')
-    //}
+    const checkboxOnChange = () => {
+      assignOrRemove({ variables: { itemId: r.id}})
+    }
 
     return (
       <Table.Tr key={r.id}>
@@ -63,7 +52,7 @@ export const ReceiptTable = ({ receipt, userID }: ReceiptTableProps) => {
         </Table.Td>
         <Table.Td>{joinedUsernames(r.sharedBy)}</Table.Td>
         <Table.Td>
-          <Checkbox size="md" checked={isSelected} />
+          <Checkbox size="md" checked={isSelected} onChange={checkboxOnChange} />
         </Table.Td>
       </Table.Tr>
     )
