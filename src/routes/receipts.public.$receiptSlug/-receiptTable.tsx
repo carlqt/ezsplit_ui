@@ -44,9 +44,9 @@ export const ReceiptTable = ({ receipt, userID }: ReceiptTableProps) => {
 
     const isSelected = r.sharedBy.find((u) => u.id === userID) !== undefined
 
-    checkboxOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log('i was clicked')
-    }
+    //const checkboxOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //  console.log('i was clicked')
+    //}
 
     return (
       <Table.Tr key={r.id}>

@@ -25,6 +25,14 @@ const PUBLIC_RECEIPT = graphql(`
   }
 `)
 
+const MY_ORDERS_FRAGMENT = graphql(`
+  fragment MyOrders on Me {
+    orders {
+      id
+    }
+  }
+`)
+
 // TODO:
 // 1. Call Me Query
 // 2. If Me is nil -> Show a modal asking for a username
@@ -65,7 +73,7 @@ const PublicReceipt = () => {
         <Title order={2}>{receiptQueryData.publicReceipt.total}</Title>
       </SimpleGrid>
 
-      <ReceiptTable receipt={receiptQueryData.publicReceipt} />
+      <ReceiptTable receipt={receiptQueryData.publicReceipt} userID={user?.id || ""} />
     </Container>
   )
 }
