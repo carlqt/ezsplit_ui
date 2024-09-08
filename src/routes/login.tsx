@@ -33,6 +33,8 @@ const LOGIN_USER = graphql(`
   }
 `)
 
+const INVALID_CREDENTIALS = "incorrect username or password"
+
 const Login = () => {
   const { invalidate: invalidateRouteContext }= useRouter()
   const navigate = useNavigate()
@@ -66,7 +68,7 @@ const Login = () => {
     login()
   }
 
-  if (error) {
+  if (error && error.message != INVALID_CREDENTIALS) {
     return <div>{error.message}</div>
   }
 
@@ -86,6 +88,7 @@ const Login = () => {
         <form onSubmit={onSubmit}>
           <TextInput
             autoFocus
+            error={error?.message}
             label="Username"
             placeholder="john_smith"
             required
@@ -94,6 +97,7 @@ const Login = () => {
           />
           <PasswordInput
             label="Password"
+            error={error?.message}
             placeholder="Your password"
             required
             mt="md"

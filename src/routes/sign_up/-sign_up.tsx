@@ -2,10 +2,10 @@ import { FormEvent, useState } from "react"
 import { graphql } from "@src/__generated__/gql"
 import { useMutation } from "@apollo/client"
 import { Link, useNavigate, useRouter } from "@tanstack/react-router"
-import { ME } from "@src/hooks/useAuth"
 import {
   CreateUserMutation,
   CreateUserMutationVariables,
+  MeDocument,
   MeQuery,
 } from "@src/__generated__/graphql"
 import {
@@ -55,7 +55,7 @@ export const SignupForm = () => {
     update(cache, { data }) {
       if (data) {
         cache.writeQuery<MeQuery>({
-          query: ME,
+          query: MeDocument,
           data: { me: data.createUser },
         })
       }
@@ -65,10 +65,6 @@ export const SignupForm = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     createUser()
-  }
-
-  if (error) {
-    return <>Lol Error: {error}</>
   }
 
   return (
@@ -86,24 +82,27 @@ export const SignupForm = () => {
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form onSubmit={onSubmit}>
           <TextInput
+            required
+            error={error?.message}
             label="Username"
             placeholder="john_smith"
-            required
             onChange={(e) => setUsername(e.target.value)}
             value={username}
           />
           <PasswordInput
+            required
+            error={error?.message}
             label="Password"
             placeholder="Your password"
-            required
             mt="md"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
           />
           <PasswordInput
+            required
+            error={error?.message}
             label="Confirm Password"
             placeholder="confirm password"
-            required
             mt="md"
             onChange={(e) => setConfirmPassword(e.target.value)}
             value={confirmPassword}
