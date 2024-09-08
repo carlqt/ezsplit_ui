@@ -1,4 +1,4 @@
-import { Link, createFileRoute, useRouter } from "@tanstack/react-router"
+import { Link, createFileRoute, useNavigate, useRouter } from "@tanstack/react-router"
 import { graphql } from "@src/__generated__/gql"
 import { FormEvent, useState } from "react"
 import { useMutation } from "@apollo/client"
@@ -6,6 +6,7 @@ import {
   LoginUserMutation,
   LoginUserMutationVariables,
   MeDocument,
+  MeQuery,
 } from "@src/__generated__/graphql"
 import {
   Container,
@@ -23,12 +24,19 @@ const LOGIN_USER = graphql(`
     loginUser(input: $input) {
       id
       username
+      state
+      totalPayables
+      orders {
+        id
+      }
     }
   }
 `)
 
 const Login = () => {
-  const router = useRouter()
+  const { invalidate: invalidateRouteContext }= useRouter()
+  const navigate = useNavigate()
+
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
@@ -38,14 +46,23 @@ const Login = () => {
   >(LOGIN_USER, {
     variables: { input: { username, password } },
     onCompleted: async () => {
-      router.history.push("/")
+      await invalidateRouteContext()
+      navigate({ to: '/' })
     },
-    refetchQueries: [MeDocument],
+    // Updating the cache directly instead of refetching query to handle race condition.
+    // The race condition is the route.push happens first before the refetch finishes.
+    update: (cache, { data }) => {
+      if (data) {
+        cache.writeQuery<MeQuery>({
+          query: MeDocument,
+          data: { me: data.loginUser},
+        })
+      }
+    },
   })
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    router.invalidate()
     login()
   }
 

@@ -23,7 +23,7 @@ const documents = {
     "\n  mutation DeleteMyReceipt($input: DeleteMyReceiptInput!) {\n    deleteMyReceipt(input: $input)\n  }\n": types.DeleteMyReceiptDocument,
     "\n  query MeWithReceipts {\n    me {\n      id\n      receipts {\n        id\n        description\n        total\n      }\n    }\n  }\n": types.MeWithReceiptsDocument,
     "\n  mutation LogoutUser {\n    logoutUser\n  }\n": types.LogoutUserDocument,
-    "\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n    }\n  }\n": types.LoginUserDocument,
+    "\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n": types.LoginUserDocument,
     "\n  mutation CreateGuestUser($input: CreateGuestUserInput!) {\n    createGuestUser(input: $input) {\n      id\n      username\n      state\n    }\n  }\n": types.CreateGuestUserDocument,
     "\n  mutation AssignOrRemoveMeFromItem($itemId: ID!) {\n    assignOrRemoveMeFromItem(itemId: $itemId) {\n      itemId\n    }\n  }\n": types.AssignOrRemoveMeFromItemDocument,
     "\n  query PublicReceipt($slug: String!) {\n    publicReceipt(slug: $slug) {\n      id\n      total\n      description\n      items {\n        id\n        name\n        price\n        sharedBy {\n          id\n          username\n        }\n      }\n    }\n  }\n": types.PublicReceiptDocument,
@@ -87,7 +87,7 @@ export function graphql(source: "\n  mutation LogoutUser {\n    logoutUser\n  }\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n    }\n  }\n"): (typeof documents)["\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n    }\n  }\n"];
+export function graphql(source: "\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

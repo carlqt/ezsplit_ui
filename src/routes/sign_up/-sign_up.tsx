@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react"
 import { graphql } from "@src/__generated__/gql"
 import { useMutation } from "@apollo/client"
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link, useNavigate, useRouter } from "@tanstack/react-router"
 import { ME } from "@src/hooks/useAuth"
 import {
   CreateUserMutation,
@@ -34,7 +34,8 @@ const CREATE_USER = graphql(`
 `)
 
 export const SignupForm = () => {
-  const router = useRouter()
+  const { invalidate: invalidateRouteContext }= useRouter()
+  const navigate = useNavigate()
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -46,9 +47,11 @@ export const SignupForm = () => {
   >(CREATE_USER, {
     variables: { input: { username, password, confirmPassword } },
     onCompleted: async () => {
-      await router.invalidate()
-      router.history.push("/dashboard")
+      await invalidateRouteContext()
+      navigate({ to: "/" })
     },
+    // Updating the cache directly instead of refetching query to handle race condition.
+    // The race condition is the route.push happens first before the refetch finishes.
     update(cache, { data }) {
       if (data) {
         cache.writeQuery<MeQuery>({
