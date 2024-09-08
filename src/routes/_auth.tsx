@@ -32,19 +32,13 @@ const AuthLayout = () => {
   const [logout, { error }] = useMutation<
     LogoutUserMutation,
     LogoutUserMutationVariables
-  >(LOGOUT_USER, {
-    onCompleted: async () => {
-      navigate({ to: "/login" })
-    },
-    update(_, { data }) {
-      if (data) {
-        clearStore()
-      }
-    },
-  })
+  >(LOGOUT_USER)
 
+  // TODO: Identify why calling clearStore() produces a console error
   const onClickLogout = () => {
     logout()
+    clearStore()
+    navigate({ to: "/login" })
   }
 
   if (error) {
