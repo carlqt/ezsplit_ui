@@ -5,10 +5,8 @@ import { useMutation } from "@apollo/client"
 import {
   LoginUserMutation,
   LoginUserMutationVariables,
-  MeQuery,
-  UserState,
+  MeDocument,
 } from "@src/__generated__/graphql"
-import { ME } from "@src/hooks/useAuth"
 import {
   Container,
   Title,
@@ -40,21 +38,14 @@ const Login = () => {
   >(LOGIN_USER, {
     variables: { input: { username, password } },
     onCompleted: async () => {
-      await router.invalidate()
       router.history.push("/")
     },
-    update(cache, { data }) {
-      if (data) {
-        cache.writeQuery<MeQuery>({
-          query: ME,
-          data: { me: { ...data.loginUser, __typename: "Me", state: UserState.Verified } },
-        })
-      }
-    },
+    refetchQueries: [MeDocument],
   })
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    router.invalidate()
     login()
   }
 

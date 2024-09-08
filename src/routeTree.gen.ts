@@ -117,16 +117,97 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  AuthRoute: AuthRoute.addChildren({
-    AuthReceiptsIndexRoute,
-    AuthReceiptsReceiptIdIndexRoute,
-  }),
-  LoginRoute,
-  SignupIndexRoute,
-  ReceiptsPublicReceiptSlugIndexRoute,
-})
+interface AuthRouteChildren {
+  AuthReceiptsIndexRoute: typeof AuthReceiptsIndexRoute
+  AuthReceiptsReceiptIdIndexRoute: typeof AuthReceiptsReceiptIdIndexRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthReceiptsIndexRoute: AuthReceiptsIndexRoute,
+  AuthReceiptsReceiptIdIndexRoute: AuthReceiptsReceiptIdIndexRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/sign_up': typeof SignupIndexRoute
+  '/receipts': typeof AuthReceiptsIndexRoute
+  '/receipts/$receiptId': typeof AuthReceiptsReceiptIdIndexRoute
+  '/receipts/public/$receiptSlug': typeof ReceiptsPublicReceiptSlugIndexRoute
+}
+
+interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/sign_up': typeof SignupIndexRoute
+  '/receipts': typeof AuthReceiptsIndexRoute
+  '/receipts/$receiptId': typeof AuthReceiptsReceiptIdIndexRoute
+  '/receipts/public/$receiptSlug': typeof ReceiptsPublicReceiptSlugIndexRoute
+}
+
+interface FileRoutesById {
+  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/sign_up/': typeof SignupIndexRoute
+  '/_auth/receipts/': typeof AuthReceiptsIndexRoute
+  '/_auth/receipts/$receiptId/': typeof AuthReceiptsReceiptIdIndexRoute
+  '/receipts/public/$receiptSlug/': typeof ReceiptsPublicReceiptSlugIndexRoute
+}
+
+interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/sign_up'
+    | '/receipts'
+    | '/receipts/$receiptId'
+    | '/receipts/public/$receiptSlug'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/sign_up'
+    | '/receipts'
+    | '/receipts/$receiptId'
+    | '/receipts/public/$receiptSlug'
+  id:
+    | '/'
+    | '/_auth'
+    | '/login'
+    | '/sign_up/'
+    | '/_auth/receipts/'
+    | '/_auth/receipts/$receiptId/'
+    | '/receipts/public/$receiptSlug/'
+  fileRoutesById: FileRoutesById
+}
+
+interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  SignupIndexRoute: typeof SignupIndexRoute
+  ReceiptsPublicReceiptSlugIndexRoute: typeof ReceiptsPublicReceiptSlugIndexRoute
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AuthRoute: AuthRouteWithChildren,
+  LoginRoute: LoginRoute,
+  SignupIndexRoute: SignupIndexRoute,
+  ReceiptsPublicReceiptSlugIndexRoute: ReceiptsPublicReceiptSlugIndexRoute,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 

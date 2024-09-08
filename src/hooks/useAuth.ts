@@ -8,6 +8,10 @@ export const ME = graphql(`
       id
       username
       state
+      totalPayables
+      orders {
+        id
+      }
     }
   }
 `);

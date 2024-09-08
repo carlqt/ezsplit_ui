@@ -13,11 +13,7 @@ const RECEIPT_QUERY = graphql(`
       total
       description
       slug
-      items {
-        id
-        name
-        price
-      }
+      ...ReceiptItemList
     }
   }
 `)
@@ -42,8 +38,6 @@ const Receipt = () => {
     return <>Error: Empty response</>
   }
 
-  const { items } = data.receipt
-
   return (
     <Container>
       <Button leftSection={<IconChevronLeft />}>
@@ -67,7 +61,7 @@ const Receipt = () => {
 
       <ShareReceipt slug={data?.receipt.slug ?? ""} receiptId={data?.receipt.id ?? ""} />
 
-      {items && <ItemsTable receiptId={receiptId} items={items} />}
+      <ItemsTable receiptId={receiptId} data={data.receipt} />
     </Container>
   )
 }

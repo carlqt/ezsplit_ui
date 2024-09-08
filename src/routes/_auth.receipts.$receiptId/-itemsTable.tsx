@@ -1,27 +1,37 @@
 import { useMutation } from "@apollo/client"
 import { ActionIcon, Table, TextInput } from "@mantine/core"
 import { graphql } from "@src/__generated__/gql"
-import { ReceiptDocument, ReceiptQuery } from "@src/__generated__/graphql"
+import { ReceiptDocument } from "@src/__generated__/graphql"
 import { IconCirclePlus, IconDeviceFloppy } from "@tabler/icons-react"
 import { useState } from "react"
 import { Item } from "./-item"
+import { FragmentType, getFragmentData } from "@src/__generated__/"
 
 const CREATE_ITEM_MUTATION = graphql(`
   mutation AddItemToReceipt($input: AddItemToReceiptInput) {
     addItemToReceipt(input: $input) {
       id
-      name
-      price
+      ...ReceiptItemFields
+    }
+  }
+`)
+
+export const ReceiptItemList = graphql(`
+  fragment ReceiptItemList on Receipt {
+    items {
+      id
+      ...ReceiptItemFields
     }
   }
 `)
 
 interface ItemsTableProps {
-  items: ReceiptQuery["receipt"]["items"]
+  data: FragmentType<typeof ReceiptItemList>
   receiptId: string
 }
 
-export const ItemsTable = ({ items, receiptId }: ItemsTableProps) => {
+export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
+  const itemsData = getFragmentData(ReceiptItemList, data)
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
 
@@ -31,23 +41,7 @@ export const ItemsTable = ({ items, receiptId }: ItemsTableProps) => {
       setName("")
       setPrice("")
     },
-    update: (cache, { data }) => {
-      const existingReceipt = cache.readQuery({ query: ReceiptDocument, variables: { receiptId } })
-
-      if (!existingReceipt) return
-      if (!data?.addItemToReceipt) return
-
-      cache.writeQuery({
-        query: ReceiptDocument,
-        variables: { receiptId },
-        data: {
-          receipt: {
-            ...existingReceipt.receipt,
-            items: [...existingReceipt.receipt.items, data.addItemToReceipt],
-          }
-        }
-      })
-    }
+    refetchQueries: [ReceiptDocument]
   })
 
   const onCreate = () => {
@@ -69,8 +63,6 @@ export const ItemsTable = ({ items, receiptId }: ItemsTableProps) => {
 
     return (
       <Table.Tr>
-        <Table.Td>
-        </Table.Td>
         <Table.Td>
           <TextInput
             variant="unstyled"
@@ -107,7 +99,6 @@ export const ItemsTable = ({ items, receiptId }: ItemsTableProps) => {
     <Table>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th>ID</Table.Th>
           <Table.Th>Name</Table.Th>
           <Table.Th>Price</Table.Th>
           <Table.Th>Actions</Table.Th>
@@ -116,7 +107,7 @@ export const ItemsTable = ({ items, receiptId }: ItemsTableProps) => {
 
       <Table.Tbody>
         <>
-          {items.map(i => <Item key={i.id} {...i} />)}
+          {itemsData.items.map(i => <Item key={i.id} data={i} />)}
         </>
         <>
           {actionRow()}

@@ -13,18 +13,21 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query Me {\n    me {\n      id\n      username\n      state\n    }\n  }\n": types.MeDocument,
-    "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n": types.AddItemToReceiptDocument,
+    "\n  query Me {\n    me {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n": types.MeDocument,
+    "\n  fragment ReceiptItemFields on Item {\n    name\n    price\n  }\n": types.ReceiptItemFieldsFragmentDoc,
+    "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.AddItemToReceiptDocument,
+    "\n  fragment ReceiptItemList on Receipt {\n    items {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.ReceiptItemListFragmentDoc,
     "\n  mutation generatePublicUrl($receiptId: ID!) {\n    generatePublicUrl(id: $receiptId) {\n      id\n      slug\n    }\n  }\n": types.GeneratePublicUrlDocument,
-    "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n": types.ReceiptDocument,
+    "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      ...ReceiptItemList\n    }\n  }\n": types.ReceiptDocument,
     "\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      id\n      total\n      description\n    }\n  }\n": types.CreateMyReceiptDocument,
     "\n  mutation DeleteMyReceipt($input: DeleteMyReceiptInput!) {\n    deleteMyReceipt(input: $input)\n  }\n": types.DeleteMyReceiptDocument,
     "\n  query MeWithReceipts {\n    me {\n      id\n      receipts {\n        id\n        description\n        total\n      }\n    }\n  }\n": types.MeWithReceiptsDocument,
     "\n  mutation LogoutUser {\n    logoutUser\n  }\n": types.LogoutUserDocument,
     "\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n    }\n  }\n": types.LoginUserDocument,
     "\n  mutation CreateGuestUser($input: CreateGuestUserInput!) {\n    createGuestUser(input: $input) {\n      id\n      username\n      state\n    }\n  }\n": types.CreateGuestUserDocument,
+    "\n  mutation AssignOrRemoveMeFromItem($itemId: ID!) {\n    assignOrRemoveMeFromItem(itemId: $itemId) {\n      itemId\n    }\n  }\n": types.AssignOrRemoveMeFromItemDocument,
     "\n  query PublicReceipt($slug: String!) {\n    publicReceipt(slug: $slug) {\n      id\n      total\n      description\n      items {\n        id\n        name\n        price\n        sharedBy {\n          id\n          username\n        }\n      }\n    }\n  }\n": types.PublicReceiptDocument,
-    "\n  mutation CreateUser($input: UserInput) {\n    createUser(input: $input) {\n      id\n      username\n    }\n  }\n": types.CreateUserDocument,
+    "\n  mutation CreateUser($input: UserInput) {\n    createUser(input: $input) {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n": types.CreateUserDocument,
 };
 
 /**
@@ -44,11 +47,19 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Me {\n    me {\n      id\n      username\n      state\n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n      id\n      username\n      state\n    }\n  }\n"];
+export function graphql(source: "\n  query Me {\n    me {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n"): (typeof documents)["\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n"];
+export function graphql(source: "\n  fragment ReceiptItemFields on Item {\n    name\n    price\n  }\n"): (typeof documents)["\n  fragment ReceiptItemFields on Item {\n    name\n    price\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"): (typeof documents)["\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ReceiptItemList on Receipt {\n    items {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"): (typeof documents)["\n  fragment ReceiptItemList on Receipt {\n    items {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -56,7 +67,7 @@ export function graphql(source: "\n  mutation generatePublicUrl($receiptId: ID!)
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n"): (typeof documents)["\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      items {\n        id\n        name\n        price\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      ...ReceiptItemList\n    }\n  }\n"): (typeof documents)["\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      ...ReceiptItemList\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -84,11 +95,15 @@ export function graphql(source: "\n  mutation CreateGuestUser($input: CreateGues
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation AssignOrRemoveMeFromItem($itemId: ID!) {\n    assignOrRemoveMeFromItem(itemId: $itemId) {\n      itemId\n    }\n  }\n"): (typeof documents)["\n  mutation AssignOrRemoveMeFromItem($itemId: ID!) {\n    assignOrRemoveMeFromItem(itemId: $itemId) {\n      itemId\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  query PublicReceipt($slug: String!) {\n    publicReceipt(slug: $slug) {\n      id\n      total\n      description\n      items {\n        id\n        name\n        price\n        sharedBy {\n          id\n          username\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query PublicReceipt($slug: String!) {\n    publicReceipt(slug: $slug) {\n      id\n      total\n      description\n      items {\n        id\n        name\n        price\n        sharedBy {\n          id\n          username\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateUser($input: UserInput) {\n    createUser(input: $input) {\n      id\n      username\n    }\n  }\n"): (typeof documents)["\n  mutation CreateUser($input: UserInput) {\n    createUser(input: $input) {\n      id\n      username\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateUser($input: UserInput) {\n    createUser(input: $input) {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateUser($input: UserInput) {\n    createUser(input: $input) {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
