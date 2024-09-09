@@ -12,21 +12,14 @@ const PUBLIC_RECEIPT = graphql(`
       id
       total
       description
-      items {
-        id
-        name
-        price
-        sharedBy {
-          id
-          username
-        }
-      }
+      ...PublicReceiptItems
     }
   }
 `)
 
 const PublicReceipt = () => {
   const { receiptSlug } = Route.useParams()
+  const { user, loading: userLoading }= useAuth()
 
   const { data: receiptQueryData, loading, error } = useQuery(PUBLIC_RECEIPT, {
     variables: {
@@ -34,7 +27,6 @@ const PublicReceipt = () => {
     },
   })
 
-  const { user, loading: userLoading }= useAuth()
   const userDetails = `${user?.username || 'GUEST'} - ${user?.totalPayables ?? 0}`
 
   if (loading) {
@@ -49,6 +41,8 @@ const PublicReceipt = () => {
     return <>Error: Empty response</>
   }
 
+  const caption = `Items in ${receiptQueryData.publicReceipt.description}`
+
   return (
     <Container>
       <CreateGuestModal opened={!userLoading && !user} />
@@ -60,7 +54,7 @@ const PublicReceipt = () => {
         <Title order={2}>{receiptQueryData.publicReceipt.total}</Title>
       </SimpleGrid>
 
-      <ReceiptTable receipt={receiptQueryData.publicReceipt} userID={user?.id || ""} />
+      { user && <ReceiptTable caption={caption} data={receiptQueryData.publicReceipt} user={user} /> }
     </Container>
   )
 }

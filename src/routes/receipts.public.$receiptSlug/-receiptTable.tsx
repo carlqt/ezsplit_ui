@@ -1,8 +1,8 @@
 import { useMutation } from "@apollo/client"
-import { ActionIcon, NumberFormatter, Table } from "@mantine/core"
-import { graphql } from "@src/__generated__/"
-import { MeDocument, PublicReceiptDocument, PublicReceiptQuery } from "@src/__generated__/graphql"
-import { IconStar, IconStarFilled } from "@tabler/icons-react"
+import { Table } from "@mantine/core"
+import { FragmentType, getFragmentData, graphql } from "@src/__generated__/"
+import { MeDocument, MeQuery, PublicReceiptDocument } from "@src/__generated__/graphql"
+import { PublicReceiptTableItem } from "./-publicReceiptTableItem"
 
 // assignMeToItem mutation
 const ASSIGN_OR_REMOVE_ME = graphql(`
@@ -13,55 +13,33 @@ const ASSIGN_OR_REMOVE_ME = graphql(`
   }
 `)
 
+const PublicReceiptItems = graphql(`
+  fragment PublicReceiptItems on Receipt {
+    items {
+      id
+      ...PublicReceiptItemFields
+    }
+  }
+`)
+
 interface ReceiptTableProps {
-  receipt: PublicReceiptQuery["publicReceipt"]
-  userID: string
+  data: FragmentType<typeof PublicReceiptItems>
+  caption: string
+  user: NonNullable<MeQuery["me"]>
 }
 
-type SharedBy = PublicReceiptQuery["publicReceipt"]["items"][0]["sharedBy"][0]
-
-export const ReceiptTable = ({ receipt, userID }: ReceiptTableProps) => {
-  const { items } = receipt
-  const caption = `Items in ${receipt.description}`
+export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
+  const itemsData = getFragmentData(PublicReceiptItems, data)
   const [assignOrRemove] = useMutation(ASSIGN_OR_REMOVE_ME, {
     refetchQueries: [PublicReceiptDocument, MeDocument]
   })
 
-  const rowItem = (r: PublicReceiptQuery["publicReceipt"]["items"][0]) => {
-    const joinedUsernames = (users: SharedBy[]): string => {
-      return users.map((u) => u.username).join(', ')
-    }
+  const isSelected = (itemId: string): boolean => {
+    return user.orders.find((o) => o.id === itemId) !== undefined
+  }
 
-    const isSelected = r.sharedBy.find((u) => u.id === userID) !== undefined
-
-    const checkboxOnChange = () => {
-      assignOrRemove({ variables: { itemId: r.id}})
-    }
-
-    return (
-      <Table.Tr key={r.id}>
-        <Table.Td>{r.id}</Table.Td>
-        <Table.Td>
-          {r.name}
-        </Table.Td>
-        <Table.Td>
-          <NumberFormatter
-            prefix="$"
-            value={r.price || 0}
-            thousandSeparator={true}
-          />
-        </Table.Td>
-        <Table.Td>{joinedUsernames(r.sharedBy)}</Table.Td>
-        <Table.Td>
-          <ActionIcon
-            variant="transparent"
-            onClick={checkboxOnChange}
-          >
-            { isSelected ? <IconStarFilled /> : <IconStar /> }
-          </ActionIcon>
-        </Table.Td>
-      </Table.Tr>
-    )
+  const onSelect = (itemId: string) => {
+    assignOrRemove({ variables: { itemId }})
   }
 
   return (
@@ -77,7 +55,14 @@ export const ReceiptTable = ({ receipt, userID }: ReceiptTableProps) => {
       </Table.Thead>
 
       <Table.Tbody>
-        {items.map(rowItem)}
+        {itemsData.items.map(item => 
+          <PublicReceiptTableItem 
+            key={item.id}
+            data={item}
+            isSelected={isSelected(item.id)}
+            onSelect={() => onSelect(item.id)}
+          />
+        )}
       </Table.Tbody>
 
       <Table.Caption>{caption}</Table.Caption>
