@@ -10,11 +10,7 @@ const RECEIPTS_QUERY = graphql(`
   query MeWithReceipts {
     me {
       id
-      receipts {
-        id
-        description
-        total
-      }
+      ...ReceiptsOnMe
     }
   }
 `)
@@ -40,13 +36,12 @@ const ReceiptsPage = () => {
     return <></>
   }
 
-  const { receipts } = data.me
-
   return (
     <Container>
       <CreateReceiptModal
         opened={opened}
         close={close}
+        userId= {data.me.id}
       />
 
       <Title order={1}>Receipts</Title>
@@ -63,7 +58,7 @@ const ReceiptsPage = () => {
           </Table.Tr>
         </Table.Thead>
 
-        <ReceiptsTableBody receipts={receipts} />
+        <ReceiptsTableBody data={data.me} />
       </Table>
     </Container>
   )

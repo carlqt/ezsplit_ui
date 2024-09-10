@@ -19,9 +19,11 @@ const documents = {
     "\n  fragment ReceiptItemList on Receipt {\n    items {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.ReceiptItemListFragmentDoc,
     "\n  mutation generatePublicUrl($receiptId: ID!) {\n    generatePublicUrl(id: $receiptId) {\n      id\n      slug\n    }\n  }\n": types.GeneratePublicUrlDocument,
     "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      ...ReceiptItemList\n    }\n  }\n": types.ReceiptDocument,
-    "\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      id\n      total\n      description\n    }\n  }\n": types.CreateMyReceiptDocument,
+    "\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      ...ReceiptFields\n    }\n  }\n": types.CreateMyReceiptDocument,
+    "\n  fragment ReceiptFields on Receipt {\n    id\n    description\n    total\n  }\n": types.ReceiptFieldsFragmentDoc,
     "\n  mutation DeleteMyReceipt($input: DeleteMyReceiptInput!) {\n    deleteMyReceipt(input: $input)\n  }\n": types.DeleteMyReceiptDocument,
-    "\n  query MeWithReceipts {\n    me {\n      id\n      receipts {\n        id\n        description\n        total\n      }\n    }\n  }\n": types.MeWithReceiptsDocument,
+    "\n  fragment ReceiptsOnMe on Me {\n    receipts {\n      id\n      ...ReceiptFields\n    }\n  }\n": types.ReceiptsOnMeFragmentDoc,
+    "\n  query MeWithReceipts {\n    me {\n      id\n      ...ReceiptsOnMe\n    }\n  }\n": types.MeWithReceiptsDocument,
     "\n  mutation LogoutUser {\n    logoutUser\n  }\n": types.LogoutUserDocument,
     "\n  mutation LoginUser($input: LoginUserInput) {\n    loginUser(input: $input) {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n": types.LoginUserDocument,
     "\n  mutation CreateGuestUser($input: CreateGuestUserInput!) {\n    createGuestUser(input: $input) {\n      id\n      username\n      state\n    }\n  }\n": types.CreateGuestUserDocument,
@@ -73,7 +75,11 @@ export function graphql(source: "\n  query Receipt($receiptId: ID!) {\n    recei
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      id\n      total\n      description\n    }\n  }\n"): (typeof documents)["\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      id\n      total\n      description\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      ...ReceiptFields\n    }\n  }\n"): (typeof documents)["\n  mutation CreateMyReceipt($input: ReceiptInput) {\n    createMyReceipt(input: $input) {\n      ...ReceiptFields\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment ReceiptFields on Receipt {\n    id\n    description\n    total\n  }\n"): (typeof documents)["\n  fragment ReceiptFields on Receipt {\n    id\n    description\n    total\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -81,7 +87,11 @@ export function graphql(source: "\n  mutation DeleteMyReceipt($input: DeleteMyRe
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query MeWithReceipts {\n    me {\n      id\n      receipts {\n        id\n        description\n        total\n      }\n    }\n  }\n"): (typeof documents)["\n  query MeWithReceipts {\n    me {\n      id\n      receipts {\n        id\n        description\n        total\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment ReceiptsOnMe on Me {\n    receipts {\n      id\n      ...ReceiptFields\n    }\n  }\n"): (typeof documents)["\n  fragment ReceiptsOnMe on Me {\n    receipts {\n      id\n      ...ReceiptFields\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query MeWithReceipts {\n    me {\n      id\n      ...ReceiptsOnMe\n    }\n  }\n"): (typeof documents)["\n  query MeWithReceipts {\n    me {\n      id\n      ...ReceiptsOnMe\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

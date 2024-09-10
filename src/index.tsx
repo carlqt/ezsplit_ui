@@ -23,6 +23,9 @@ declare module "@tanstack/react-router" {
 const client = new ApolloClient({
   uri: "http://localhost:3000/api/query",
   cache: new InMemoryCache(),
+  devtools: {
+    enabled: true,
+  },
 })
 
 // eslint-disable-next-line react-refresh/only-export-components

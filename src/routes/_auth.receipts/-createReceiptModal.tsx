@@ -4,16 +4,13 @@ import { graphql } from "@src/__generated__/gql"
 import {
   CreateMyReceiptMutation,
   CreateMyReceiptMutationVariables,
-  MeWithReceiptsDocument,
 } from "@src/__generated__/graphql"
 import { ChangeEvent, FormEvent, useState } from "react"
 
 const CREATE_RECEIPT_MUTATION = graphql(`
   mutation CreateMyReceipt($input: ReceiptInput) {
     createMyReceipt(input: $input) {
-      id
-      total
-      description
+      ...ReceiptFields
     }
   }
 `)
@@ -21,11 +18,13 @@ const CREATE_RECEIPT_MUTATION = graphql(`
 interface CreateReceiptModalProps {
   opened: boolean
   close: () => void
+  userId: string
 }
 
 export const CreateReceiptModal = ({
   opened,
   close,
+  userId,
 }: CreateReceiptModalProps) => {
   const [total, setTotal] = useState(0)
   const [description, setDescription] = useState("")
@@ -48,18 +47,14 @@ export const CreateReceiptModal = ({
       close()
     },
     update: (cache, { data }) => {
-      const existingReceipts = cache.readQuery({ query: MeWithReceiptsDocument })
-      if (!existingReceipts?.me) return
-      if (!data?.createMyReceipt) return
-
-      const updatedReceipts = [
-        ...existingReceipts.me.receipts,
-        data.createMyReceipt,
-      ]
-
-      cache.writeQuery({
-        query: MeWithReceiptsDocument,
-        data: { me: { ...existingReceipts.me, receipts: updatedReceipts } },
+      // docs at https://www.apollographql.com/docs/react/data/mutations/#the-update-function
+      cache.modify({
+        id: cache.identify({ __typename: "Me", id: userId }),
+        fields: {
+          receipts: (existingReceipts = []) => {
+            return [...existingReceipts, data?.createMyReceipt]
+          },
+        }
       })
     },
   })
