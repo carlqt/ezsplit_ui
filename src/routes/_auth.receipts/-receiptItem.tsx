@@ -15,14 +15,16 @@ const ReceiptFields = graphql(`
 interface Props {
   data: FragmentType<typeof ReceiptFields>
   onClick: () => void
+  index: number
 }
 
-export const ReceiptItem = ({ data, onClick }: Props) => {
+export const ReceiptItem = ({ data, onClick, index }: Props) => {
   const r = getFragmentData(ReceiptFields, data)
+  const rowIndex = index + 1
 
   return (
     <Table.Tr>
-      <Table.Td>xxx</Table.Td>
+      <Table.Td>{rowIndex}</Table.Td>
       <Table.Td>
         <Link to={`/receipts/$receiptId`} params={{ receiptId: r.id }}>{r.description}</Link>
       </Table.Td>

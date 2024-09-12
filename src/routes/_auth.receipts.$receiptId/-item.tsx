@@ -12,15 +12,18 @@ export const ReceiptItemFields = graphql(`
 
 interface ItemProps {
   data: FragmentType<typeof ReceiptItemFields>
+  index: number
 }
 
 
-export const Item = ({ data }: ItemProps) => {
+export const Item = ({ data, index }: ItemProps) => {
   const item = getFragmentData(ReceiptItemFields, data)
   const { name, price } = item
+  const rowIndex = index + 1
 
   return (
     <Table.Tr>
+      <Table.Td>{rowIndex}</Table.Td>
       <Table.Td>{name}</Table.Td>
       <Table.Td>
         <NumberFormatter

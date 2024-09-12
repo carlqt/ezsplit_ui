@@ -65,8 +65,9 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
 
   return (
     <Table.Tbody>
-      {receipts.map(r =>
+      {receipts.map((r, i) =>
         <ReceiptItem
+          index={i}
           key={r.id}
           onClick={() => onDelete(r.id)}
           data={r}

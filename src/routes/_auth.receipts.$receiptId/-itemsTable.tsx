@@ -63,6 +63,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
 
     return (
       <Table.Tr>
+        <Table.Td></Table.Td>
         <Table.Td>
           <TextInput
             variant="unstyled"
@@ -107,7 +108,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
 
       <Table.Tbody>
         <>
-          {itemsData.items.map(i => <Item key={i.id} data={i} />)}
+          {itemsData.items.map((item, index) => <Item key={item.id} index={index} data={item} />)}
         </>
         <>
           {actionRow()}
