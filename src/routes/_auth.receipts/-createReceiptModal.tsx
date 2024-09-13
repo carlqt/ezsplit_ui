@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client"
-import { Modal, Box, TextInput, Button } from "@mantine/core"
+import { Modal, Box, TextInput, Button, FocusTrap } from "@mantine/core"
 import { graphql } from "@src/__generated__/gql"
 import {
   CreateMyReceiptMutation,
@@ -68,35 +68,38 @@ export const CreateReceiptModal = ({
   }
 
   return (
-    <Modal opened={opened} onClose={close} title="Create Receipt" centered>
-      <Box mx="auto">
-        <form onSubmit={onSubmit}>
-          <TextInput
-            label="Description"
-            name="description"
-            required
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-          />
-          <TextInput
-            label="Total"
-            mt="md"
-            name="total"
-            type="number"
-            onChange={onTotalChange}
-            value={total}
-          />
-          <Button
-            loading={loading}
-            loaderProps={{ type: "bars" }}
-            type="submit"
-            fullWidth
-            mt="xl"
-          >
-            Create
-          </Button>
-        </form>
-      </Box>
-    </Modal>
+    <FocusTrap active={opened}>
+      <Modal opened={opened} onClose={close} title="Create Receipt" centered>
+        <Box mx="auto">
+          <form onSubmit={onSubmit}>
+            <TextInput
+              required
+              data-autofocus
+              label="Description"
+              name="description"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+            <TextInput
+              label="Total"
+              mt="md"
+              name="total"
+              type="number"
+              onChange={onTotalChange}
+              value={total}
+            />
+            <Button
+              loading={loading}
+              loaderProps={{ type: "bars" }}
+              type="submit"
+              fullWidth
+              mt="xl"
+            >
+              Create
+            </Button>
+          </form>
+        </Box>
+      </Modal>
+    </FocusTrap>
   )
 }
