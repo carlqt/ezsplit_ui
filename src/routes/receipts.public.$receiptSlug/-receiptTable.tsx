@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client"
 import { Table } from "@mantine/core"
 import { FragmentType, getFragmentData, graphql } from "@src/__generated__/"
-import { MeQuery, PublicReceiptDocument } from "@src/__generated__/graphql"
+import { MeDocument, MeQuery, PublicReceiptDocument } from "@src/__generated__/graphql"
 import { PublicReceiptTableItem } from "./-publicReceiptTableItem"
 
 // assignMeToItem mutation
@@ -36,29 +36,11 @@ export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
   }
 
   const [assignOrRemove] = useMutation(ASSIGN_OR_REMOVE_ME, {
-    refetchQueries: [PublicReceiptDocument],
-    update: (cache, { data }) => {
-      // Updating Me Orders
-      cache.modify<NonNullable<MeQuery["me"]>>({
-        id: cache.identify({ __typename: user.__typename, id: user?.id }),
-        fields: {
-          orders: (orderRefs = [], { toReference, readField }) => {
-            if (!data) return
-
-            const newOrderRef = toReference({
-              __typename: "Item",
-              id: data?.assignOrRemoveMeFromItem.itemId,
-            })
-
-            if (isSelected(data.assignOrRemoveMeFromItem.itemId ?? '')) {
-              return orderRefs.filter((ref) => readField("id", ref) !== data.assignOrRemoveMeFromItem.itemId)
-            }
-
-            return [...orderRefs, newOrderRef]
-          }
-        }
-      })
-    }
+    // Tried optimizing using update but it's too complicated
+    // MeDocument's complexity comes from needing to recalculate the totalPayables
+    // PublicReceiptDocument's complexity is when you're adding the user to `SharedBy` and the extraRootIds being created in cache.
+    // Also had some problem with types.
+    refetchQueries: [PublicReceiptDocument, MeDocument],
   })
 
   const onSelect = (itemId: string) => {
