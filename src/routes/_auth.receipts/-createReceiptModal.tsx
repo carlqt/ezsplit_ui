@@ -1,19 +1,18 @@
 import { useMutation } from "@apollo/client"
-import { Modal, Box, TextInput, Button } from "@mantine/core"
+import { Modal, Box, TextInput, Button, NumberInput } from "@mantine/core"
 import { graphql } from "@src/__generated__/gql"
 import {
   CreateMyReceiptMutation,
   CreateMyReceiptMutationVariables,
-  MeWithReceiptsDocument,
+  ReceiptsOnMeFragment,
 } from "@src/__generated__/graphql"
-import { ChangeEvent, FormEvent, useState } from "react"
+import { FormEvent, useState } from "react"
 
 const CREATE_RECEIPT_MUTATION = graphql(`
   mutation CreateMyReceipt($input: ReceiptInput) {
     createMyReceipt(input: $input) {
       id
-      total
-      description
+      ...ReceiptFields
     }
   }
 `)
@@ -21,19 +20,19 @@ const CREATE_RECEIPT_MUTATION = graphql(`
 interface CreateReceiptModalProps {
   opened: boolean
   close: () => void
+  userId: string
 }
 
 export const CreateReceiptModal = ({
   opened,
   close,
+  userId,
 }: CreateReceiptModalProps) => {
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState("0")
   const [description, setDescription] = useState("")
 
-  const onTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const floatTotal = parseFloat(e.target.value)
-
-    setTotal(floatTotal)
+  const onTotalChange = (value: string | number) => {
+    setTotal(`${value}`)
   }
 
   // TODO: Error handling
@@ -41,32 +40,35 @@ export const CreateReceiptModal = ({
     CreateMyReceiptMutation,
     CreateMyReceiptMutationVariables
   >(CREATE_RECEIPT_MUTATION, {
-    variables: { input: { total, description } },
     onCompleted: async () => {
-      setTotal(0)
+      setTotal("0")
       setDescription("")
       close()
     },
     update: (cache, { data }) => {
-      const existingReceipts = cache.readQuery({ query: MeWithReceiptsDocument })
-      if (!existingReceipts?.me) return
-      if (!data?.createMyReceipt) return
+      // docs at https://www.apollographql.com/docs/react/data/mutations/#the-update-function
+      cache.modify<ReceiptsOnMeFragment>({
+        id: cache.identify({ __typename: "Me", id: userId }),
+        fields: {
+          receipts: (existingReceipts = [], { toReference }) => {
+            const newReceiptRef = toReference({ id: data?.createMyReceipt.id, __typename: data?.createMyReceipt.__typename })
 
-      const updatedReceipts = [
-        ...existingReceipts.me.receipts,
-        data.createMyReceipt,
-      ]
-
-      cache.writeQuery({
-        query: MeWithReceiptsDocument,
-        data: { me: { ...existingReceipts.me, receipts: updatedReceipts } },
+            return [...existingReceipts, newReceiptRef]
+          },
+        }
       })
     },
   })
 
   const onSubmit = async (e: FormEvent) => {
+    const floatTotal = parseFloat(total) ?? 0
+
     e.preventDefault()
-    createReceipt()
+    createReceipt({
+      variables: {
+        input: { total: floatTotal, description }
+      },
+    })
   }
 
   return (
@@ -74,17 +76,17 @@ export const CreateReceiptModal = ({
       <Box mx="auto">
         <form onSubmit={onSubmit}>
           <TextInput
+            required
+            data-autofocus
             label="Description"
             name="description"
-            required
             onChange={(e) => setDescription(e.target.value)}
             value={description}
           />
-          <TextInput
+          <NumberInput
             label="Total"
             mt="md"
             name="total"
-            type="number"
             onChange={onTotalChange}
             value={total}
           />

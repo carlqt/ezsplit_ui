@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client"
-import { ActionIcon, Table, TextInput } from "@mantine/core"
+import { ActionIcon, FocusTrap, Table, TextInput } from "@mantine/core"
 import { graphql } from "@src/__generated__/gql"
 import { ReceiptDocument } from "@src/__generated__/graphql"
 import { IconCirclePlus, IconDeviceFloppy } from "@tabler/icons-react"
@@ -62,36 +62,40 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
     const actionIcon = (name || price) ? <IconDeviceFloppy /> : <IconCirclePlus />
 
     return (
-      <Table.Tr>
-        <Table.Td>
-          <TextInput
-            variant="unstyled"
-            placeholder="Add item"
-            onChange={(e) => setName(e.currentTarget.value)}
-            value={name}
-            required
-          />
-        </Table.Td>
-        <Table.Td>
-          <TextInput
-            variant="unstyled"
-            placeholder="Add price"
-            onChange={e => setPrice(e.currentTarget.value)}
-            type="number"
-            value={price}
-            required
-          />
-        </Table.Td>
-        <Table.Td>
-          <ActionIcon
-            variant="transparent"
-            onClick={onCreate}
-          // loading={isDeleting}
-          >
-            {actionIcon}
-          </ActionIcon>
-        </Table.Td>
-      </Table.Tr>
+      <FocusTrap active>
+        <Table.Tr>
+          <Table.Td></Table.Td>
+          <Table.Td>
+            <TextInput
+              required
+              data-autofocus
+              variant="unstyled"
+              placeholder="Add item"
+              onChange={(e) => setName(e.currentTarget.value)}
+              value={name}
+            />
+          </Table.Td>
+          <Table.Td>
+            <TextInput
+              required
+              variant="unstyled"
+              placeholder="Add price"
+              onChange={e => setPrice(e.currentTarget.value)}
+              type="number"
+              value={price}
+            />
+          </Table.Td>
+          <Table.Td>
+            <ActionIcon
+              variant="transparent"
+              onClick={onCreate}
+            // loading={isDeleting}
+            >
+              {actionIcon}
+            </ActionIcon>
+          </Table.Td>
+        </Table.Tr>
+      </FocusTrap>
     )
   }
 
@@ -107,7 +111,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
 
       <Table.Tbody>
         <>
-          {itemsData.items.map(i => <Item key={i.id} data={i} />)}
+          {itemsData.items.map((item, index) => <Item key={item.id} index={index} data={item} />)}
         </>
         <>
           {actionRow()}

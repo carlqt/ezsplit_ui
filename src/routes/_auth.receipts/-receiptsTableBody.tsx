@@ -1,18 +1,14 @@
 import { useMutation } from "@apollo/client"
-import { Table, NumberFormatter, ActionIcon } from "@mantine/core"
+import { Table } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+import { FragmentType, getFragmentData } from "@src/__generated__"
 import { graphql } from "@src/__generated__/gql"
 import {
   DeleteMyReceiptMutation,
   DeleteMyReceiptMutationVariables,
-  MeWithReceiptsQuery,
+  ReceiptsOnMeFragment,
 } from "@src/__generated__/graphql"
-import { IconTrash } from "@tabler/icons-react"
-import { Link } from "@tanstack/react-router"
-
-interface ReceiptsTableBodyProps {
-  receipts: NonNullable<MeWithReceiptsQuery["me"]>["receipts"]
-}
+import { ReceiptItem } from "./-receiptItem"
 
 const DELETE_RECEIPT_MUTATION = graphql(`
   mutation DeleteMyReceipt($input: DeleteMyReceiptInput!) {
@@ -20,9 +16,27 @@ const DELETE_RECEIPT_MUTATION = graphql(`
   }
 `)
 
-export const ReceiptsTableBody = ({ receipts }: ReceiptsTableBodyProps) => {
-  const [isDeleting, { open: startLoading, close: stopLoading }] =
+const ReceiptsOnMe = graphql(`
+  fragment ReceiptsOnMe on Me {
+    receipts {
+      id
+      ...ReceiptFields
+    }
+  }
+`)
+
+interface ReceiptsTableBodyProps {
+  data: FragmentType<typeof ReceiptsOnMe>
+}
+
+export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
+  const receiptsData = getFragmentData(ReceiptsOnMe, data)
+  const { receipts } = receiptsData
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, { open: startLoading, close: stopLoading }] =
     useDisclosure()
+
   const [deleteReceipt] = useMutation<
     DeleteMyReceiptMutation,
     DeleteMyReceiptMutationVariables
@@ -31,14 +45,15 @@ export const ReceiptsTableBody = ({ receipts }: ReceiptsTableBodyProps) => {
       stopLoading()
     },
     update: (cache, { data }) => {
-      cache.evict({
-        id: cache.identify({
-          __typename: "Receipt",
-          id: data?.deleteMyReceipt,
-        }),
+      // Not sure if "ReceiptsOnMeFragment" is the correct type here but it stopped the linter from complaining
+      cache.modify<ReceiptsOnMeFragment>({
+        id: cache.identify(receiptsData),
+        fields: {
+          receipts: (existingReceipts = [], { readField }) => {
+            return existingReceipts.filter((receiptRef) => readField("id", receiptRef) !== data?.deleteMyReceipt)
+          }
+        }
       })
-
-      cache.gc()
     },
   })
 
@@ -47,32 +62,15 @@ export const ReceiptsTableBody = ({ receipts }: ReceiptsTableBodyProps) => {
     deleteReceipt({ variables: { input: { id } } })
   }
 
-  const rowItem = (r: NonNullable<MeWithReceiptsQuery["me"]>["receipts"][0]) => {
-    return (
-      <Table.Tr key={r.id}>
-        <Table.Td>{r.id}</Table.Td>
-        <Table.Td>
-          <Link to={`/receipts/$receiptId`} params={{ receiptId: r.id }}>{r.description}</Link>
-        </Table.Td>
-        <Table.Td>
-          <NumberFormatter
-            prefix="$"
-            value={r.total || 0}
-            thousandSeparator={true}
-          />
-        </Table.Td>
-        <Table.Td>
-          <ActionIcon
-            variant="transparent"
-            onClick={() => onDelete(r.id)}
-            loading={isDeleting}
-          >
-            <IconTrash />
-          </ActionIcon>
-        </Table.Td>
-      </Table.Tr>
-    )
-  }
-
-  return <Table.Tbody>{receipts.map(rowItem)}</Table.Tbody>
+  return (
+    <Table.Tbody>
+      {receipts.map((r, i) =>
+        <ReceiptItem
+          index={i}
+          key={r.id}
+          onClick={() => onDelete(r.id)}
+          data={r}
+        />
+      )}
+    </Table.Tbody>)
 }

@@ -55,11 +55,11 @@ const Receipt = () => {
         </Grid.Col>
 
         <Grid.Col span={4}>
-          <Title order={2}>{data?.receipt.total}</Title>
+          <Title order={2}>{data.receipt.total}</Title>
         </Grid.Col>
       </Grid>
 
-      <ShareReceipt slug={data?.receipt.slug ?? ""} receiptId={data?.receipt.id ?? ""} />
+      <ShareReceipt slug={data.receipt.slug ?? ""} receiptId={data.receipt.id ?? ""} />
 
       <ItemsTable receiptId={receiptId} data={data.receipt} />
     </Container>
