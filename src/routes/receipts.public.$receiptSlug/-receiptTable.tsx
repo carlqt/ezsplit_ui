@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client"
 import { Table } from "@mantine/core"
 import { FragmentType, getFragmentData, graphql } from "@src/__generated__/"
-import { MeDocument, MeQuery, PublicReceiptDocument } from "@src/__generated__/graphql"
+import { MeQuery, PublicReceiptDocument } from "@src/__generated__/graphql"
 import { PublicReceiptTableItem } from "./-publicReceiptTableItem"
 
 // assignMeToItem mutation
@@ -30,13 +30,36 @@ interface ReceiptTableProps {
 
 export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
   const itemsData = getFragmentData(PublicReceiptItems, data)
-  const [assignOrRemove] = useMutation(ASSIGN_OR_REMOVE_ME, {
-    refetchQueries: [PublicReceiptDocument, MeDocument]
-  })
 
   const isSelected = (itemId: string): boolean => {
-    return user.orders.find((o) => o.id === itemId) !== undefined
+    return user.orders.some((o) => o.id === itemId)
   }
+
+  const [assignOrRemove] = useMutation(ASSIGN_OR_REMOVE_ME, {
+    refetchQueries: [PublicReceiptDocument],
+    update: (cache, { data }) => {
+      // Updating Me Orders
+      cache.modify<NonNullable<MeQuery["me"]>>({
+        id: cache.identify({ __typename: user.__typename, id: user?.id }),
+        fields: {
+          orders: (orderRefs = [], { toReference, readField }) => {
+            if (!data) return
+
+            const newOrderRef = toReference({
+              __typename: "Item",
+              id: data?.assignOrRemoveMeFromItem.itemId,
+            })
+
+            if (isSelected(data.assignOrRemoveMeFromItem.itemId ?? '')) {
+              return orderRefs.filter((ref) => readField("id", ref) !== data.assignOrRemoveMeFromItem.itemId)
+            }
+
+            return [...orderRefs, newOrderRef]
+          }
+        }
+      })
+    }
+  })
 
   const onSelect = (itemId: string) => {
     assignOrRemove({ variables: { itemId }})

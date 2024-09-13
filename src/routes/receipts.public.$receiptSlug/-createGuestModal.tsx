@@ -41,12 +41,13 @@ export const CreateGuestModal = ({
       <Box mx="auto">
         <form onSubmit={onSubmit}>
           <TextInput
+            required
+            data-autofocus
             label="Display name"
             name="username"
             placeholder="Enter your display name"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
-            required
           />
           <Button
             loaderProps={{ type: "bars" }}
