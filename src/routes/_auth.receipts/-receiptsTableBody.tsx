@@ -46,7 +46,6 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
     },
     update: (cache, { data }) => {
       // Not sure if "ReceiptsOnMeFragment" is the correct type here but it stopped the linter from complaining
-      // FYI: In the debugger, the shape of the object is { __ref: "Receipts:1" } | ReceiptsOnMeFragment (basically, the Receipt type)
       cache.modify<ReceiptsOnMeFragment>({
         id: cache.identify(receiptsData),
         fields: {

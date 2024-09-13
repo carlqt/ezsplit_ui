@@ -10,6 +10,7 @@ import { ChangeEvent, FormEvent, useState } from "react"
 const CREATE_RECEIPT_MUTATION = graphql(`
   mutation CreateMyReceipt($input: ReceiptInput) {
     createMyReceipt(input: $input) {
+      id
       ...ReceiptFields
     }
   }
@@ -51,8 +52,10 @@ export const CreateReceiptModal = ({
       cache.modify({
         id: cache.identify({ __typename: "Me", id: userId }),
         fields: {
-          receipts: (existingReceipts = []) => {
-            return [...existingReceipts, data?.createMyReceipt]
+          receipts: (existingReceipts = [], { toReference }) => {
+            const newReceiptRef = toReference({ id: data?.createMyReceipt.id, __typename: data?.createMyReceipt.__typename })
+
+            return [...existingReceipts, newReceiptRef]
           },
         }
       })
