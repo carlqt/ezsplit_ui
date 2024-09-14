@@ -27,13 +27,13 @@ export const CreateGuestModal = ({
     refetchQueries: [MeDocument],
   })
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault()
-    createGuestUser({variables: { input: { username: name }}})
+    void createGuestUser({variables: { input: { username: name }}})
   }
 
   // On close is just to satisfy the Modal component
-  const onClose = (): void => {}
+  const onClose = (): void => undefined
 
   // On create click, call mutation
   return (

@@ -34,7 +34,7 @@ const CREATE_USER = graphql(`
 `)
 
 export const SignupForm = () => {
-  const { invalidate: invalidateRouteContext }= useRouter()
+  const { invalidate: invalidateRouteContext } = useRouter()
   const navigate = useNavigate()
 
   const [username, setUsername] = useState("")
@@ -46,9 +46,9 @@ export const SignupForm = () => {
     CreateUserMutationVariables
   >(CREATE_USER, {
     variables: { input: { username, password, confirmPassword } },
-    onCompleted: async () => {
-      await invalidateRouteContext()
-      navigate({ to: "/" })
+    onCompleted: () => {
+      void invalidateRouteContext()
+      void navigate({ to: "/" })
     },
     // Updating the cache directly instead of refetching query to handle race condition.
     // The race condition is the route.push happens first before the refetch finishes.
@@ -62,9 +62,9 @@ export const SignupForm = () => {
     },
   })
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault()
-    createUser()
+    void createUser()
   }
 
   return (
@@ -86,7 +86,9 @@ export const SignupForm = () => {
             error={error?.message}
             label="Username"
             placeholder="john_smith"
-            onChange={(e) => { setUsername(e.target.value); }}
+            onChange={(e) => {
+              setUsername(e.target.value)
+            }}
             value={username}
           />
           <PasswordInput
@@ -95,7 +97,9 @@ export const SignupForm = () => {
             label="Password"
             placeholder="Your password"
             mt="md"
-            onChange={(e) => { setPassword(e.target.value); }}
+            onChange={(e) => {
+              setPassword(e.target.value)
+            }}
             value={password}
           />
           <PasswordInput
@@ -104,7 +108,9 @@ export const SignupForm = () => {
             label="Confirm Password"
             placeholder="confirm password"
             mt="md"
-            onChange={(e) => { setConfirmPassword(e.target.value); }}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value)
+            }}
             value={confirmPassword}
           />
           <Button type="submit" fullWidth mt="xl">

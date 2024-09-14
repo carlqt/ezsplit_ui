@@ -44,7 +44,7 @@ export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
   })
 
   const onSelect = (itemId: string) => {
-    assignOrRemove({ variables: { itemId }})
+    void assignOrRemove({ variables: { itemId }})
   }
 
   return (

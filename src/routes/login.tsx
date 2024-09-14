@@ -47,9 +47,9 @@ const Login = () => {
     LoginUserMutationVariables
   >(LOGIN_USER, {
     variables: { input: { username, password } },
-    onCompleted: async () => {
-      await invalidateRouteContext()
-      navigate({ to: '/' })
+    onCompleted: () => {
+      void invalidateRouteContext()
+      void navigate({ to: '/' })
     },
     // Updating the cache directly instead of refetching query to handle race condition.
     // The race condition is the route.push happens first before the refetch finishes.
@@ -63,9 +63,9 @@ const Login = () => {
     },
   })
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault()
-    login()
+    void login()
   }
 
   if (error && error.message != INVALID_CREDENTIALS) {

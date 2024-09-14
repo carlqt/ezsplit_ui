@@ -27,7 +27,7 @@ const PublicReceipt = () => {
     },
   })
 
-  const userDetails = `${user?.username || 'GUEST'} - ${user?.totalPayables ?? 0}`
+  const userDetails = `${user?.username ?? 'GUEST'} - ${user?.totalPayables ?? "0"}`
 
   if (loading) {
     return <Skeleton visible={loading} height={100}></Skeleton>

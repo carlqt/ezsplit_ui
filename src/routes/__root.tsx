@@ -17,7 +17,7 @@ interface MyRouterContext {
   auth: {
     isAuthenticated: boolean
     user: MeQuery["me"]
-  }
+  } | undefined
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

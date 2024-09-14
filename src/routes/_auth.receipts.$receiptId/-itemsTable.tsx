@@ -47,7 +47,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
   const onCreate = () => {
     const inputPrice = parseFloat(price)
 
-    addItem({
+    void addItem({
       variables: {
         input: {
           receiptId,

@@ -41,7 +41,7 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
     DeleteMyReceiptMutation,
     DeleteMyReceiptMutationVariables
   >(DELETE_RECEIPT_MUTATION, {
-    onCompleted: async () => {
+    onCompleted: () => {
       stopLoading()
     },
     update: (cache, { data }) => {
@@ -59,7 +59,7 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
 
   const onDelete = (id: string) => {
     startLoading()
-    deleteReceipt({ variables: { input: { id } } })
+    void deleteReceipt({ variables: { input: { id } } })
   }
 
   return (

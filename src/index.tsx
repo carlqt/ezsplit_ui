@@ -9,7 +9,7 @@ import { createTheme, MantineProvider } from "@mantine/core"
 
 const router = createRouter({
   routeTree,
-  context: { auth: undefined! },
+  context: { auth: undefined },
   defaultPreload: "intent",
 })
 
@@ -28,7 +28,6 @@ const client = new ApolloClient({
   },
 })
 
-// eslint-disable-next-line react-refresh/only-export-components
 const InnerApp = () => {
   const auth = useAuth()
 
@@ -47,6 +46,7 @@ const theme = createTheme({
   defaultRadius: "md",
 })
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ApolloProvider client={client}>

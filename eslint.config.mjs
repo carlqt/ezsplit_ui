@@ -15,4 +15,8 @@ export default tseslint.config(
       },
     },
   },
+
+  {
+    ignores: ['dist/*', 'codegen.ts', 'eslint.config.mjs']
+  }
 );

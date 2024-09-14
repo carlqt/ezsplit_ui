@@ -41,7 +41,7 @@ export const ShareReceipt = ({ slug, receiptId }: ShareReceiptProps) => {
 
   const onClick = () => {
     if (slug === "") {
-      generatePublicUrl()
+      void generatePublicUrl()
     }
   }
 

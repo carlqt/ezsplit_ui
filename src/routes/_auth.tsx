@@ -22,11 +22,12 @@ const LOGOUT_USER = graphql(`
 
 const AuthLayout = () => {
   const { user } = useAuth()
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { clearStore } = useApolloClient()
   const navigate = useNavigate()
 
   const navigateToReceipts = () => {
-    navigate({ to: "/receipts" })
+    void navigate({ to: "/receipts" })
   }
 
   const [logout, { error }] = useMutation<
@@ -36,9 +37,9 @@ const AuthLayout = () => {
 
   // TODO: Identify why calling clearStore() produces a console error
   const onClickLogout = () => {
-    logout()
-    clearStore()
-    navigate({ to: "/login" })
+    void logout()
+    void clearStore()
+    void navigate({ to: "/login" })
   }
 
   if (error) {
@@ -80,7 +81,9 @@ const AuthLayout = () => {
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: ({ context, location }) => {
-    if (!context.auth.isAuthenticated) {
+    if (!context.auth?.isAuthenticated) {
+      // Disabling error because this is the documented way to redirect. https://tanstack.com/router/latest/docs/framework/react/api/router/redirectFunction#examples
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw redirect({
         to: "/login",
         search: {

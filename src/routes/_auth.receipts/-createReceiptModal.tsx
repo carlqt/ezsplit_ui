@@ -32,7 +32,7 @@ export const CreateReceiptModal = ({
   const [description, setDescription] = useState("")
 
   const onTotalChange = (value: string | number) => {
-    setTotal(`${value}`)
+    setTotal(value.toString())
   }
 
   // TODO: Error handling
@@ -40,7 +40,7 @@ export const CreateReceiptModal = ({
     CreateMyReceiptMutation,
     CreateMyReceiptMutationVariables
   >(CREATE_RECEIPT_MUTATION, {
-    onCompleted: async () => {
+    onCompleted: () => {
       setTotal("0")
       setDescription("")
       close()
@@ -60,11 +60,11 @@ export const CreateReceiptModal = ({
     },
   })
 
-  const onSubmit = async (e: FormEvent) => {
-    const floatTotal = parseFloat(total) ?? 0
+  const onSubmit = (e: FormEvent) => {
+    const floatTotal = parseFloat(total) || 0
 
     e.preventDefault()
-    createReceipt({
+    void createReceipt({
       variables: {
         input: { total: floatTotal, description }
       },

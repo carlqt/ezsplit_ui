@@ -59,7 +59,7 @@ const Receipt = () => {
         </Grid.Col>
       </Grid>
 
-      <ShareReceipt slug={data.receipt.slug ?? ""} receiptId={data.receipt.id ?? ""} />
+      <ShareReceipt slug={data.receipt.slug} receiptId={data.receipt.id} />
 
       <ItemsTable receiptId={receiptId} data={data.receipt} />
     </Container>
