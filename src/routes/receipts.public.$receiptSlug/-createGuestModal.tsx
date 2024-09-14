@@ -47,7 +47,7 @@ export const CreateGuestModal = ({
             name="username"
             placeholder="Enter your display name"
             value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
+            onChange={(e) => { setName(e.currentTarget.value); }}
           />
           <Button
             loaderProps={{ type: "bars" }}

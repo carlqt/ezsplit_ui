@@ -44,7 +44,7 @@ const Receipt = () => {
         <Link to="/receipts">Back</Link>
       </Button>
 
-      <Title order={1}>{data?.receipt.description}</Title>
+      <Title order={1}>{data.receipt.description}</Title>
 
       <Divider />
       <Space h="md" />

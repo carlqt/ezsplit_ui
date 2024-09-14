@@ -80,7 +80,7 @@ export const CreateReceiptModal = ({
             data-autofocus
             label="Description"
             name="description"
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => { setDescription(e.target.value); }}
             value={description}
           />
           <NumberInput

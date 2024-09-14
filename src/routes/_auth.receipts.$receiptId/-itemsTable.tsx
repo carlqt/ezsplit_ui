@@ -71,7 +71,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
               data-autofocus
               variant="unstyled"
               placeholder="Add item"
-              onChange={(e) => setName(e.currentTarget.value)}
+              onChange={(e) => { setName(e.currentTarget.value); }}
               value={name}
             />
           </Table.Td>
@@ -80,7 +80,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
               required
               variant="unstyled"
               placeholder="Add price"
-              onChange={e => setPrice(e.currentTarget.value)}
+              onChange={e => { setPrice(e.currentTarget.value); }}
               type="number"
               value={price}
             />

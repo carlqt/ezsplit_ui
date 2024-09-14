@@ -92,7 +92,7 @@ const Login = () => {
             label="Username"
             placeholder="john_smith"
             required
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => { setUsername(e.target.value); }}
             value={username}
           />
           <PasswordInput
@@ -101,7 +101,7 @@ const Login = () => {
             placeholder="Your password"
             required
             mt="md"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => { setPassword(e.target.value); }}
             value={password}
           />
           <Button type="submit" fullWidth mt="xl">

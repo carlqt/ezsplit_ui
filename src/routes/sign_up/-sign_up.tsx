@@ -86,7 +86,7 @@ export const SignupForm = () => {
             error={error?.message}
             label="Username"
             placeholder="john_smith"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => { setUsername(e.target.value); }}
             value={username}
           />
           <PasswordInput
@@ -95,7 +95,7 @@ export const SignupForm = () => {
             label="Password"
             placeholder="Your password"
             mt="md"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => { setPassword(e.target.value); }}
             value={password}
           />
           <PasswordInput
@@ -104,7 +104,7 @@ export const SignupForm = () => {
             label="Confirm Password"
             placeholder="confirm password"
             mt="md"
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => { setConfirmPassword(e.target.value); }}
             value={confirmPassword}
           />
           <Button type="submit" fullWidth mt="xl">

@@ -65,7 +65,7 @@ export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
             key={item.id}
             data={item}
             isSelected={isSelected(item.id)}
-            onSelect={() => onSelect(item.id)}
+            onSelect={() => { onSelect(item.id); }}
           />
         )}
       </Table.Tbody>

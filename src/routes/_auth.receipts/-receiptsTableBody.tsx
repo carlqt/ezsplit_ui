@@ -68,7 +68,7 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
         <ReceiptItem
           index={i}
           key={r.id}
-          onClick={() => onDelete(r.id)}
+          onClick={() => { onDelete(r.id); }}
           data={r}
         />
       )}
