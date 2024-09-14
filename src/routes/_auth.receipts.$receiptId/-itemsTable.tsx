@@ -1,11 +1,11 @@
-import { useMutation } from "@apollo/client"
-import { ActionIcon, FocusTrap, Table, TextInput } from "@mantine/core"
-import { graphql } from "@src/__generated__/gql"
-import { ReceiptDocument } from "@src/__generated__/graphql"
-import { IconCirclePlus, IconDeviceFloppy } from "@tabler/icons-react"
-import { useState } from "react"
-import { Item } from "./-item"
-import { FragmentType, getFragmentData } from "@src/__generated__/"
+import { useMutation } from '@apollo/client'
+import { ActionIcon, FocusTrap, Table, TextInput } from '@mantine/core'
+import { graphql } from '@src/__generated__/gql'
+import { ReceiptDocument } from '@src/__generated__/graphql'
+import { IconCirclePlus, IconDeviceFloppy } from '@tabler/icons-react'
+import { useState } from 'react'
+import { Item } from './-item'
+import { FragmentType, getFragmentData } from '@src/__generated__/'
 
 const CREATE_ITEM_MUTATION = graphql(`
   mutation AddItemToReceipt($input: AddItemToReceiptInput) {
@@ -32,29 +32,29 @@ interface ItemsTableProps {
 
 export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
   const itemsData = getFragmentData(ReceiptItemList, data)
-  const [name, setName] = useState("")
-  const [price, setPrice] = useState("")
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState('')
 
   const [addItem] = useMutation(CREATE_ITEM_MUTATION, {
     variables: { input: { receiptId, name, price: 0 } },
     onCompleted: () => {
-      setName("")
-      setPrice("")
+      setName('')
+      setPrice('')
     },
-    refetchQueries: [ReceiptDocument]
+    refetchQueries: [ReceiptDocument],
   })
 
   const onCreate = () => {
     const inputPrice = parseFloat(price)
 
-    addItem({
+    void addItem({
       variables: {
         input: {
           receiptId,
           name,
           price: inputPrice,
-        }
-      }
+        },
+      },
     })
   }
 
@@ -71,7 +71,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
               data-autofocus
               variant="unstyled"
               placeholder="Add item"
-              onChange={(e) => setName(e.currentTarget.value)}
+              onChange={(e) => { setName(e.currentTarget.value) }}
               value={name}
             />
           </Table.Td>
@@ -80,7 +80,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
               required
               variant="unstyled"
               placeholder="Add price"
-              onChange={e => setPrice(e.currentTarget.value)}
+              onChange={(e) => { setPrice(e.currentTarget.value) }}
               type="number"
               value={price}
             />

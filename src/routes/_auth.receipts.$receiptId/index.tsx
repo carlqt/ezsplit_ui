@@ -31,7 +31,12 @@ const Receipt = () => {
   }
 
   if (error) {
-    return <>Error: {error.message}</>
+    return (
+      <>
+        Error:
+        {error.message}
+      </>
+    )
   }
 
   if (!data) {
@@ -44,7 +49,7 @@ const Receipt = () => {
         <Link to="/receipts">Back</Link>
       </Button>
 
-      <Title order={1}>{data?.receipt.description}</Title>
+      <Title order={1}>{data.receipt.description}</Title>
 
       <Divider />
       <Space h="md" />
@@ -59,7 +64,7 @@ const Receipt = () => {
         </Grid.Col>
       </Grid>
 
-      <ShareReceipt slug={data.receipt.slug ?? ""} receiptId={data.receipt.id ?? ""} />
+      <ShareReceipt slug={data.receipt.slug} receiptId={data.receipt.id} />
 
       <ItemsTable receiptId={receiptId} data={data.receipt} />
     </Container>
@@ -67,5 +72,5 @@ const Receipt = () => {
 }
 
 export const Route = createFileRoute('/_auth/receipts/$receiptId/')({
-  component: Receipt
+  component: Receipt,
 })

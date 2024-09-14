@@ -1,10 +1,10 @@
-import { useQuery } from "@apollo/client"
-import { Table, Container, Title, Button, Skeleton } from "@mantine/core"
-import { createFileRoute } from "@tanstack/react-router"
-import { graphql } from "@src/__generated__/gql"
-import { useDisclosure } from "@mantine/hooks"
-import { CreateReceiptModal } from "./-createReceiptModal"
-import { ReceiptsTableBody } from "./-receiptsTableBody"
+import { useQuery } from '@apollo/client'
+import { Table, Container, Title, Button, Skeleton } from '@mantine/core'
+import { createFileRoute } from '@tanstack/react-router'
+import { graphql } from '@src/__generated__/gql'
+import { useDisclosure } from '@mantine/hooks'
+import { CreateReceiptModal } from './-createReceiptModal'
+import { ReceiptsTableBody } from './-receiptsTableBody'
 
 const RECEIPTS_QUERY = graphql(`
   query MeWithReceipts {
@@ -24,7 +24,12 @@ const ReceiptsPage = () => {
   }
 
   if (error) {
-    return <>Error: {error.message}</>
+    return (
+      <>
+        Error:
+        {error.message}
+      </>
+    )
   }
 
   if (!data) {
@@ -41,7 +46,7 @@ const ReceiptsPage = () => {
       <CreateReceiptModal
         opened={opened}
         close={close}
-        userId= {data.me.id}
+        userId={data.me.id}
       />
 
       <Title order={1}>Receipts</Title>
@@ -64,6 +69,6 @@ const ReceiptsPage = () => {
   )
 }
 
-export const Route = createFileRoute("/_auth/receipts/")({
+export const Route = createFileRoute('/_auth/receipts/')({
   component: ReceiptsPage,
 })

@@ -1,7 +1,7 @@
-import { ActionIcon, NumberFormatter, Table } from "@mantine/core"
-import { IconTrash } from "@tabler/icons-react"
-import { graphql } from "@src/__generated__/gql";
-import { FragmentType, getFragmentData } from "@src/__generated__";
+import { ActionIcon, NumberFormatter, Table } from '@mantine/core'
+import { IconTrash } from '@tabler/icons-react'
+import { graphql } from '@src/__generated__/gql'
+import { FragmentType, getFragmentData } from '@src/__generated__'
 
 export const ReceiptItemFields = graphql(`
   fragment ReceiptItemFields on Item {
@@ -14,7 +14,6 @@ interface ItemProps {
   data: FragmentType<typeof ReceiptItemFields>
   index: number
 }
-
 
 export const Item = ({ data, index }: ItemProps) => {
   const item = getFragmentData(ReceiptItemFields, data)

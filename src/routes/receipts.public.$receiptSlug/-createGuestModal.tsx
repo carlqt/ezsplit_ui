@@ -1,9 +1,9 @@
-import { useMutation } from "@apollo/client"
-import { Modal, Box, TextInput, Button, Flex, Anchor } from "@mantine/core"
-import { graphql } from "@src/__generated__"
-import { MeDocument } from "@src/__generated__/graphql"
-import { Link } from "@tanstack/react-router"
-import { FormEvent, useState } from "react"
+import { useMutation } from '@apollo/client'
+import { Modal, Box, TextInput, Button, Flex, Anchor } from '@mantine/core'
+import { graphql } from '@src/__generated__'
+import { MeDocument } from '@src/__generated__/graphql'
+import { Link } from '@tanstack/react-router'
+import { FormEvent, useState } from 'react'
 
 const GUEST_USER_MUTATION = graphql(`
   mutation CreateGuestUser($input: CreateGuestUserInput!) {
@@ -22,18 +22,18 @@ interface ModalProps {
 export const CreateGuestModal = ({
   opened,
 }: ModalProps) => {
-  const [name, setName] = useState("")
+  const [name, setName] = useState('')
   const [createGuestUser] = useMutation(GUEST_USER_MUTATION, {
     refetchQueries: [MeDocument],
   })
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault()
-    createGuestUser({variables: { input: { username: name }}})
+    void createGuestUser({ variables: { input: { username: name } } })
   }
 
   // On close is just to satisfy the Modal component
-  const onClose = (): void => {}
+  const onClose = (): void => undefined
 
   // On create click, call mutation
   return (
@@ -47,10 +47,10 @@ export const CreateGuestModal = ({
             name="username"
             placeholder="Enter your display name"
             value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
+            onChange={(e) => { setName(e.currentTarget.value) }}
           />
           <Button
-            loaderProps={{ type: "bars" }}
+            loaderProps={{ type: 'bars' }}
             type="submit"
             fullWidth
             mt="xl"

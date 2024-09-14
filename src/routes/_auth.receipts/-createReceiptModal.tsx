@@ -1,12 +1,12 @@
-import { useMutation } from "@apollo/client"
-import { Modal, Box, TextInput, Button, NumberInput } from "@mantine/core"
-import { graphql } from "@src/__generated__/gql"
+import { useMutation } from '@apollo/client'
+import { Modal, Box, TextInput, Button, NumberInput } from '@mantine/core'
+import { graphql } from '@src/__generated__/gql'
 import {
   CreateMyReceiptMutation,
   CreateMyReceiptMutationVariables,
   ReceiptsOnMeFragment,
-} from "@src/__generated__/graphql"
-import { FormEvent, useState } from "react"
+} from '@src/__generated__/graphql'
+import { FormEvent, useState } from 'react'
 
 const CREATE_RECEIPT_MUTATION = graphql(`
   mutation CreateMyReceipt($input: ReceiptInput) {
@@ -28,11 +28,11 @@ export const CreateReceiptModal = ({
   close,
   userId,
 }: CreateReceiptModalProps) => {
-  const [total, setTotal] = useState("0")
-  const [description, setDescription] = useState("")
+  const [total, setTotal] = useState('0')
+  const [description, setDescription] = useState('')
 
   const onTotalChange = (value: string | number) => {
-    setTotal(`${value}`)
+    setTotal(value.toString())
   }
 
   // TODO: Error handling
@@ -40,33 +40,33 @@ export const CreateReceiptModal = ({
     CreateMyReceiptMutation,
     CreateMyReceiptMutationVariables
   >(CREATE_RECEIPT_MUTATION, {
-    onCompleted: async () => {
-      setTotal("0")
-      setDescription("")
+    onCompleted: () => {
+      setTotal('0')
+      setDescription('')
       close()
     },
     update: (cache, { data }) => {
       // docs at https://www.apollographql.com/docs/react/data/mutations/#the-update-function
       cache.modify<ReceiptsOnMeFragment>({
-        id: cache.identify({ __typename: "Me", id: userId }),
+        id: cache.identify({ __typename: 'Me', id: userId }),
         fields: {
           receipts: (existingReceipts = [], { toReference }) => {
             const newReceiptRef = toReference({ id: data?.createMyReceipt.id, __typename: data?.createMyReceipt.__typename })
 
             return [...existingReceipts, newReceiptRef]
           },
-        }
+        },
       })
     },
   })
 
-  const onSubmit = async (e: FormEvent) => {
-    const floatTotal = parseFloat(total) ?? 0
+  const onSubmit = (e: FormEvent) => {
+    const floatTotal = parseFloat(total) || 0
 
     e.preventDefault()
-    createReceipt({
+    void createReceipt({
       variables: {
-        input: { total: floatTotal, description }
+        input: { total: floatTotal, description },
       },
     })
   }
@@ -80,7 +80,7 @@ export const CreateReceiptModal = ({
             data-autofocus
             label="Description"
             name="description"
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => { setDescription(e.target.value) }}
             value={description}
           />
           <NumberInput
@@ -92,7 +92,7 @@ export const CreateReceiptModal = ({
           />
           <Button
             loading={loading}
-            loaderProps={{ type: "bars" }}
+            loaderProps={{ type: 'bars' }}
             type="submit"
             fullWidth
             mt="xl"
