@@ -1,8 +1,8 @@
-import { useMutation } from "@apollo/client"
-import { Table } from "@mantine/core"
-import { FragmentType, getFragmentData, graphql } from "@src/__generated__/"
-import { MeDocument, MeQuery, PublicReceiptDocument } from "@src/__generated__/graphql"
-import { PublicReceiptTableItem } from "./-publicReceiptTableItem"
+import { useMutation } from '@apollo/client'
+import { Table } from '@mantine/core'
+import { FragmentType, getFragmentData, graphql } from '@src/__generated__/'
+import { MeDocument, MeQuery, PublicReceiptDocument } from '@src/__generated__/graphql'
+import { PublicReceiptTableItem } from './-publicReceiptTableItem'
 
 // assignMeToItem mutation
 const ASSIGN_OR_REMOVE_ME = graphql(`
@@ -25,14 +25,14 @@ const PublicReceiptItems = graphql(`
 interface ReceiptTableProps {
   data: FragmentType<typeof PublicReceiptItems>
   caption: string
-  user: NonNullable<MeQuery["me"]>
+  user: NonNullable<MeQuery['me']>
 }
 
 export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
   const itemsData = getFragmentData(PublicReceiptItems, data)
 
   const isSelected = (itemId: string): boolean => {
-    return user.orders.some((o) => o.id === itemId)
+    return user.orders.some(o => o.id === itemId)
   }
 
   const [assignOrRemove] = useMutation(ASSIGN_OR_REMOVE_ME, {
@@ -44,7 +44,7 @@ export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
   })
 
   const onSelect = (itemId: string) => {
-    void assignOrRemove({ variables: { itemId }})
+    void assignOrRemove({ variables: { itemId } })
   }
 
   return (
@@ -60,13 +60,14 @@ export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
       </Table.Thead>
 
       <Table.Tbody>
-        {itemsData.items.map(item => 
-          <PublicReceiptTableItem 
+        {itemsData.items.map(item => (
+          <PublicReceiptTableItem
             key={item.id}
             data={item}
             isSelected={isSelected(item.id)}
-            onSelect={() => { onSelect(item.id); }}
+            onSelect={() => { onSelect(item.id) }}
           />
+        ),
         )}
       </Table.Tbody>
 

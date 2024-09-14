@@ -19,7 +19,7 @@ const PUBLIC_RECEIPT = graphql(`
 
 const PublicReceipt = () => {
   const { receiptSlug } = Route.useParams()
-  const { user, loading: userLoading }= useAuth()
+  const { user, loading: userLoading } = useAuth()
 
   const { data: receiptQueryData, loading, error } = useQuery(PUBLIC_RECEIPT, {
     variables: {
@@ -27,14 +27,19 @@ const PublicReceipt = () => {
     },
   })
 
-  const userDetails = `${user?.username ?? 'GUEST'} - ${user?.totalPayables ?? "0"}`
+  const userDetails = `${user?.username ?? 'GUEST'} - ${user?.totalPayables ?? '0'}`
 
   if (loading) {
     return <Skeleton visible={loading} height={100}></Skeleton>
   }
 
   if (error) {
-    return <>Error: {error.message}</>
+    return (
+      <>
+        Error:
+        {error.message}
+      </>
+    )
   }
 
   if (!receiptQueryData) {
@@ -62,4 +67,3 @@ const PublicReceipt = () => {
 export const Route = createFileRoute('/receipts/public/$receiptSlug/')({
   component: PublicReceipt,
 })
-

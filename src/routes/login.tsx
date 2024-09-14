@@ -1,13 +1,13 @@
-import { Link, createFileRoute, useNavigate, useRouter } from "@tanstack/react-router"
-import { graphql } from "@src/__generated__/gql"
-import { FormEvent, useState } from "react"
-import { useMutation } from "@apollo/client"
+import { Link, createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
+import { graphql } from '@src/__generated__/gql'
+import { FormEvent, useState } from 'react'
+import { useMutation } from '@apollo/client'
 import {
   LoginUserMutation,
   LoginUserMutationVariables,
   MeDocument,
   MeQuery,
-} from "@src/__generated__/graphql"
+} from '@src/__generated__/graphql'
 import {
   Container,
   Title,
@@ -17,7 +17,7 @@ import {
   PasswordInput,
   Button,
   Text,
-} from "@mantine/core"
+} from '@mantine/core'
 
 const LOGIN_USER = graphql(`
   mutation LoginUser($input: LoginUserInput) {
@@ -33,14 +33,14 @@ const LOGIN_USER = graphql(`
   }
 `)
 
-const INVALID_CREDENTIALS = "incorrect username or password"
+const INVALID_CREDENTIALS = 'incorrect username or password'
 
 const Login = () => {
-  const { invalidate: invalidateRouteContext }= useRouter()
+  const { invalidate: invalidateRouteContext } = useRouter()
   const navigate = useNavigate()
 
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const [login, { error }] = useMutation<
     LoginUserMutation,
@@ -57,7 +57,7 @@ const Login = () => {
       if (data) {
         cache.writeQuery<MeQuery>({
           query: MeDocument,
-          data: { me: data.loginUser},
+          data: { me: data.loginUser },
         })
       }
     },
@@ -76,7 +76,8 @@ const Login = () => {
     <Container size={420} my={40}>
       <Title ta="center">Welcome back!</Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Do not have an account yet?{" "}
+        Do not have an account yet?
+        {' '}
         <Link to="/sign_up">
           <Anchor size="sm" component="button">
             Create account
@@ -92,7 +93,7 @@ const Login = () => {
             label="Username"
             placeholder="john_smith"
             required
-            onChange={(e) => { setUsername(e.target.value); }}
+            onChange={(e) => { setUsername(e.target.value) }}
             value={username}
           />
           <PasswordInput
@@ -101,7 +102,7 @@ const Login = () => {
             placeholder="Your password"
             required
             mt="md"
-            onChange={(e) => { setPassword(e.target.value); }}
+            onChange={(e) => { setPassword(e.target.value) }}
             value={password}
           />
           <Button type="submit" fullWidth mt="xl">
@@ -113,6 +114,6 @@ const Login = () => {
   )
 }
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute('/login')({
   component: Login,
 })

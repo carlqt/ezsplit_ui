@@ -31,7 +31,12 @@ const Receipt = () => {
   }
 
   if (error) {
-    return <>Error: {error.message}</>
+    return (
+      <>
+        Error:
+        {error.message}
+      </>
+    )
   }
 
   if (!data) {
@@ -67,5 +72,5 @@ const Receipt = () => {
 }
 
 export const Route = createFileRoute('/_auth/receipts/$receiptId/')({
-  component: Receipt
+  component: Receipt,
 })

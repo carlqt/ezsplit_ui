@@ -1,8 +1,8 @@
-import { ActionIcon, NumberFormatter, Table } from "@mantine/core"
-import { IconTrash } from "@tabler/icons-react"
-import { Link } from "@tanstack/react-router"
-import { FragmentType, getFragmentData } from "@src/__generated__"
-import { graphql } from "@src/__generated__/gql"
+import { ActionIcon, NumberFormatter, Table } from '@mantine/core'
+import { IconTrash } from '@tabler/icons-react'
+import { Link } from '@tanstack/react-router'
+import { FragmentType, getFragmentData } from '@src/__generated__'
+import { graphql } from '@src/__generated__/gql'
 
 const ReceiptFields = graphql(`
   fragment ReceiptFields on Receipt {
@@ -26,7 +26,7 @@ export const ReceiptItem = ({ data, onClick, index }: Props) => {
     <Table.Tr>
       <Table.Td>{rowIndex}</Table.Td>
       <Table.Td>
-        <Link to={`/receipts/$receiptId`} params={{ receiptId: r.id }}>{r.description}</Link>
+        <Link to="/receipts/$receiptId" params={{ receiptId: r.id }}>{r.description}</Link>
       </Table.Td>
       <Table.Td>
         <NumberFormatter
