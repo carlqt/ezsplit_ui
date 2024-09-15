@@ -3,6 +3,7 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin'
+import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -30,6 +31,16 @@ export default tseslint.config(
     rules: {
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/semi': ['error', 'never'],
+    }
+  },
+
+  // stylistic rules
+  {
+    plugins: {
+      'react-refresh': reactRefresh, 
+    },
+    rules: {
+      'react-refresh/only-export-components': 'warn'
     }
   },
 );
