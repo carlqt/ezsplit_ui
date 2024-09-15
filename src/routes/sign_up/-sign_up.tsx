@@ -9,14 +9,14 @@ import {
   MeQuery,
 } from '@src/__generated__/graphql'
 import {
-  Container,
-  Title,
-  Text,
   Anchor,
-  Paper,
-  TextInput,
-  PasswordInput,
   Button,
+  Container,
+  Paper,
+  PasswordInput,
+  Text,
+  TextInput,
+  Title,
 } from '@mantine/core'
 
 const CREATE_USER = graphql(`
@@ -45,7 +45,6 @@ export const SignupForm = () => {
     CreateUserMutation,
     CreateUserMutationVariables
   >(CREATE_USER, {
-    variables: { input: { username, password, confirmPassword } },
     onCompleted: () => {
       void invalidateRouteContext()
       void navigate({ to: '/' })
@@ -55,11 +54,12 @@ export const SignupForm = () => {
     update(cache, { data }) {
       if (data) {
         cache.writeQuery<MeQuery>({
-          query: MeDocument,
           data: { me: data.createUser },
+          query: MeDocument,
         })
       }
     },
+    variables: { input: { confirmPassword, password, username } },
   })
 
   const onSubmit = (e: FormEvent) => {

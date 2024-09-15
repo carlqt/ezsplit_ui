@@ -23,7 +23,7 @@ export const useAuth = () => {
 
   return {
     isAuthenticated,
-    user: data?.me,
     loading,
+    user: data?.me,
   }
 }

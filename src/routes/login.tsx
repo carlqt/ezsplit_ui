@@ -9,14 +9,14 @@ import {
   MeQuery,
 } from '@src/__generated__/graphql'
 import {
-  Container,
-  Title,
   Anchor,
-  Paper,
-  TextInput,
-  PasswordInput,
   Button,
+  Container,
+  Paper,
+  PasswordInput,
   Text,
+  TextInput,
+  Title,
 } from '@mantine/core'
 
 const LOGIN_USER = graphql(`
@@ -46,7 +46,6 @@ const Login = () => {
     LoginUserMutation,
     LoginUserMutationVariables
   >(LOGIN_USER, {
-    variables: { input: { username, password } },
     onCompleted: () => {
       void invalidateRouteContext()
       void navigate({ to: '/' })
@@ -56,11 +55,12 @@ const Login = () => {
     update: (cache, { data }) => {
       if (data) {
         cache.writeQuery<MeQuery>({
-          query: MeDocument,
           data: { me: data.loginUser },
+          query: MeDocument,
         })
       }
     },
+    variables: { input: { password, username } },
   })
 
   const onSubmit = (e: FormEvent) => {

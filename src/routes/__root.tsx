@@ -1,5 +1,5 @@
 import { MeQuery } from '@src/__generated__/graphql'
-import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
+import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
 const Root = () => {

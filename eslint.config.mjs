@@ -20,7 +20,14 @@ export default tseslint.config(
   },
 
   {
-    ignores: ['dist/*', 'codegen.ts', 'eslint.config.mjs', 'src/__generated__/*']
+    ignores: ['dist/*', 'codegen.ts', 'eslint.config.mjs', 'src/__generated__/*'],
+  },
+
+  // ESLINT Rules
+  {
+    rules: {
+      "sort-keys": "error",
+    }
   },
 
   // stylistic rules
@@ -34,7 +41,7 @@ export default tseslint.config(
     }
   },
 
-  // stylistic rules
+  // react-refresh rules
   {
     plugins: {
       'react-refresh': reactRefresh, 
