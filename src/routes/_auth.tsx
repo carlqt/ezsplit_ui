@@ -1,11 +1,11 @@
-import { AppShell, Group, Burger, NavLink, Title } from '@mantine/core'
+import { AppShell, Burger, Group, NavLink, Title } from '@mantine/core'
 import {
   Outlet,
   createFileRoute,
   redirect,
   useNavigate,
 } from '@tanstack/react-router'
-import { IconReceipt, IconLogout2 } from '@tabler/icons-react'
+import { IconLogout2, IconReceipt } from '@tabler/icons-react'
 import { useAuth } from '@src/hooks/useAuth'
 import { useApolloClient, useMutation } from '@apollo/client'
 import { graphql } from '@src/__generated__/gql'
@@ -49,7 +49,7 @@ const AuthLayout = () => {
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: false } }}
+      navbar={{ breakpoint: 'sm', collapsed: { mobile: false }, width: 300 }}
       padding="md"
     >
       <AppShell.Header>
@@ -88,10 +88,10 @@ export const Route = createFileRoute('/_auth')({
       // Disabling error because this is the documented way to redirect. https://tanstack.com/router/latest/docs/framework/react/api/router/redirectFunction#examples
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw redirect({
-        to: '/login',
         search: {
           redirect: location.href,
         },
+        to: '/login',
       })
     }
   },

@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Modal, Box, TextInput, Button, NumberInput } from '@mantine/core'
+import { Box, Button, Modal, NumberInput, TextInput } from '@mantine/core'
 import { graphql } from '@src/__generated__/gql'
 import {
   CreateMyReceiptMutation,
@@ -48,14 +48,14 @@ export const CreateReceiptModal = ({
     update: (cache, { data }) => {
       // docs at https://www.apollographql.com/docs/react/data/mutations/#the-update-function
       cache.modify<ReceiptsOnMeFragment>({
-        id: cache.identify({ __typename: 'Me', id: userId }),
         fields: {
           receipts: (existingReceipts = [], { toReference }) => {
-            const newReceiptRef = toReference({ id: data?.createMyReceipt.id, __typename: data?.createMyReceipt.__typename })
+            const newReceiptRef = toReference({ __typename: data?.createMyReceipt.__typename, id: data?.createMyReceipt.id })
 
             return [...existingReceipts, newReceiptRef]
           },
         },
+        id: cache.identify({ __typename: 'Me', id: userId }),
       })
     },
   })
@@ -66,7 +66,7 @@ export const CreateReceiptModal = ({
     e.preventDefault()
     void createReceipt({
       variables: {
-        input: { total: floatTotal, description },
+        input: { description, total: floatTotal },
       },
     })
   }

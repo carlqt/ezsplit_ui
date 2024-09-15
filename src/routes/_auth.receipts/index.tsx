@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { Table, Container, Title, Button, Skeleton } from '@mantine/core'
+import { Button, Container, Skeleton, Table, Title } from '@mantine/core'
 import { createFileRoute } from '@tanstack/react-router'
 import { graphql } from '@src/__generated__/gql'
 import { useDisclosure } from '@mantine/hooks'

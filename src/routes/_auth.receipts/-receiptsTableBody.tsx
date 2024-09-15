@@ -47,12 +47,12 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
     update: (cache, { data }) => {
       // Not sure if "ReceiptsOnMeFragment" is the correct type here but it stopped the linter from complaining
       cache.modify<ReceiptsOnMeFragment>({
-        id: cache.identify(receiptsData),
         fields: {
           receipts: (existingReceipts = [], { readField }) => {
             return existingReceipts.filter(receiptRef => readField('id', receiptRef) !== data?.deleteMyReceipt)
           },
         },
+        id: cache.identify(receiptsData),
       })
     },
   })

@@ -1,8 +1,8 @@
-import { useMutation } from '@apollo/client'
-import { ActionIcon, Grid, rem, TextInput, Title } from '@mantine/core'
-import { graphql } from '@src/__generated__/gql'
-import { ReceiptDocument } from '@src/__generated__/graphql'
+import { ActionIcon, Grid, TextInput, Title, rem } from '@mantine/core'
 import { IconArrowRight, IconLink } from '@tabler/icons-react'
+import { ReceiptDocument } from '@src/__generated__/graphql'
+import { graphql } from '@src/__generated__/gql'
+import { useMutation } from '@apollo/client'
 
 const GENERATE_PUBLIC_URL = graphql(`
   mutation generatePublicUrl($receiptId: ID!) {
@@ -22,7 +22,6 @@ export const ShareReceipt = ({ slug, receiptId }: ShareReceiptProps) => {
   const publicUrl = slug ? `${window.location.origin}/receipts/public/${slug}` : ''
 
   const [generatePublicUrl] = useMutation(GENERATE_PUBLIC_URL, {
-    variables: { receiptId },
     update: (cache, { data }) => {
       const receiptDocument = cache.readQuery({ query: ReceiptDocument, variables: { receiptId } })
 
@@ -30,13 +29,14 @@ export const ShareReceipt = ({ slug, receiptId }: ShareReceiptProps) => {
       if (!data?.generatePublicUrl) return
 
       cache.writeQuery({
-        query: ReceiptDocument,
-        variables: { receiptId },
         data: {
           receipt: receiptDocument.receipt,
         },
+        query: ReceiptDocument,
+        variables: { receiptId },
       })
     },
+    variables: { receiptId },
   })
 
   const onClick = () => {
@@ -60,7 +60,7 @@ export const ShareReceipt = ({ slug, receiptId }: ShareReceiptProps) => {
           leftSection={<IconLink />}
           rightSection={(
             <ActionIcon onClick={onClick} size={32} radius="xl" variant="filled">
-              <IconArrowRight style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+              <IconArrowRight style={{ height: rem(18), width: rem(18) }} stroke={1.5} />
             </ActionIcon>
           )}
         />

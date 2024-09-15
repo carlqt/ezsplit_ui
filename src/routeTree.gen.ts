@@ -129,7 +129,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
-export interface FileRoutesByFullPath {
+interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
@@ -139,7 +139,7 @@ export interface FileRoutesByFullPath {
   '/receipts/public/$receiptSlug': typeof ReceiptsPublicReceiptSlugIndexRoute
 }
 
-export interface FileRoutesByTo {
+interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
@@ -149,8 +149,7 @@ export interface FileRoutesByTo {
   '/receipts/public/$receiptSlug': typeof ReceiptsPublicReceiptSlugIndexRoute
 }
 
-export interface FileRoutesById {
-  __root__: typeof rootRoute
+interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
@@ -160,7 +159,7 @@ export interface FileRoutesById {
   '/receipts/public/$receiptSlug/': typeof ReceiptsPublicReceiptSlugIndexRoute
 }
 
-export interface FileRouteTypes {
+interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
@@ -180,7 +179,6 @@ export interface FileRouteTypes {
     | '/receipts/$receiptId'
     | '/receipts/public/$receiptSlug'
   id:
-    | '__root__'
     | '/'
     | '/_auth'
     | '/login'
@@ -191,7 +189,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 
-export interface RootRouteChildren {
+interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   LoginRoute: typeof LoginRoute

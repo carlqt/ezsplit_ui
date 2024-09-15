@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Skeleton, Space, Title, Divider } from '@mantine/core'
+import { Button, Container, Divider, Grid, Skeleton, Space, Title } from '@mantine/core'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { IconChevronLeft } from '@tabler/icons-react'
 import { graphql } from '@src/__generated__/gql'

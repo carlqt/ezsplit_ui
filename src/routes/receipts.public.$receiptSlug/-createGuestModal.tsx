@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Modal, Box, TextInput, Button, Flex, Anchor } from '@mantine/core'
+import { Anchor, Box, Button, Flex, Modal, TextInput } from '@mantine/core'
 import { graphql } from '@src/__generated__'
 import { MeDocument } from '@src/__generated__/graphql'
 import { Link } from '@tanstack/react-router'

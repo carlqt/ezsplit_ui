@@ -36,12 +36,12 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
   const [price, setPrice] = useState('')
 
   const [addItem] = useMutation(CREATE_ITEM_MUTATION, {
-    variables: { input: { receiptId, name, price: 0 } },
     onCompleted: () => {
       setName('')
       setPrice('')
     },
     refetchQueries: [ReceiptDocument],
+    variables: { input: { name, price: 0, receiptId } },
   })
 
   const onCreate = () => {
@@ -50,9 +50,9 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
     void addItem({
       variables: {
         input: {
-          receiptId,
           name,
           price: inputPrice,
+          receiptId,
         },
       },
     })
