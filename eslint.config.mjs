@@ -38,6 +38,7 @@ export default tseslint.config(
     rules: {
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/semi': ['error', 'never'],
+      '@stylistic/max-statements-per-line': ['error', { max: 2 }],
     }
   },
 

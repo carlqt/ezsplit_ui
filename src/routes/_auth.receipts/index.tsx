@@ -20,7 +20,7 @@ const ReceiptsPage = () => {
   const [opened, { open, close }] = useDisclosure(false)
 
   if (loading) {
-    return <Skeleton visible={loading} height={100}></Skeleton>
+    return <Skeleton visible={true} height={100}></Skeleton>
   }
 
   if (error) {
