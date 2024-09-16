@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client'
-import { ActionIcon, FocusTrap, Table, TextInput } from '@mantine/core'
+import { ActionIcon, FocusTrap, NumberInput, Table, TextInput } from '@mantine/core'
 import { graphql } from '@src/__generated__/gql'
 import { ReceiptDocument } from '@src/__generated__/graphql'
 import { IconCirclePlus, IconDeviceFloppy } from '@tabler/icons-react'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { Item } from './-item'
 import { FragmentType, getFragmentData } from '@src/__generated__/'
 
@@ -44,7 +44,9 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
     variables: { input: { name, price: 0, receiptId } },
   })
 
-  const onCreate = () => {
+  const onCreate = (e: FormEvent) => {
+    e.preventDefault()
+
     const inputPrice = parseFloat(price)
 
     void addItem({
@@ -56,6 +58,10 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
         },
       },
     })
+  }
+
+  const onPriceChange = (value: string | number) => {
+    setPrice(value.toString())
   }
 
   const actionRow = () => {
@@ -75,21 +81,22 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
               value={name}
             />
           </Table.Td>
+
           <Table.Td>
-            <TextInput
+            <NumberInput
               required
+              hideControls
               variant="unstyled"
               placeholder="Add price"
-              onChange={(e) => { setPrice(e.currentTarget.value) }}
-              type="number"
+              onChange={onPriceChange}
               value={price}
             />
           </Table.Td>
+
           <Table.Td>
             <ActionIcon
               variant="transparent"
-              onClick={onCreate}
-            // loading={isDeleting}
+              type="submit"
             >
               {actionIcon}
             </ActionIcon>
@@ -100,23 +107,25 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
   }
 
   return (
-    <Table>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>Name</Table.Th>
-          <Table.Th>Price</Table.Th>
-          <Table.Th>Actions</Table.Th>
-        </Table.Tr>
-      </Table.Thead>
+    <form onSubmit={onCreate}>
+      <Table>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Name</Table.Th>
+            <Table.Th>Price</Table.Th>
+            <Table.Th>Actions</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
 
-      <Table.Tbody>
-        <>
-          {itemsData.items.map((item, index) => <Item key={item.id} index={index} data={item} />)}
-        </>
-        <>
-          {actionRow()}
-        </>
-      </Table.Tbody>
-    </Table>
+        <Table.Tbody>
+          <>
+            {itemsData.items.map((item, index) => <Item key={item.id} index={index} data={item} />)}
+          </>
+          <>
+            {actionRow()}
+          </>
+        </Table.Tbody>
+      </Table>
+    </form>
   )
 }
