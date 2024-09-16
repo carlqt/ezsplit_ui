@@ -60,8 +60,9 @@ export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
       </Table.Thead>
 
       <Table.Tbody>
-        {itemsData.items.map(item => (
+        {itemsData.items.map((item, index) => (
           <PublicReceiptTableItem
+            index={index}
             key={item.id}
             data={item}
             isSelected={isSelected(item.id)}

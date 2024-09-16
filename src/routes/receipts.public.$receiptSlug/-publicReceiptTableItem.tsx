@@ -18,9 +18,10 @@ interface ItemProps {
   data: FragmentType<typeof PublicReceiptItemFields>
   isSelected: boolean
   onSelect: () => void
+  index: number
 }
 
-export const PublicReceiptTableItem = ({ data, isSelected, onSelect }: ItemProps) => {
+export const PublicReceiptTableItem = ({ data, isSelected, onSelect, index }: ItemProps) => {
   const item = getFragmentData(PublicReceiptItemFields, data)
   const { price, sharedBy, name } = item
 
@@ -30,7 +31,7 @@ export const PublicReceiptTableItem = ({ data, isSelected, onSelect }: ItemProps
 
   return (
     <Table.Tr>
-      <Table.Td>xxx</Table.Td>
+      <Table.Td>{ index + 1 }</Table.Td>
       <Table.Td>
         {name}
       </Table.Td>
