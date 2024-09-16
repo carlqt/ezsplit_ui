@@ -82,6 +82,7 @@ export type Mutation = {
   createGuestUser: User;
   createMyReceipt: Receipt;
   createUser: Me;
+  deleteItemFromReceipt: DeleteItemPayload;
   deleteMyReceipt: Scalars['ID']['output'];
   generatePublicUrl: Receipt;
   loginUser: Me;
@@ -123,6 +124,11 @@ export type MutationCreateMyReceiptArgs = {
 
 export type MutationCreateUserArgs = {
   input?: InputMaybe<UserInput>;
+};
+
+
+export type MutationDeleteItemFromReceiptArgs = {
+  itemId: Scalars['ID']['input'];
 };
 
 
