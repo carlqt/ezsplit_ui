@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { ActionIcon, FocusTrap, NumberInput, Table, TextInput } from '@mantine/core'
 import { graphql } from '@src/__generated__/gql'
-import { ReceiptDocument } from '@src/__generated__/graphql'
+import { ReceiptItemListFragment } from '@src/__generated__/graphql'
 import { IconCirclePlus, IconDeviceFloppy } from '@tabler/icons-react'
 import { FormEvent, useState } from 'react'
 import { Item } from './-item'
@@ -40,7 +40,20 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
       setName('')
       setPrice('')
     },
-    refetchQueries: [ReceiptDocument],
+    update: (cache, { data }) => {
+      if (!data?.addItemToReceipt) return
+
+      cache.modify<ReceiptItemListFragment>({
+        fields: {
+          items: (itemsRef = [], { toReference }) => {
+            const newItemRef = toReference(data.addItemToReceipt)
+
+            return [...itemsRef, newItemRef]
+          },
+        },
+        id: cache.identify(itemsData),
+      })
+    },
     variables: { input: { name, price: 0, receiptId } },
   })
 
