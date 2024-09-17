@@ -129,6 +129,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
       <Table>
         <Table.Thead>
           <Table.Tr>
+            <Table.Th>#</Table.Th>
             <Table.Th>Name</Table.Th>
             <Table.Th>Price</Table.Th>
             <Table.Th>Actions</Table.Th>

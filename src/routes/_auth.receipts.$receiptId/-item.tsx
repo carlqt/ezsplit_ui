@@ -1,5 +1,5 @@
-import { ActionIcon, NumberFormatter, Table } from '@mantine/core'
-import { IconTrash, IconEdit, IconDeviceFloppy } from '@tabler/icons-react'
+import { ActionIcon, NumberFormatter, NumberInput, NumberInputProps, rem, Table, TextInput, TextInputProps } from '@mantine/core'
+import { IconTrash, IconEdit, IconDeviceFloppy, IconWriting } from '@tabler/icons-react'
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
 import { useMutation } from '@apollo/client'
@@ -51,6 +51,53 @@ const EditActionIcon = (props: { editMode: boolean, setEditMode: Dispatch<SetSta
   )
 }
 
+const PriceCell = (props: { editMode: boolean, value?: string | number, onChange?: NumberInputProps['onChange'] }) => {
+  const { editMode, value, onChange } = props
+
+  if (editMode) {
+    return (
+      <NumberInput
+        required
+        hideControls
+        rightSection={<IconWriting style={{ height: rem(16) }} />}
+        form="on-create"
+        variant="unstyled"
+        placeholder="Add price"
+        onChange={onChange}
+        value={value}
+      />
+    )
+  }
+
+  return (
+    <NumberFormatter
+      prefix="$"
+      value={value}
+      thousandSeparator={true}
+    />
+  )
+}
+
+const NameCell = (props: { editMode: boolean, value?: string | number, onChange?: TextInputProps['onChange'] }) => {
+  const { editMode, value, onChange } = props
+
+  if (editMode) {
+    return (
+      <TextInput
+        required
+        rightSection={<IconWriting style={{ height: rem(16) }} />}
+        form="on-update"
+        variant="unstyled"
+        placeholder="Add name"
+        onChange={onChange}
+        value={value}
+      />
+    )
+  }
+
+  return <>{value}</>
+}
+
 export const Item = ({ data, index }: ItemProps) => {
   const item = getFragmentData(ReceiptItemFields, data)
   const { name, price } = item
@@ -75,12 +122,11 @@ export const Item = ({ data, index }: ItemProps) => {
   return (
     <Table.Tr>
       <Table.Td>{rowIndex}</Table.Td>
-      <Table.Td>{name}</Table.Td>
+      <Table.Td><NameCell editMode={editMode} value={name} /></Table.Td>
       <Table.Td>
-        <NumberFormatter
-          prefix="$"
+        <PriceCell
+          editMode={editMode}
           value={price}
-          thousandSeparator={true}
         />
       </Table.Td>
       <Table.Td>
