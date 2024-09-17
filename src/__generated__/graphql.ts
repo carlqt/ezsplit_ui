@@ -78,7 +78,6 @@ export type Mutation = {
   addItemToReceipt: Item;
   assignMeToItem: Item;
   assignOrRemoveMeFromItem: UserOrderRef;
-  assignUserToItem: Item;
   createGuestUser: User;
   createMyReceipt: Receipt;
   createUser: Me;
@@ -89,6 +88,7 @@ export type Mutation = {
   logoutUser: Scalars['String']['output'];
   removeMeFromItem: DeleteItemPayload;
   removePublicUrl: Receipt;
+  updateItemFromReceipt: Item;
 };
 
 
@@ -104,11 +104,6 @@ export type MutationAssignMeToItemArgs = {
 
 export type MutationAssignOrRemoveMeFromItemArgs = {
   itemId: Scalars['ID']['input'];
-};
-
-
-export type MutationAssignUserToItemArgs = {
-  input?: InputMaybe<AssignUserToItemInput>;
 };
 
 
@@ -156,6 +151,11 @@ export type MutationRemovePublicUrlArgs = {
   id: Scalars['ID']['input'];
 };
 
+
+export type MutationUpdateItemFromReceiptArgs = {
+  input?: InputMaybe<UpdateItemToReceiptInput>;
+};
+
 export type OrderFilterInput = {
   receiptId: Scalars['ID']['input'];
 };
@@ -193,6 +193,12 @@ export type Receipt = {
 export type ReceiptInput = {
   description: Scalars['String']['input'];
   total?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type UpdateItemToReceiptInput = {
+  itemId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+  price?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type User = {
