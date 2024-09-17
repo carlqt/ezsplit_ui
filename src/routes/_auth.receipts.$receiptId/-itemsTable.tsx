@@ -88,6 +88,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
             <TextInput
               required
               data-autofocus
+              form="on-create"
               variant="unstyled"
               placeholder="Add item"
               onChange={(e) => { setName(e.currentTarget.value) }}
@@ -99,6 +100,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
             <NumberInput
               required
               hideControls
+              form="on-create"
               variant="unstyled"
               placeholder="Add price"
               onChange={onPriceChange}
@@ -110,6 +112,7 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
             <ActionIcon
               variant="transparent"
               type="submit"
+              form="on-create"
             >
               {actionIcon}
             </ActionIcon>
@@ -120,7 +123,9 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
   }
 
   return (
-    <form onSubmit={onCreate}>
+    <div className="itemsTable">
+      <form id="on-create" onSubmit={onCreate} />
+
       <Table>
         <Table.Thead>
           <Table.Tr>
@@ -139,6 +144,6 @@ export const ItemsTable = ({ data, receiptId }: ItemsTableProps) => {
           </>
         </Table.Tbody>
       </Table>
-    </form>
+    </div>
   )
 }
