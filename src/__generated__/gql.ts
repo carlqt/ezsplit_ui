@@ -16,6 +16,7 @@ const documents = {
     "\n  query Me {\n    me {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n": types.MeDocument,
     "\n  fragment ReceiptItemFields on Item {\n    id\n    name\n    price\n  }\n": types.ReceiptItemFieldsFragmentDoc,
     "\n  mutation DeleteItemFromReceipt($itemId: ID!) {\n    deleteItemFromReceipt(itemId: $itemId) {\n      id\n    }\n  } \n": types.DeleteItemFromReceiptDocument,
+    "\n  mutation UpdateItemFromReceipt($input: UpdateItemToReceiptInput) {\n    updateItemFromReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n": types.UpdateItemFromReceiptDocument,
     "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.AddItemToReceiptDocument,
     "\n  fragment ReceiptItemList on Receipt {\n    items {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.ReceiptItemListFragmentDoc,
     "\n  mutation generatePublicUrl($receiptId: ID!) {\n    generatePublicUrl(id: $receiptId) {\n      id\n      slug\n    }\n  }\n": types.GeneratePublicUrlDocument,
@@ -61,6 +62,10 @@ export function graphql(source: "\n  fragment ReceiptItemFields on Item {\n    i
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation DeleteItemFromReceipt($itemId: ID!) {\n    deleteItemFromReceipt(itemId: $itemId) {\n      id\n    }\n  } \n"): (typeof documents)["\n  mutation DeleteItemFromReceipt($itemId: ID!) {\n    deleteItemFromReceipt(itemId: $itemId) {\n      id\n    }\n  } \n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateItemFromReceipt($input: UpdateItemToReceiptInput) {\n    updateItemFromReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateItemFromReceipt($input: UpdateItemToReceiptInput) {\n    updateItemFromReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

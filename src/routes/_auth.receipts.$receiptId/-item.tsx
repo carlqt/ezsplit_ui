@@ -3,7 +3,8 @@ import { IconTrash, IconEdit, IconDeviceFloppy, IconWriting } from '@tabler/icon
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
 import { useMutation } from '@apollo/client'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useRef, useState } from 'react'
+import { ReceiptDocument } from '@src/__generated__/graphql'
 
 const ReceiptItemFields = graphql(`
   fragment ReceiptItemFields on Item {
@@ -21,43 +22,31 @@ const DeleteItemMutation = graphql(`
   } 
 `)
 
+const UpdateItemMutation = graphql(`
+  mutation UpdateItemFromReceipt($input: UpdateItemToReceiptInput) {
+    updateItemFromReceipt(input: $input) {
+      id
+      name
+      price
+    }
+  }
+`)
+
 interface ItemProps {
   data: FragmentType<typeof ReceiptItemFields>
   index: number
 }
 
-// Tried using ComponentProps but can't inherit props from ActionIcon
-const EditActionIcon = (props: { editMode: boolean, setEditMode: Dispatch<SetStateAction<boolean>> }) => {
-  const { editMode, setEditMode } = props
-
-  if (editMode) {
-    return (
-      <ActionIcon
-        onClick={() => { setEditMode(false) }}
-        variant="transparent"
-      >
-        <IconDeviceFloppy />
-      </ActionIcon>
-    )
-  }
-
-  return (
-    <ActionIcon
-      onClick={() => { setEditMode(true) }}
-      variant="transparent"
-    >
-      <IconEdit />
-    </ActionIcon>
-  )
-}
-
 export const Item = ({ data, index }: ItemProps) => {
   const item = getFragmentData(ReceiptItemFields, data)
-  const { name, price } = item
+  const { name, price, id } = item
   const rowIndex = index + 1
 
   const [itemName, setName] = useState(name)
   const [itemPrice, setPrice] = useState(price)
+
+  const priceInputRef = useRef<HTMLInputElement>(null)
+  const nameInputRef = useRef<HTMLInputElement>(null)
 
   const onPriceChange = (value: string | number) => {
     setPrice(value.toString())
@@ -76,26 +65,52 @@ export const Item = ({ data, index }: ItemProps) => {
         cache.gc()
       }
     },
-    variables: { itemId: item.id },
+    variables: { itemId: id },
   })
+
+  // TODO: Use ref to trigger checkValidity
+  const [updateItem] = useMutation(UpdateItemMutation, {
+    refetchQueries: [ReceiptDocument],
+  })
+
+  const onUpdateItem = () => {
+    if (!priceInputRef.current?.reportValidity()) return
+    if (!nameInputRef.current?.reportValidity()) return
+
+    const floatPrice = parseFloat(itemPrice)
+
+    setEditMode(false)
+
+    void updateItem({
+      variables: {
+        input: {
+          itemId: id,
+          name: itemName,
+          price: floatPrice,
+        },
+      },
+    })
+  }
 
   return (
     <Table.Tr>
       <Table.Td>{rowIndex}</Table.Td>
       <Table.Td>
-        { editMode
-          ? (
-              <TextInput
-                required
-                rightSection={<IconWriting style={{ height: rem(16) }} />}
-                form="on-update"
-                variant="unstyled"
-                placeholder="Add name"
-                onChange={(e) => { setName(e.currentTarget.value) }}
-                value={itemName}
-              />
-            )
-          : <>{itemName}</>}
+        {
+          editMode
+            ? (
+                <TextInput
+                  required
+                  rightSection={<IconWriting style={{ height: rem(16) }} />}
+                  ref={nameInputRef}
+                  variant="unstyled"
+                  placeholder="Add name"
+                  onChange={(e) => { setName(e.currentTarget.value) }}
+                  value={itemName}
+                />
+              )
+            : <>{itemName}</>
+        }
 
       </Table.Td>
       <Table.Td>
@@ -106,8 +121,9 @@ export const Item = ({ data, index }: ItemProps) => {
                 <NumberInput
                   required
                   hideControls
+                  ref={priceInputRef}
                   rightSection={<IconWriting style={{ height: rem(16) }} />}
-                  form="on-create"
+                  form="on-update"
                   variant="unstyled"
                   placeholder="Add price"
                   onChange={onPriceChange}
@@ -124,7 +140,29 @@ export const Item = ({ data, index }: ItemProps) => {
         }
       </Table.Td>
       <Table.Td>
-        <EditActionIcon setEditMode={setEditMode} editMode={editMode} />
+        {
+          editMode
+            ? (
+                <ActionIcon
+                  onClick={onUpdateItem}
+                  variant="transparent"
+                >
+                  <IconDeviceFloppy />
+                </ActionIcon>
+
+              )
+            : (
+                <ActionIcon
+                  onClick={() => { setEditMode(true) }}
+                  type="submit"
+                  form="on-update"
+                  variant="transparent"
+                >
+                  <IconEdit />
+                </ActionIcon>
+
+              )
+        }
 
         <ActionIcon
           variant="transparent"
