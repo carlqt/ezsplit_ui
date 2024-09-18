@@ -1,4 +1,4 @@
-import { ActionIcon, NumberFormatter, NumberInput, NumberInputProps, rem, Table, TextInput, TextInputProps } from '@mantine/core'
+import { ActionIcon, NumberFormatter, NumberInput, rem, Table, TextInput } from '@mantine/core'
 import { IconTrash, IconEdit, IconDeviceFloppy, IconWriting } from '@tabler/icons-react'
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
@@ -51,57 +51,17 @@ const EditActionIcon = (props: { editMode: boolean, setEditMode: Dispatch<SetSta
   )
 }
 
-const PriceCell = (props: { editMode: boolean, value?: string | number, onChange?: NumberInputProps['onChange'] }) => {
-  const { editMode, value, onChange } = props
-
-  if (editMode) {
-    return (
-      <NumberInput
-        required
-        hideControls
-        rightSection={<IconWriting style={{ height: rem(16) }} />}
-        form="on-create"
-        variant="unstyled"
-        placeholder="Add price"
-        onChange={onChange}
-        value={value}
-      />
-    )
-  }
-
-  return (
-    <NumberFormatter
-      prefix="$"
-      value={value}
-      thousandSeparator={true}
-    />
-  )
-}
-
-const NameCell = (props: { editMode: boolean, value?: string | number, onChange?: TextInputProps['onChange'] }) => {
-  const { editMode, value, onChange } = props
-
-  if (editMode) {
-    return (
-      <TextInput
-        required
-        rightSection={<IconWriting style={{ height: rem(16) }} />}
-        form="on-update"
-        variant="unstyled"
-        placeholder="Add name"
-        onChange={onChange}
-        value={value}
-      />
-    )
-  }
-
-  return <>{value}</>
-}
-
 export const Item = ({ data, index }: ItemProps) => {
   const item = getFragmentData(ReceiptItemFields, data)
   const { name, price } = item
   const rowIndex = index + 1
+
+  const [itemName, setName] = useState(name)
+  const [itemPrice, setPrice] = useState(price)
+
+  const onPriceChange = (value: string | number) => {
+    setPrice(value.toString())
+  }
 
   const [editMode, setEditMode] = useState(false)
 
@@ -122,12 +82,46 @@ export const Item = ({ data, index }: ItemProps) => {
   return (
     <Table.Tr>
       <Table.Td>{rowIndex}</Table.Td>
-      <Table.Td><NameCell editMode={editMode} value={name} /></Table.Td>
       <Table.Td>
-        <PriceCell
-          editMode={editMode}
-          value={price}
-        />
+        { editMode
+          ? (
+              <TextInput
+                required
+                rightSection={<IconWriting style={{ height: rem(16) }} />}
+                form="on-update"
+                variant="unstyled"
+                placeholder="Add name"
+                onChange={(e) => { setName(e.currentTarget.value) }}
+                value={itemName}
+              />
+            )
+          : <>{itemName}</>}
+
+      </Table.Td>
+      <Table.Td>
+        {
+          editMode
+
+            ? (
+                <NumberInput
+                  required
+                  hideControls
+                  rightSection={<IconWriting style={{ height: rem(16) }} />}
+                  form="on-create"
+                  variant="unstyled"
+                  placeholder="Add price"
+                  onChange={onPriceChange}
+                  value={itemPrice}
+                />
+              )
+            : (
+                <NumberFormatter
+                  prefix="$"
+                  value={itemPrice}
+                  thousandSeparator={true}
+                />
+              )
+        }
       </Table.Td>
       <Table.Td>
         <EditActionIcon setEditMode={setEditMode} editMode={editMode} />
