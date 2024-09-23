@@ -5,6 +5,7 @@ import { FragmentType, getFragmentData } from '@src/__generated__'
 import { useMutation } from '@apollo/client'
 import { useRef, useState } from 'react'
 import { ReceiptDocument } from '@src/__generated__/graphql'
+import { getHotkeyHandler } from '@mantine/hooks'
 
 const ReceiptItemFields = graphql(`
   fragment ReceiptItemFields on Item {
@@ -107,6 +108,7 @@ export const Item = ({ data, index }: ItemProps) => {
                   placeholder="Add name"
                   onChange={(e) => { setName(e.currentTarget.value) }}
                   value={itemName}
+                  onKeyDown={getHotkeyHandler([['Enter', onUpdateItem]])}
                 />
               )
             : <>{itemName}</>
@@ -128,6 +130,7 @@ export const Item = ({ data, index }: ItemProps) => {
                   placeholder="Add price"
                   onChange={onPriceChange}
                   value={itemPrice}
+                  onKeyDown={getHotkeyHandler([['Enter', onUpdateItem]])}
                 />
               )
             : (
