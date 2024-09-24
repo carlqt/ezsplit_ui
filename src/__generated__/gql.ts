@@ -14,9 +14,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query Me {\n    me {\n      id\n      username\n      state\n      totalPayables\n      orders {\n        id\n      }\n    }\n  }\n": types.MeDocument,
+    "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.AddItemToReceiptDocument,
     "\n  fragment ReceiptItemFields on Item {\n    id\n    name\n    price\n  }\n": types.ReceiptItemFieldsFragmentDoc,
     "\n  mutation DeleteItemFromReceipt($itemId: ID!) {\n    deleteItemFromReceipt(itemId: $itemId) {\n      id\n    }\n  } \n": types.DeleteItemFromReceiptDocument,
-    "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.AddItemToReceiptDocument,
+    "\n  mutation UpdateItemFromReceipt($input: UpdateItemToReceiptInput) {\n    updateItemFromReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n": types.UpdateItemFromReceiptDocument,
     "\n  fragment ReceiptItemList on Receipt {\n    items {\n      id\n      ...ReceiptItemFields\n    }\n  }\n": types.ReceiptItemListFragmentDoc,
     "\n  mutation generatePublicUrl($receiptId: ID!) {\n    generatePublicUrl(id: $receiptId) {\n      id\n      slug\n    }\n  }\n": types.GeneratePublicUrlDocument,
     "\n  query Receipt($receiptId: ID!) {\n    receipt(id: $receiptId) {\n      id\n      total\n      description\n      slug\n      ...ReceiptItemList\n    }\n  }\n": types.ReceiptDocument,
@@ -56,6 +57,10 @@ export function graphql(source: "\n  query Me {\n    me {\n      id\n      usern
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"): (typeof documents)["\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  fragment ReceiptItemFields on Item {\n    id\n    name\n    price\n  }\n"): (typeof documents)["\n  fragment ReceiptItemFields on Item {\n    id\n    name\n    price\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -64,7 +69,7 @@ export function graphql(source: "\n  mutation DeleteItemFromReceipt($itemId: ID!
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"): (typeof documents)["\n  mutation AddItemToReceipt($input: AddItemToReceiptInput) {\n    addItemToReceipt(input: $input) {\n      id\n      ...ReceiptItemFields\n    }\n  }\n"];
+export function graphql(source: "\n  mutation UpdateItemFromReceipt($input: UpdateItemToReceiptInput) {\n    updateItemFromReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateItemFromReceipt($input: UpdateItemToReceiptInput) {\n    updateItemFromReceipt(input: $input) {\n      id\n      name\n      price\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
