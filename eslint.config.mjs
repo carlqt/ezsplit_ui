@@ -4,6 +4,7 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import reactHooks from "eslint-plugin-react-hooks"
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -45,10 +46,21 @@ export default tseslint.config(
   // react-refresh rules
   {
     plugins: {
-      'react-refresh': reactRefresh, 
+      'react-refresh': reactRefresh,
     },
     rules: {
       'react-refresh/only-export-components': 'warn'
+    }
+  },
+
+  // react-hooks rules
+  // Some Type issues but rule works. Better than nothing
+  {
+    plugins: {
+      'react-hooks': reactHooks,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules
     }
   },
 );
