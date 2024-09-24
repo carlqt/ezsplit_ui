@@ -132,7 +132,6 @@ export const Item = ({ data, index }: ItemProps) => {
                   valueIsNumericString
                   ref={priceInputRef}
                   rightSection={<IconWriting style={{ height: rem(16) }} />}
-                  form="on-update"
                   variant="unstyled"
                   placeholder="Add price"
                   onChange={onPriceChange}
