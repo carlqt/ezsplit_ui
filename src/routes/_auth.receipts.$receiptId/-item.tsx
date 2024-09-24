@@ -5,7 +5,7 @@ import { FragmentType, getFragmentData } from '@src/__generated__'
 import { useMutation } from '@apollo/client'
 import { useRef, useState } from 'react'
 import { ReceiptDocument } from '@src/__generated__/graphql'
-import { getHotkeyHandler } from '@mantine/hooks'
+import { getHotkeyHandler, HotkeyItem } from '@mantine/hooks'
 
 const ReceiptItemFields = graphql(`
   fragment ReceiptItemFields on Item {
@@ -93,6 +93,11 @@ export const Item = ({ data, index }: ItemProps) => {
     })
   }
 
+  const hotkeysForInputs: HotkeyItem[] = [
+    ['Enter', onUpdateItem],
+    ['Escape', () => { setEditMode(false) }],
+  ]
+
   return (
     <Table.Tr>
       <Table.Td>{rowIndex}</Table.Td>
@@ -108,7 +113,7 @@ export const Item = ({ data, index }: ItemProps) => {
                   placeholder="Add name"
                   onChange={(e) => { setName(e.currentTarget.value) }}
                   value={itemName}
-                  onKeyDown={getHotkeyHandler([['Enter', onUpdateItem]])}
+                  onKeyDown={getHotkeyHandler(hotkeysForInputs)}
                 />
               )
             : <>{itemName}</>
@@ -123,6 +128,8 @@ export const Item = ({ data, index }: ItemProps) => {
                 <NumberInput
                   required
                   hideControls
+                  fixedDecimalScale
+                  valueIsNumericString
                   ref={priceInputRef}
                   rightSection={<IconWriting style={{ height: rem(16) }} />}
                   form="on-update"
@@ -130,7 +137,8 @@ export const Item = ({ data, index }: ItemProps) => {
                   placeholder="Add price"
                   onChange={onPriceChange}
                   value={itemPrice}
-                  onKeyDown={getHotkeyHandler([['Enter', onUpdateItem]])}
+                  decimalScale={2}
+                  onKeyDown={getHotkeyHandler(hotkeysForInputs)}
                 />
               )
             : (
