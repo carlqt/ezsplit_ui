@@ -6,6 +6,7 @@ import './index.css'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import { useAuth } from './hooks/useAuth.ts'
 import { MantineProvider, createTheme } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
 
 const router = createRouter({
   context: { auth: undefined },
@@ -51,6 +52,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <MantineProvider theme={theme} defaultColorScheme="auto">
+        <Notifications position="top-right" />
+
         <InnerApp />
       </MantineProvider>
     </ApolloProvider>
