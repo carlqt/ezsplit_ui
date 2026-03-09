@@ -1,7 +1,0 @@
-:3000 {
-  handle_path /api/* {
-    reverse_proxy host.docker.internal:7777
-  }
-
-  reverse_proxy host.docker.internal:5173
-}

@@ -8,9 +8,13 @@ up:
 
 down:
   docker compose down
+  pkill -f "pnpm dev"
 
 build:
   docker compose build
+
+lint:
+  pnpm lint
 
 # Starts the backend
 start-backend:

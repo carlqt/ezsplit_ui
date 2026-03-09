@@ -26,7 +26,7 @@ const client = new ApolloClient({
   devtools: {
     enabled: true,
   },
-  uri: 'http://localhost:3000/api/query',
+  uri: 'http://localhost:5173/query',
 })
 
 const InnerApp = () => {
