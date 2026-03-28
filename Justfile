@@ -3,7 +3,7 @@ default:
 
 # Start the entire application (both backend and frontend)
 up:
-  docker compose up -d
+  docker compose up --build -d
   pnpm dev
 
 down:
