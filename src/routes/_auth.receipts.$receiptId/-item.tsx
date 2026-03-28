@@ -3,7 +3,7 @@ import { IconTrash, IconEdit, IconDeviceFloppy, IconWriting } from '@tabler/icon
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
 import { useMutation } from '@apollo/client'
-import { useRef, useState } from 'react'
+import { useRef, useState, useCallback, useMemo, KeyboardEvent } from 'react'
 import { ReceiptDocument } from '@src/__generated__/graphql'
 import { getHotkeyHandler, HotkeyItem } from '@mantine/hooks'
 
@@ -93,10 +93,20 @@ export const Item = ({ data, index }: ItemProps) => {
     })
   }
 
-  const hotkeysForInputs: HotkeyItem[] = [
+  // build the list once and keep a stable reference
+  const hotkeysForInputs = useMemo<HotkeyItem[]>(() => [
     ['Enter', onUpdateItem],
     ['Escape', () => { setEditMode(false) }],
-  ]
+  ], [onUpdateItem])
+
+  // create a keydown handler that calls Mantine's helper only when an
+  // event occurs; this prevents refs from being read during render
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      getHotkeyHandler(hotkeysForInputs)(e)
+    },
+    [hotkeysForInputs],
+  )
 
   return (
     <Table.Tr>
@@ -113,7 +123,7 @@ export const Item = ({ data, index }: ItemProps) => {
                   placeholder="Add name"
                   onChange={(e) => { setName(e.currentTarget.value) }}
                   value={itemName}
-                  onKeyDown={getHotkeyHandler(hotkeysForInputs)}
+                  onKeyDown={handleKeyDown}
                 />
               )
             : <>{itemName}</>
@@ -137,7 +147,7 @@ export const Item = ({ data, index }: ItemProps) => {
                   onChange={onPriceChange}
                   value={itemPrice}
                   decimalScale={2}
-                  onKeyDown={getHotkeyHandler(hotkeysForInputs)}
+                  onKeyDown={handleKeyDown}
                 />
               )
             : (
