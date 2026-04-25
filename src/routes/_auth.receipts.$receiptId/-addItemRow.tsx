@@ -1,10 +1,9 @@
 import { useMutation } from '@apollo/client'
 import { ActionIcon, FocusTrap, NumberInput, Table, TextInput } from '@mantine/core'
-import { getHotkeyHandler, HotkeyItem } from '@mantine/hooks'
 import { graphql } from '@src/__generated__/gql'
 import { ReceiptItemListFragment } from '@src/__generated__/graphql'
 import { IconCirclePlus, IconDeviceFloppy } from '@tabler/icons-react'
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 const CREATE_ITEM_MUTATION = graphql(`
   mutation AddItemToReceipt($input: AddItemToReceiptInput) {
@@ -49,7 +48,7 @@ export const AddItemRow = ({ receiptId, itemsCache }: Props) => {
     },
   })
 
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     if (!nameInputRef.current?.reportValidity()) return
     if (!priceInputRef.current?.reportValidity()) return
 
@@ -64,15 +63,15 @@ export const AddItemRow = ({ receiptId, itemsCache }: Props) => {
         },
       },
     })
-  }
+  }, [addItem, name, price, receiptId])
 
   const onPriceChange = (value: string | number) => {
     setPrice(value.toString())
   }
 
-  const hotkeysForInputs: HotkeyItem[] = [
-    ['Enter', onCreate],
-  ]
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') onCreate()
+  }, [onCreate])
 
   return (
     <FocusTrap active>
@@ -87,7 +86,7 @@ export const AddItemRow = ({ receiptId, itemsCache }: Props) => {
             placeholder="Add item"
             onChange={(e) => { setName(e.currentTarget.value) }}
             value={name}
-            onKeyDown={getHotkeyHandler(hotkeysForInputs)}
+            onKeyDown={handleKeyDown}
           />
         </Table.Td>
 
@@ -102,7 +101,7 @@ export const AddItemRow = ({ receiptId, itemsCache }: Props) => {
             onChange={onPriceChange}
             value={price}
             decimalScale={2}
-            onKeyDown={getHotkeyHandler(hotkeysForInputs)}
+            onKeyDown={handleKeyDown}
           />
         </Table.Td>
 

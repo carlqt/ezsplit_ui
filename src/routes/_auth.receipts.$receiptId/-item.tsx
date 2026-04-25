@@ -3,9 +3,8 @@ import { IconTrash, IconEdit, IconDeviceFloppy, IconWriting } from '@tabler/icon
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
 import { useMutation } from '@apollo/client'
-import { useRef, useState, useCallback, useMemo, KeyboardEvent } from 'react'
+import { useRef, useState, useCallback, type KeyboardEvent } from 'react'
 import { ReceiptDocument } from '@src/__generated__/graphql'
-import { getHotkeyHandler, HotkeyItem } from '@mantine/hooks'
 
 const ReceiptItemFields = graphql(`
   fragment ReceiptItemFields on Item {
@@ -74,7 +73,7 @@ export const Item = ({ data, index }: ItemProps) => {
     refetchQueries: [ReceiptDocument],
   })
 
-  const onUpdateItem = () => {
+  const onUpdateItem = useCallback(() => {
     if (!priceInputRef.current?.reportValidity()) return
     if (!nameInputRef.current?.reportValidity()) return
 
@@ -91,22 +90,19 @@ export const Item = ({ data, index }: ItemProps) => {
         },
       },
     })
-  }
+  }, [id, itemName, itemPrice, updateItem])
 
-  // build the list once and keep a stable reference
-  const hotkeysForInputs = useMemo<HotkeyItem[]>(() => [
-    ['Enter', onUpdateItem],
-    ['Escape', () => { setEditMode(false) }],
-  ], [onUpdateItem])
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      onUpdateItem()
+    }
 
-  // create a keydown handler that calls Mantine's helper only when an
-  // event occurs; this prevents refs from being read during render
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      getHotkeyHandler(hotkeysForInputs)(e)
-    },
-    [hotkeysForInputs],
-  )
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      setEditMode(false)
+    }
+  }, [onUpdateItem])
 
   return (
     <Table.Tr>
