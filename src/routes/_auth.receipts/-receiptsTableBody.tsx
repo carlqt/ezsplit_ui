@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client'
-import { Table } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { Center, Stack, Table, Text } from '@mantine/core'
 import { FragmentType, getFragmentData } from '@src/__generated__'
 import { graphql } from '@src/__generated__/gql'
+import { useState } from 'react'
 import {
   DeleteMyReceiptMutation,
   DeleteMyReceiptMutationVariables,
@@ -32,17 +32,17 @@ interface ReceiptsTableBodyProps {
 export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
   const receiptsData = getFragmentData(ReceiptsOnMe, data)
   const { receipts } = receiptsData
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, { open: startLoading, close: stopLoading }]
-    = useDisclosure()
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const [deleteReceipt] = useMutation<
     DeleteMyReceiptMutation,
     DeleteMyReceiptMutationVariables
   >(DELETE_RECEIPT_MUTATION, {
     onCompleted: () => {
-      stopLoading()
+      setDeletingId(null)
+    },
+    onError: () => {
+      setDeletingId(null)
     },
     update: (cache, { data }) => {
       // Not sure if "ReceiptsOnMeFragment" is the correct type here but it stopped the linter from complaining
@@ -58,8 +58,25 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
   })
 
   const onDelete = (id: string) => {
-    startLoading()
+    setDeletingId(id)
     void deleteReceipt({ variables: { input: { id } } })
+  }
+
+  if (receipts.length === 0) {
+    return (
+      <Table.Tbody>
+        <Table.Tr>
+          <Table.Td colSpan={4}>
+            <Center py="xl">
+              <Stack gap={2} align="center">
+                <Text fw={600}>No receipts yet</Text>
+                <Text size="sm" c="dimmed">Create your first receipt to get started.</Text>
+              </Stack>
+            </Center>
+          </Table.Td>
+        </Table.Tr>
+      </Table.Tbody>
+    )
   }
 
   return (
@@ -70,6 +87,7 @@ export const ReceiptsTableBody = ({ data }: ReceiptsTableBodyProps) => {
           key={r.id}
           onClick={() => { onDelete(r.id) }}
           data={r}
+          isDeleting={deletingId === r.id}
         />
       ),
       )}

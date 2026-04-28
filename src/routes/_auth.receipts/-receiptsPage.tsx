@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client'
-import { Alert, Button, Center, Container, Group, Paper, Skeleton, Stack, Table, Text, Title } from '@mantine/core'
+import { Alert, Badge, Button, Center, Container, Group, Paper, Skeleton, Stack, Table, Text, Title } from '@mantine/core'
 import { graphql } from '@src/__generated__/gql'
 import { useDisclosure } from '@mantine/hooks'
+import { IconReceipt, IconPlus } from '@tabler/icons-react'
 import { CreateReceiptModal } from './-createReceiptModal'
 import { ReceiptsTableBody } from './-receiptsTableBody'
 
@@ -51,7 +52,7 @@ export const ReceiptsPage = () => {
   }
 
   return (
-    <Container size="md" py="xl">
+    <Container size="lg" py="xl">
       <CreateReceiptModal
         opened={opened}
         close={close}
@@ -59,26 +60,44 @@ export const ReceiptsPage = () => {
       />
 
       <Stack gap="lg">
-        <Group justify="space-between" align="center">
-          <Title order={1}>Receipts</Title>
-          <Button onClick={open} color="teal">
-            Create Receipt
-          </Button>
-        </Group>
+        <Paper withBorder radius="lg" p="lg">
+          <Group justify="space-between" align="center">
+            <Stack gap={4}>
+              <Group gap="xs" align="center">
+                <IconReceipt size={20} />
+                <Title order={2}>Receipts</Title>
+              </Group>
+              <Text c="dimmed" size="sm">
+                Organize shared expenses and keep every total in one place.
+              </Text>
+            </Stack>
+
+            <Group gap="sm">
+              <Badge variant="light" color="gray" size="lg">
+                My receipts
+              </Badge>
+              <Button onClick={open} color="teal" leftSection={<IconPlus size={16} />}>
+                Create Receipt
+              </Button>
+            </Group>
+          </Group>
+        </Paper>
 
         <Paper withBorder radius="md" p="md">
-          <Table highlightOnHover>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>ID</Table.Th>
-                <Table.Th>Description</Table.Th>
-                <Table.Th>Total</Table.Th>
-                <Table.Th>Actions</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
+          <Table.ScrollContainer minWidth={720}>
+            <Table highlightOnHover striped verticalSpacing="sm">
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>#</Table.Th>
+                  <Table.Th>Receipt</Table.Th>
+                  <Table.Th style={{ textAlign: 'right' }}>Total</Table.Th>
+                  <Table.Th style={{ width: 72 }}>Actions</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
 
-            <ReceiptsTableBody data={data.me} />
-          </Table>
+              <ReceiptsTableBody data={data.me} />
+            </Table>
+          </Table.ScrollContainer>
         </Paper>
       </Stack>
     </Container>
