@@ -1,5 +1,5 @@
-import { ActionIcon, Grid, TextInput, Title, rem } from '@mantine/core'
-import { IconArrowRight, IconLink } from '@tabler/icons-react'
+import { Button, CopyButton, Group, Paper, Text, TextInput } from '@mantine/core'
+import { IconCheck, IconLink, IconWorld } from '@tabler/icons-react'
 import { ReceiptDocument } from '@src/__generated__/graphql'
 import { graphql } from '@src/__generated__/gql'
 import { useMutation } from '@apollo/client'
@@ -19,7 +19,8 @@ interface ShareReceiptProps {
 }
 
 export const ShareReceipt = ({ slug, receiptId }: ShareReceiptProps) => {
-  const publicUrl = slug ? `${window.location.origin}/receipts/public/${slug}` : ''
+  const origin = typeof window !== 'undefined' ? window.location.origin : ''
+  const publicUrl = slug ? `${origin}/receipts/public/${slug}` : ''
 
   const [generatePublicUrl] = useMutation(GENERATE_PUBLIC_URL, {
     update: (cache, { data }) => {
@@ -46,25 +47,44 @@ export const ShareReceipt = ({ slug, receiptId }: ShareReceiptProps) => {
   }
 
   return (
-    <Grid>
-      <Grid.Col span="content">
-        <Title order={2}>Share:</Title>
-      </Grid.Col>
+    <Paper withBorder radius="md" p="md">
+      <Group justify="space-between" align="center" mb="xs">
+        <Group gap="xs">
+          <IconWorld size={18} />
+          <Text fw={600}>Share receipt</Text>
+        </Group>
 
-      <Grid.Col span={4}>
-        <TextInput
-          disabled
-          size="md"
-          value={publicUrl}
-          rightSectionWidth={42}
-          leftSection={<IconLink />}
-          rightSection={(
-            <ActionIcon onClick={onClick} size={32} radius="xl" variant="filled">
-              <IconArrowRight style={{ height: rem(18), width: rem(18) }} stroke={1.5} />
-            </ActionIcon>
-          )}
-        />
-      </Grid.Col>
-    </Grid>
+        {
+          slug === ''
+            ? (
+                <Button size="xs" leftSection={<IconLink size={14} />} onClick={onClick}>
+                  Generate link
+                </Button>
+              )
+            : (
+                <CopyButton value={publicUrl} timeout={1200}>
+                  {({ copied, copy }) => (
+                    <Button
+                      size="xs"
+                      variant="light"
+                      color={copied ? 'teal' : 'gray'}
+                      leftSection={copied ? <IconCheck size={14} /> : <IconLink size={14} />}
+                      onClick={copy}
+                    >
+                      {copied ? 'Copied' : 'Copy link'}
+                    </Button>
+                  )}
+                </CopyButton>
+              )
+        }
+      </Group>
+
+      <TextInput
+        readOnly
+        value={publicUrl}
+        placeholder="Generate a public link to share this receipt"
+        leftSection={<IconLink size={16} />}
+      />
+    </Paper>
   )
 }

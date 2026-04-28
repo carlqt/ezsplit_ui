@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { ActionIcon, FocusTrap, NumberInput, Table, TextInput } from '@mantine/core'
+import { ActionIcon, Badge, FocusTrap, NumberInput, Table, TextInput, Tooltip } from '@mantine/core'
 import { graphql } from '@src/__generated__/gql'
 import { ReceiptItemListFragment } from '@src/__generated__/graphql'
 import { IconCirclePlus, IconDeviceFloppy } from '@tabler/icons-react'
@@ -22,7 +22,7 @@ interface Props {
 export const AddItemRow = ({ receiptId, itemsCache }: Props) => {
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
-  const actionIcon = (name || price) ? <IconDeviceFloppy /> : <IconCirclePlus />
+  const actionIcon = (name || price) ? <IconDeviceFloppy size={16} /> : <IconCirclePlus size={16} />
 
   const priceInputRef = useRef<HTMLInputElement>(null)
   const nameInputRef = useRef<HTMLInputElement>(null)
@@ -76,7 +76,9 @@ export const AddItemRow = ({ receiptId, itemsCache }: Props) => {
   return (
     <FocusTrap active>
       <Table.Tr>
-        <Table.Td></Table.Td>
+        <Table.Td>
+          <Badge variant="light" color="teal">+</Badge>
+        </Table.Td>
         <Table.Td>
           <TextInput
             required
@@ -106,13 +108,17 @@ export const AddItemRow = ({ receiptId, itemsCache }: Props) => {
         </Table.Td>
 
         <Table.Td>
-          <ActionIcon
-            variant="transparent"
-            type="submit"
-            onClick={onCreate}
-          >
-            {actionIcon}
-          </ActionIcon>
+          <Tooltip label={(name || price) ? 'Save item' : 'Add item'}>
+            <ActionIcon
+              variant="subtle"
+              color="teal"
+              type="submit"
+              onClick={onCreate}
+              aria-label="Add item"
+            >
+              {actionIcon}
+            </ActionIcon>
+          </Tooltip>
         </Table.Td>
       </Table.Tr>
     </FocusTrap>

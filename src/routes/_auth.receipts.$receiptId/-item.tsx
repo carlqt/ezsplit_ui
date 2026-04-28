@@ -1,4 +1,4 @@
-import { ActionIcon, NumberFormatter, NumberInput, rem, Table, TextInput } from '@mantine/core'
+import { ActionIcon, Badge, Group, NumberFormatter, NumberInput, rem, Table, Text, TextInput, Tooltip } from '@mantine/core'
 import { IconTrash, IconEdit, IconDeviceFloppy, IconWriting } from '@tabler/icons-react'
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
@@ -106,7 +106,9 @@ export const Item = ({ data, index }: ItemProps) => {
 
   return (
     <Table.Tr>
-      <Table.Td>{rowIndex}</Table.Td>
+      <Table.Td>
+        <Badge variant="light" color="gray">{rowIndex}</Badge>
+      </Table.Td>
       <Table.Td>
         {
           editMode
@@ -122,7 +124,9 @@ export const Item = ({ data, index }: ItemProps) => {
                   onKeyDown={handleKeyDown}
                 />
               )
-            : <>{itemName}</>
+            : (
+                <Text fw={600}>{itemName}</Text>
+              )
         }
 
       </Table.Td>
@@ -147,45 +151,59 @@ export const Item = ({ data, index }: ItemProps) => {
                 />
               )
             : (
-                <NumberFormatter
-                  prefix="$"
-                  value={itemPrice}
-                  thousandSeparator={true}
-                />
+                <Text fw={700} ta="right">
+                  <NumberFormatter
+                    prefix="$"
+                    value={itemPrice}
+                    thousandSeparator
+                  />
+                </Text>
               )
         }
       </Table.Td>
       <Table.Td>
-        {
-          editMode
-            ? (
-                <ActionIcon
-                  onClick={onUpdateItem}
-                  variant="transparent"
-                >
-                  <IconDeviceFloppy />
-                </ActionIcon>
+        <Group gap={6} justify="flex-end" wrap="nowrap">
+          {
+            editMode
+              ? (
+                  <Tooltip label="Save item">
+                    <ActionIcon
+                      onClick={onUpdateItem}
+                      variant="subtle"
+                      color="teal"
+                      aria-label="Save item"
+                    >
+                      <IconDeviceFloppy size={16} />
+                    </ActionIcon>
+                  </Tooltip>
+                )
+              : (
+                  <Tooltip label="Edit item">
+                    <ActionIcon
+                      onClick={() => { setEditMode(true) }}
+                      type="submit"
+                      form="on-update"
+                      variant="subtle"
+                      color="blue"
+                      aria-label="Edit item"
+                    >
+                      <IconEdit size={16} />
+                    </ActionIcon>
+                  </Tooltip>
+                )
+          }
 
-              )
-            : (
-                <ActionIcon
-                  onClick={() => { setEditMode(true) }}
-                  type="submit"
-                  form="on-update"
-                  variant="transparent"
-                >
-                  <IconEdit />
-                </ActionIcon>
-
-              )
-        }
-
-        <ActionIcon
-          variant="transparent"
-          onClick={() => void deleteItem()}
-        >
-          <IconTrash />
-        </ActionIcon>
+          <Tooltip label="Delete item">
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              onClick={() => void deleteItem()}
+              aria-label="Delete item"
+            >
+              <IconTrash size={16} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
       </Table.Td>
     </Table.Tr>
   )
