@@ -5,8 +5,9 @@ import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import reactHooks from "eslint-plugin-react-hooks"
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
@@ -54,13 +55,5 @@ export default tseslint.config(
   },
 
   // react-hooks rules
-  // Some Type issues but rule works. Better than nothing
-  {
-    plugins: {
-      'react-hooks': reactHooks,
-    },
-    rules: {
-      ...reactHooks.configs.recommended.rules
-    }
-  },
+  reactHooks.configs.flat['recommended-latest'],
 );

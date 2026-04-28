@@ -3,9 +3,8 @@ import { IconTrash, IconEdit, IconDeviceFloppy, IconWriting } from '@tabler/icon
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
 import { useMutation } from '@apollo/client'
-import { useRef, useState } from 'react'
+import { useRef, useState, useCallback, type KeyboardEvent } from 'react'
 import { ReceiptDocument } from '@src/__generated__/graphql'
-import { getHotkeyHandler, HotkeyItem } from '@mantine/hooks'
 
 const ReceiptItemFields = graphql(`
   fragment ReceiptItemFields on Item {
@@ -74,7 +73,7 @@ export const Item = ({ data, index }: ItemProps) => {
     refetchQueries: [ReceiptDocument],
   })
 
-  const onUpdateItem = () => {
+  const onUpdateItem = useCallback(() => {
     if (!priceInputRef.current?.reportValidity()) return
     if (!nameInputRef.current?.reportValidity()) return
 
@@ -91,12 +90,19 @@ export const Item = ({ data, index }: ItemProps) => {
         },
       },
     })
-  }
+  }, [id, itemName, itemPrice, updateItem])
 
-  const hotkeysForInputs: HotkeyItem[] = [
-    ['Enter', onUpdateItem],
-    ['Escape', () => { setEditMode(false) }],
-  ]
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      onUpdateItem()
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      setEditMode(false)
+    }
+  }, [onUpdateItem])
 
   return (
     <Table.Tr>
@@ -113,7 +119,7 @@ export const Item = ({ data, index }: ItemProps) => {
                   placeholder="Add name"
                   onChange={(e) => { setName(e.currentTarget.value) }}
                   value={itemName}
-                  onKeyDown={getHotkeyHandler(hotkeysForInputs)}
+                  onKeyDown={handleKeyDown}
                 />
               )
             : <>{itemName}</>
@@ -137,7 +143,7 @@ export const Item = ({ data, index }: ItemProps) => {
                   onChange={onPriceChange}
                   value={itemPrice}
                   decimalScale={2}
-                  onKeyDown={getHotkeyHandler(hotkeysForInputs)}
+                  onKeyDown={handleKeyDown}
                 />
               )
             : (

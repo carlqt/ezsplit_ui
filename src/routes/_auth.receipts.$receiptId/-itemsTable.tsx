@@ -5,7 +5,7 @@ import { FragmentType, getFragmentData } from '@src/__generated__/'
 import { AddItemRow } from './-addItemRow'
 import { useApolloClient } from '@apollo/client'
 
-export const ReceiptItemList = graphql(`
+const ReceiptItemList = graphql(`
   fragment ReceiptItemList on Receipt {
     items {
       id
