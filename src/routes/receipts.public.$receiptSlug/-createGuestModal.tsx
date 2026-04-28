@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/client'
-import { Anchor, Box, Button, Flex, Modal, TextInput } from '@mantine/core'
+import { Anchor, Box, Button, Group, Modal, Stack, Text, TextInput, ThemeIcon } from '@mantine/core'
 import { graphql } from '@src/__generated__'
 import { MeDocument } from '@src/__generated__/graphql'
 import { Link } from '@tanstack/react-router'
+import { IconUserCircle } from '@tabler/icons-react'
 import { FormEvent, useState } from 'react'
 
 const GUEST_USER_MUTATION = graphql(`
@@ -37,39 +38,56 @@ export const CreateGuestModal = ({
 
   // On create click, call mutation
   return (
-    <Modal opened={opened} onClose={onClose} title="Create a display name" centered>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title="Join this receipt"
+      centered
+      radius="md"
+      overlayProps={{ blur: 2 }}
+    >
       <Box mx="auto">
         <form onSubmit={onSubmit}>
-          <TextInput
-            required
-            data-autofocus
-            label="Display name"
-            name="username"
-            placeholder="Enter your display name"
-            value={name}
-            onChange={(e) => { setName(e.currentTarget.value) }}
-          />
-          <Button
-            loaderProps={{ type: 'bars' }}
-            type="submit"
-            fullWidth
-            mt="xl"
-          >
-            Create
-          </Button>
+          <Stack gap="md">
+            <Group gap="xs" align="center">
+              <ThemeIcon variant="light" color="teal" radius="xl">
+                <IconUserCircle size={16} />
+              </ThemeIcon>
+              <Text size="sm" c="dimmed">Create a temporary display name to select items.</Text>
+            </Group>
+
+            <TextInput
+              required
+              data-autofocus
+              label="Display name"
+              name="username"
+              placeholder="Enter your display name"
+              value={name}
+              onChange={(e) => { setName(e.currentTarget.value) }}
+            />
+
+            <Button
+              loaderProps={{ type: 'bars' }}
+              type="submit"
+              fullWidth
+            >
+              Continue as guest
+            </Button>
+          </Stack>
         </form>
-        <Flex justify="space-between">
+
+        <Group justify="space-between" mt="sm">
           <Link to="/login">
             <Anchor size="sm" component="button">
-              Login
+              Login instead
             </Anchor>
           </Link>
           <Link to="/sign_up">
             <Anchor size="sm" component="button">
-              Sign up
+              Create account
             </Anchor>
           </Link>
-        </Flex>
+        </Group>
       </Box>
     </Modal>
   )

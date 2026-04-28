@@ -1,4 +1,4 @@
-import { ActionIcon, NumberFormatter, Table } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Group, NumberFormatter, Table, Text, Tooltip } from '@mantine/core'
 import { IconStar, IconStarFilled } from '@tabler/icons-react'
 import { graphql } from '@src/__generated__/gql'
 import { FragmentType, getFragmentData } from '@src/__generated__'
@@ -29,27 +29,46 @@ export const PublicReceiptTableItem = ({ data, isSelected, onSelect, index }: It
     return users.map(u => u.username).join(', ')
   }
 
+  const sharedByText = joinedUsernames(sharedBy) || 'No one yet'
+
   return (
     <Table.Tr>
-      <Table.Td>{ index + 1 }</Table.Td>
       <Table.Td>
-        {name}
+        <Badge variant="light" color="gray">{index + 1}</Badge>
       </Table.Td>
       <Table.Td>
-        <NumberFormatter
-          prefix="$"
-          value={price || 0}
-          thousandSeparator={true}
-        />
+        <Text fw={600}>{name}</Text>
       </Table.Td>
-      <Table.Td>{joinedUsernames(sharedBy)}</Table.Td>
       <Table.Td>
-        <ActionIcon
-          variant="transparent"
-          onClick={onSelect}
-        >
-          { isSelected ? <IconStarFilled /> : <IconStar /> }
-        </ActionIcon>
+        <Text fw={700} ta="right">
+          <NumberFormatter
+            prefix="$"
+            value={price ?? 0}
+            thousandSeparator
+          />
+        </Text>
+      </Table.Td>
+      <Table.Td>
+        <Group gap="xs" wrap="nowrap">
+          <Avatar size="sm" radius="xl" color="teal" variant="light">
+            {sharedBy.length}
+          </Avatar>
+          <Text size="sm" c="dimmed" truncate>
+            {sharedByText}
+          </Text>
+        </Group>
+      </Table.Td>
+      <Table.Td>
+        <Tooltip label={isSelected ? 'Selected' : 'Select item'}>
+          <ActionIcon
+            variant="subtle"
+            color={isSelected ? 'yellow' : 'gray'}
+            onClick={onSelect}
+            aria-label="Toggle item selection"
+          >
+            {isSelected ? <IconStarFilled size={16} /> : <IconStar size={16} />}
+          </ActionIcon>
+        </Tooltip>
       </Table.Td>
     </Table.Tr>
   )

@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Table } from '@mantine/core'
+import { Center, Paper, Stack, Table, Text } from '@mantine/core'
 import { FragmentType, getFragmentData, graphql } from '@src/__generated__/'
 import { MeDocument, MeQuery, PublicReceiptDocument } from '@src/__generated__/graphql'
 import { PublicReceiptTableItem } from './-publicReceiptTableItem'
@@ -24,11 +24,10 @@ const PublicReceiptItems = graphql(`
 
 interface ReceiptTableProps {
   data: FragmentType<typeof PublicReceiptItems>
-  caption: string
   user: NonNullable<MeQuery['me']>
 }
 
-export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
+export const ReceiptTable = ({ data, user }: ReceiptTableProps) => {
   const itemsData = getFragmentData(PublicReceiptItems, data)
 
   const isSelected = (itemId: string): boolean => {
@@ -47,32 +46,46 @@ export const ReceiptTable = ({ caption, data, user }: ReceiptTableProps) => {
     void assignOrRemove({ variables: { itemId } })
   }
 
+  if (itemsData.items.length === 0) {
+    return (
+      <Paper withBorder radius="md" p="md">
+        <Center py="xl">
+          <Stack gap={2} align="center">
+            <Text fw={600}>No items yet</Text>
+            <Text size="sm" c="dimmed">This public receipt does not have any items.</Text>
+          </Stack>
+        </Center>
+      </Paper>
+    )
+  }
+
   return (
-    <Table highlightOnHover>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>ID</Table.Th>
-          <Table.Th>Name</Table.Th>
-          <Table.Th>Price</Table.Th>
-          <Table.Th>Shared By</Table.Th>
-          <Table.Th>Select</Table.Th>
-        </Table.Tr>
-      </Table.Thead>
+    <Paper withBorder radius="md" p="md">
+      <Table.ScrollContainer minWidth={760}>
+        <Table highlightOnHover striped verticalSpacing="sm">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>#</Table.Th>
+              <Table.Th>Item</Table.Th>
+              <Table.Th style={{ textAlign: 'right' }}>Price</Table.Th>
+              <Table.Th>Shared by</Table.Th>
+              <Table.Th style={{ width: 80 }}>Select</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
 
-      <Table.Tbody>
-        {itemsData.items.map((item, index) => (
-          <PublicReceiptTableItem
-            index={index}
-            key={item.id}
-            data={item}
-            isSelected={isSelected(item.id)}
-            onSelect={() => { onSelect(item.id) }}
-          />
-        ),
-        )}
-      </Table.Tbody>
-
-      <Table.Caption>{caption}</Table.Caption>
-    </Table>
+          <Table.Tbody>
+            {itemsData.items.map((item, index) => (
+              <PublicReceiptTableItem
+                index={index}
+                key={item.id}
+                data={item}
+                isSelected={isSelected(item.id)}
+                onSelect={() => { onSelect(item.id) }}
+              />
+            ))}
+          </Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
+    </Paper>
   )
 }
